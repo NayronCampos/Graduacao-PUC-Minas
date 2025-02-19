@@ -13,6 +13,7 @@ int palindromorec(char m[], int e, int d) {
 int main(void) {
     char palavra[20];
     int i = 0;
+    printf("Digite a palavrinha\n");
 
     scanf("%s", palavra);
 
