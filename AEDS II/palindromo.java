@@ -1,10 +1,10 @@
 import java.util.Scanner;
-public class palindromo{
 
+public class palindromo {
 
     public static void main(String[] args) {
         Scanner ler = new Scanner(System.in);
-    
+
         String palavra;
         int p1, p2;
 
@@ -13,11 +13,6 @@ public class palindromo{
 
         System.out.println(palavra);
 
-        for(int i=0, i<){}
-            
-
-
     }
-
 
 }
