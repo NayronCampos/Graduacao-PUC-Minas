@@ -1,34 +1,53 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 
-int palindromorec(char m[], int e, int d) {
-    if (e >= d) { 
-        return 1;
+#define INPUT_BREAK "FIM"
+
+bool isPalindrome(char *string)
+{
+    if (string == NULL)
+        return false;
+
+    int i = 0, j = 0;
+
+    while (string[j] != '\n' && string[j] != '\0')
+    {
+        j++;
     }
-    if (m[e] != m[d]) { 
-        return 0;
+    j--;
+    while (i < j)
+    {
+        if (string[i] != string[j])
+            return false;
+        i++;
+        j--;
     }
-    return palindromorec(m, e + 1, d - 1); 
+    return true;
 }
 
-int main(void) {
-    char palavra[20];
-    int i = 0;
-    printf("Digite a palavrinha\n");
+void processInput()
+{
+    char input[100];
 
-    scanf("%s", palavra);
+    while (true)
+    {
+        fgets(input, sizeof(input), stdin);
 
-    while (palavra[i] != '\0') {
-        i++;
+        input[strcspn(input, "\n")] = 0;
+
+        if (strcmp(input, INPUT_BREAK) == 0)
+            break;
+
+        if (isPalindrome(input))
+            printf("SIM\n");
+        else
+            printf("NAO\n");
     }
+}
 
-    int esq = 0;
-    int dir = i - 1; 
-
-    if (palindromorec(palavra, esq, dir)) {
-        printf("Eh um palindromo!\n");
-    } else {
-        printf("Nao eh um palindromo!\n");
-    }
-
+int main()
+{
+    processInput();
     return 0;
 }
