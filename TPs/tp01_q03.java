@@ -8,8 +8,8 @@ public class tp01_q03 {
 
         for (int i = 0; i < tamanho; i++) {
             char caractere = mensagem.charAt(i);
-            char cifrado = (char) (caractere + 3); // Desloca o caractere 3 posições para frente
-            resultado += cifrado; // Adiciona o caractere cifrado na nova string
+            char cifrado = (char) (caractere + 3);
+            resultado += cifrado;
         }
 
         return resultado;
@@ -22,7 +22,7 @@ public class tp01_q03 {
             String mensagem = sc.nextLine().trim();
 
             if (mensagem.equals("FIM"))
-                break; // Para o programa se a entrada for "FIM"
+                break;
 
             System.out.println(cifrar(mensagem));
         }
