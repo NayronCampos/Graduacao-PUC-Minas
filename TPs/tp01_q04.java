@@ -2,36 +2,49 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class tp01_q04 {
+    static Random gerador = new Random();
 
-    public static String alterarString(String input) {
-        Random gerador = new Random();
-        gerador.setSeed(4); // Definir a semente para garantir reprodutibilidade
+    static {
+        gerador.setSeed(4);
+    }
 
-        // Sorteando duas letras minúsculas aleatórias e garantindo que sejam diferentes
-        char letra1, letra2;
-        letra1 = (char) ('a' + Math.abs(gerador.nextInt()) % 26);
+    static String alterarString(String s) {
+        int tamanho = s.length();
+
+        // Sorteia a primeira letra aleatória (entre 'a' e 'z')
+        char letra1 = (char) ('a' + Math.abs(gerador.nextInt()) % 26);
+
+        // Sorteia a segunda letra, garantindo que seja diferente da primeira
+        char letra2;
         do {
             letra2 = (char) ('a' + Math.abs(gerador.nextInt()) % 26);
-        } while (letra1 == letra2); // Garante que as letras não sejam iguais
+        } while (letra2 == letra1);
 
-        // Substituindo todas as ocorrências da letra1 por letra2
-        return input.replace(letra1, letra2);
+        // Constrói a nova string, substituindo letra1 por letra2
+        String resultado = "";
+        for (int i = 0; i < tamanho; i++) {
+            char c = s.charAt(i);
+            if (c == letra1) {
+                resultado += letra2;
+            } else {
+                resultado += c;
+            }
+        }
+        return resultado;
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        // Leitura das linhas até a palavra "FIM"
         while (true) {
-            String input = scanner.nextLine();
-
-            if (input.equals("FIM")) {
-                break; // Encerra o loop ao encontrar "FIM"
+            String linha = scanner.nextLine();
+            if (linha.equals("FIM")) {
+                break;
             }
-
-            // Processa a string e exibe o resultado
-            System.out.println(alterarString(input));
+            // Processa a linha e exibe o resultado
+            System.out.println(alterarString(linha));
         }
-
         scanner.close();
     }
 }
