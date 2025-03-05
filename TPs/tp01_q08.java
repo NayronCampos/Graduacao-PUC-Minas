@@ -6,7 +6,6 @@ public class tp01_q08 {
         int i = 0;
         int soma = 0;
 
-        // Usando o while para contar os caracteres da string
         while (i < numero.length()) {
             soma += numero.charAt(i) - '0'; // Converte o caractere para número e soma
             i++;
