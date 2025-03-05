@@ -26,22 +26,26 @@ public class tp01_q13 {
     }
 
     public static void contarVogais(String texto, int[] contadores) {
+
         String vogais = "aeiouáéíóúàèìòùãõâêîôû";
         for (char c : texto.toCharArray()) {
-            int index = vogais.indexOf(c);
+            char lower = Character.toLowerCase(c);
+            int index = vogais.indexOf(lower);
             if (index != -1) {
                 contadores[index]++;
-            } else if (Character.isLetter(c)) {
+            } else if (Character.isLetter(lower)) {
                 contadores[22]++; // Contador de consoantes
             }
         }
     }
 
     public static void contarBr(String texto, int[] contadores) {
+        // Procura ocorrências de "<br>"
         contadores[23] += texto.split("<br>", -1).length - 1;
     }
 
     public static void contarTable(String texto, int[] contadores) {
+        // Procura ocorrências de "<table>"
         contadores[24] += texto.split("<table>", -1).length - 1;
     }
 
@@ -62,12 +66,12 @@ public class tp01_q13 {
         return entrada.equals("FIM");
     }
 
-    public static void main(String[] args) {
-        while (true) {
-            String nomePagina = MyIO.readLine();
-            if (ehFim(nomePagina))
-                break;
-            String url = MyIO.readLine();
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String nomePagina;
+        while (!(nomePagina = in.readLine()).equals("FIM")) {
+            String url = in.readLine();
             String html = baixarHTML(url);
             int[] contadores = new int[25];
             contarPadroes(html, contadores);
