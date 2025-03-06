@@ -34,19 +34,26 @@ public class tp01_q13 {
             if (index != -1) {
                 contadores[index]++;
             } else if (Character.isLetter(lower)) {
-                contadores[22]++; // Contador de consoantes
+                // Garantir que o índice das consoantes esteja dentro do limite do array
+                if (contadores.length > 22) {
+                    contadores[22]++; // Contador de consoantes
+                }
             }
         }
     }
 
     public static void contarBr(String texto, int[] contadores) {
         // Procura ocorrências de "<br>"
-        contadores[23] += texto.split("<br>", -1).length - 1;
+        if (contadores.length > 23) {
+            contadores[23] += texto.split("<br>", -1).length - 1;
+        }
     }
 
     public static void contarTable(String texto, int[] contadores) {
         // Procura ocorrências de "<table>"
-        contadores[24] += texto.split("<table>", -1).length - 1;
+        if (contadores.length > 24) {
+            contadores[24] += texto.split("<table>", -1).length - 1;
+        }
     }
 
     public static void imprimirResultado(int[] contadores, String nomePagina) {
@@ -73,7 +80,7 @@ public class tp01_q13 {
         while (!(nomePagina = in.readLine()).equals("FIM")) {
             String url = in.readLine();
             String html = baixarHTML(url);
-            int[] contadores = new int[25];
+            int[] contadores = new int[25]; // 25 posições para os contadores
             contarPadroes(html, contadores);
             imprimirResultado(contadores, nomePagina);
         }

@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-class tp01_q05 {
+class tp01_q19 {
 
     static boolean[] Boolrecursivo(String s, int pos, int n, boolean[] arr, int cnt) {
         if (cnt == n || pos >= s.length())
