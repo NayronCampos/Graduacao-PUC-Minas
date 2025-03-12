@@ -7,6 +7,10 @@ public class conta {
         deposito=adddeposito;
         return valor += deposito;
     }
+    public int sacar(int saquii){
+        saque=saquii;
+        return valor -= saque;
+    }
 
    
 
@@ -15,6 +19,9 @@ public class conta {
             conta Nayron = new conta();
             
             System.out.println(Nayron.insertvalor(180));
+            System.out.println(Nayron.sacar(18));
+
+
 
 
 
