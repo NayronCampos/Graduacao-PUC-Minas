@@ -1,0 +1,249 @@
+Matrícula: 874422
+Aluno: Nayron Campos Soares
+
+
+01.) Fazer as conversões de decimal para binário:
+01a.) manualmente (em arquivo texto)
+
+a.) 27(10) = 11011(2)
+27 % 2 = 1
+13 % 2 = 1
+6  % 2 = 0
+3  % 2 = 1
+1  % 2 = 1
+
+
+b.) 51(10) = 110011(2)
+51 % 2 = 1
+25 % 2 = 1
+12 % 2 = 0
+6  % 2 = 0
+3  % 2 = 1
+1  % 2 = 1
+
+
+c.) 725(10) = 1011010101(2)
+725 % 2 = 1
+362 % 2 = 0
+181 % 2 = 1
+90  % 2 = 0
+45  % 2 = 1
+22  % 2 = 0
+11  % 2 = 1
+5   % 2 = 1
+2   % 2 = 0
+1   % 2 = 1
+
+ 
+d.) 132(10) = 10000100(2)
+132 % 2 = 0
+66  % 2 = 0
+33  % 2 = 1
+16  % 2 = 0
+8   % 2 = 0
+4   % 2 = 0
+2   % 2 = 0
+1   % 2 = 1
+
+
+e.) 360(10) = 101101000(2)
+360 % 2 = 0
+180 % 2 = 0
+90  % 2 = 0
+45  % 2 = 1
+22  % 2 = 0
+11  % 2 = 1
+5   % 2 = 1
+2   % 2 = 0
+1   % 2 = 1
+01b.) mediante uso de um programa em Verilog (em arquivo fonte com extensão (.v))
+
+Disponível na pasta como ex1-874422_Nayron.v
+
+
+
+02.) Fazer as conversões de binário para decimal:
+02a.) manualmente
+
+a.) 10011(2) = 19(10)
+
+1x24+0x23+0x22+1x21+1x20
+16            +2  +1 = 19 
+
+
+b.) 10101(2) = 21(10)
+
+1x24+0x23+1x22+0x21+1x20
+16       +4       +1 = 21  
+
+
+c.) 10110(2) = 22(10)
+
+1x24+0x23+1x22+1x21+0x20
+16       +4  +2      = 22
+
+
+d.) 110010(2) = 50(10)
+
+1x25+1x24+0x23+0x22+1x21+0x20
+32  +16          +2       = 50
+
+
+e.) 111011(2) = 59(10)
+
+1x25+1x24+1x23+0x22+1x21+1x20
+32  +16  +8       +2   +1 = 59
+
+
+
+02b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex2-874422_Nayron.v
+
+
+
+03.) Fazer as conversões de decimal para a base indicada:
+03a.) manualmente
+
+a.) 54(10) = 312(4)
+54 % 4 = 2
+13 % 4 = 1
+3  % 4 = 3
+
+
+
+b.) 67(10) = 103(8)
+67 % 8 = 3
+8  % 8 = 0
+1  % 8 = 1 
+
+
+c.) 76(10) = 4C(16)
+76 % 16 = 12 = C
+4  % 16 = 4
+
+
+d.) 157(10) = 9D(16)
+157 % 16 = 13 = D
+9   % 16 = 9
+
+
+e.) 731(10) = 2DB(16)
+731 % 16 = 11 = B
+45  % 16 = 13 = D
+2   % 16 = 2
+	
+
+03b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex3-874422_Nayron.v
+
+
+04.) Fazer as conversões de base entre as bases indicadas por agrupamento:
+04a.) manualmente
+
+a.) 10110(2) = 112(4)
+[01] [01] [10]
+ 1      1      2 
+
+
+b.) 11011(2) = 33(8)
+[011] [011] 
+  3     3
+
+
+c.) 100100(2) = 24(16)
+[0010] [0100]
+  2       4
+
+
+d.) 101011(2) = 53(8)
+[101] [011]
+  5     3
+
+
+e.) 101100(2) = 230(4)
+[10] [11] [00]
+  2    3   0
+
+04b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex4-874422_Nayron.v
+
+
+05.) Converter entre símbolos e códigos de representação alfanumérico (ASCII):
+05a.) manualmente
+
+a.) “PUC-Minas” = 50 55 43 2D 4D 69 6E 61 73(16_ASCII)
+P = 50
+U = 55
+C = 43
+- = 2D
+M = 4D
+i = 69
+n = 6E
+a = 61
+s = 73
+
+
+b.) “2025-01” = 32 30 32 35 2D 30 31(16_ASCII)
+2 = 32
+0 = 30
+2 = 32
+5 = 35
+- = 2D
+0 = 30
+1 = 31
+
+
+c.) “Belo Horizonte - M.G." = 01000010 01100101 01101100 01101111 00100000 01001000 01101111 01110010 01101001 01111010 01101111 01101110 01110100 01100101 00100000 00101101 00100000 01001101 00101110 01000111 00101110
+(2_ASCII)
+B = 01000010
+e = 01100101
+l = 01101100
+o = 01101111
+"espaço" = 00100000
+H = 01001000
+o = 01101111
+r = 01110010
+i = 01101001
+z = 01111010
+o = 01101111
+n = 01101110
+t = 01110100
+e = 01100101
+"espaço" = 00100000
+- = 00101101
+"espaço" = 00100000
+M = 01001101
+. = 00101110
+G = 01000111
+. = 00101110
+
+
+d.) 156 157 151 164 145 (8) = noite(ASCII)
+Convertendo da base 8 para decimal:
+1568 = 1×8² + 5×8¹ + 6×8° = 110
+1578 = 1×8² + 5×8¹ + 7×8° = 111
+1518 = 1×8² + 5×8¹ + 1×8° = 105
+1648 = 1×8² + 6×8¹ + 4×8° = 116
+1458 = 1×8² + 4×8¹ + 5×8° = 101
+Convertendo para caracteres ASCII:
+110 = 'n'
+111 = 'o'
+105 = 'i'
+116 = 't'
+101 = 'e'
+
+
+e.) 4D 61 6E 68 61 (16) = Manha(ASCII)
+4D = 'M'
+61 = 'a'
+6E = 'n'
+68 = 'h'
+61 = 'a'
+
+
+05b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex5-874422_Nayron.v
