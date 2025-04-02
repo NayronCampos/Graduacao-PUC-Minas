@@ -1,7 +1,7 @@
 .container{
     border: 1px solid #7a6c6c;
     width: 10rem;
-    height: 10rem;
+    height: 17rem;
     margin: 1rem auto;
     box-shadow: .5rem .5rem .3rem .01rem #0fffcb;
     
@@ -10,4 +10,23 @@
 *{
     font-size: 16px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+.titulo{
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.descricao{
+    font-size: .8rem;
+}
+
+.preco{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: right;
+}
+img {
+    width: 10rem;
+    height: 8rem;
 }
