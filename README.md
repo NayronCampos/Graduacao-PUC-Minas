@@ -1,35 +1,73 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15963201&assignment_repo_type=AssignmentRepo)
-# Dificuldades em prestar concursos públicos
+# Welcome to your Lovable project
 
-A dificuldade em encontrar concursos públicos e federais torna-se marcante no contexto brasileiro, uma vez que os candidatos interessados possuem dificuldade em encontrar, de maneira simples, concursos disponíveis, editais, materiais de estudo, datas e futuros concursos abertos (preestabelecidos por entidades públicas). Embora a Internet tenha facilitado a maneira como os candidatos possuem acesso aos concursos e editais, as informações geralmente se encontram fragmentadas e incompletas, com pouca variedade de opções e de difícil coesão temporal, uma vez que os prazos são curtos e a informação sobre as possibilidades são geralmente encaminhas aos usuários próximo a data das provas de seleção, o que diminui a possibilidade de aprovação.
+## Project info
 
-## Alunos integrantes da equipe
+**URL**: https://lovable.dev/projects/d4ba9693-bee3-473b-a4bc-80f20c5e9fb1
 
-* Gabriel Matos Nogueira
-* Gustavo Lopes Oliveira
-* Isabel Cristina Borges
-* João Paulo de Deus Natividade Oliveira Saraiva
-* Nayron Campos Soares
-* Lawer Böuch Soncin Rocha
+## How can I edit this code?
 
-## Professores responsáveis
+There are several ways of editing your application.
 
-* João Carlos Oliveira Caetano
-* Luciana Mara Freitas Diniz
-* Rommel Vieira Carneiro
+**Use Lovable**
 
-## Instruções de utilização 
+Simply visit the [Lovable Project](https://lovable.dev/projects/d4ba9693-bee3-473b-a4bc-80f20c5e9fb1) and start prompting.
 
-> **IMPORTANTE: APAGUE ESSA SEÇÃO DE INSTRUÇÕES ANTES DE ENTREGAR SEU TRABALHO**
+Changes made via Lovable will be committed automatically to this repo.
 
-No desenvolvimento desse trabalho, o grupo deverá utilizar esse repositório como local para entrega de todos os artefatos a serem produzidos. Em especial, o grupo deverá providenciar a alteração dos seguintes arquivos:
+**Use your preferred IDE**
 
-* **Capa do projeto** (Esse arquivo aqui): Informação básica sobre o projeto, alunos do grupo e professores responsáveis;
-* **Arquivo CITATION.cff**: descritor do projeto, utilizado para geração do certificado ao final da disciplina.
-* **Pasta código**: todos os arquivos resultantes da programação do software.
-* **Pasta docs --> arquivo README.md**: Documentação completa do projeto.
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-Toda a documentação do projeto é realizado por meio do Markdown, uma linguagem de formatação adotada pelo GitHub e por diversas outras plataformas. Aprenda Markdown e use-o para documentar o projeto:
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-* [Sintaxe básica de gravação e formatação no GitHub - GitHub Docs](https://docs.github.com/pt/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
-* [Markdown® Básico: Sintaxe, Uso &amp; Exemplos [Passo a Passo]](https://markdown.net.br/sintaxe-basica/)
+Follow these steps:
+
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
+
+**Edit a file directly in GitHub**
+
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/d4ba9693-bee3-473b-a4bc-80f20c5e9fb1) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes it is!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
