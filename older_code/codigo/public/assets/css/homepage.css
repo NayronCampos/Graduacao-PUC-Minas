@@ -1,0 +1,290 @@
+.text-bg-blue {
+    background-color: #0d6efd !important;
+    color: white !important; /* Cor do texto manual */
+}
+.text-bg-dark-steel-blue{
+    background-color: #224d7a !important;
+    color: white !important; /* Cor do texto manual */
+}
+
+header {
+    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+}
+
+.icon-hover {
+    transition: transform 0.5s ease, color 0.8s ease;
+    color: white; /* Cor padrão */
+}
+
+.icon-hover:hover {
+    transform: translateY(-5px); /* Levanta o ícone */
+    color: black; /* Muda a cor para preto */
+}
+
+/* filepath: c:\Users\jeanl\Desktop\Vaga-Certa\codigo\public\assets\css\homepage.css */
+.button-dark-steel-blue {
+    background-color: #385bad !important; /* Cor personalizada (Dark Steel Blue) */
+    color: white !important; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+}
+
+.button-dark-steel-blue:hover {
+    background-color: #577acc !important; /* Cor mais escura ao passar o mouse */
+}
+
+.button-dark-steel-blue:active {
+    background-color: #4260a5 !important; /* Cor ainda mais escura ao clicar */
+}
+
+.button-orange {
+    background-color: #ff9800 !important; /* Cor personalizada (Laranja) */
+    color: white !important; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+}
+.button-orange:hover {
+    background-color: #ffb74d !important; /* Cor mais clara ao passar o mouse */
+}
+.button-orange:active {
+    background-color: #fb8c00 !important; /* Cor ainda mais escura ao clicar */
+}
+
+/* Animação para levantar o botão e criar sombra */
+@-webkit-keyframes shadow-drop-2-bottom {
+    0% {
+        -webkit-transform: translateZ(0) translateY(0);
+                transform: translateZ(0) translateY(0);
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+    100% {
+        -webkit-transform: translateZ(0) translateY(-12px);
+                transform: translateZ(0) translateY(-12px);
+        -webkit-box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+                box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+    }
+}
+
+@keyframes shadow-drop-2-bottom {
+    0% {
+        transform: translateZ(0) translateY(0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+    100% {
+        transform: translateZ(0) translateY(-8px);
+        box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+    }
+}
+
+/* Animação reversa para voltar ao estado inicial */
+@keyframes shadow-drop-2-bottom-reverse {
+    0% {
+        transform: translateZ(0) translateY(-8px);
+        box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.35);
+    }
+    100% {
+        transform: translateZ(0) translateY(0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+
+/* Estilo padrão do botão */
+.btn-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre a imagem e o texto */
+    padding: 15px 20px !important; /* Aumenta o tamanho do botão */
+    font-size: 18px; /* Aumenta o tamanho do texto */
+    border-radius: 15px !important;  /* Bordas arredondadas */
+    background-color: #4863A0; /* Cor padrão do botão */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+    transition: background-color 0.3s ease; /* Transição suave para a cor */
+    animation: shadow-drop-2-bottom-reverse 0.6s ease forwards; /* Animação reversa ao remover o hover */
+}
+
+/* Animação ao passar o mouse no botão */
+.btn-custom:hover {
+    animation: shadow-drop-2-bottom 0.6s ease forwards; /* Aplica a animação ao passar o mouse */
+    background-color: #4f76d1; /* Cor ao passar o mouse */
+}
+
+/* Estilo padrão do ícone */
+.button-icon {
+    width: 24px; /* Largura da imagem */
+    height: 24px; /* Altura da imagem */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+    margin-bottom: 15px; /* Levanta o ícone levemente */
+    transform: translateY(5px); /* Move o ícone para baixo inicialmente */
+    transition: transform 0.6s ease; /* Transição suave para o ícone */
+}
+
+/* Estilo padrão do texto */
+.button-text {
+    transform: translateY(5px); /* Move o texto para baixo inicialmente */
+    transition: transform 0.6s ease; /* Transição suave para o texto */
+}
+
+/* O botão ao passar o mouse */
+.btn-custom:hover .button-icon,
+.btn-custom:hover .button-text {
+    transform: translateY(0); /* Levanta o ícone e o texto juntos */
+}
+
+/* O ícone acompanha o movimento do botão */
+.btn-custom:hover .button-icon {
+    transform: translateY(0); /* Remove o movimento separado do ícone */
+}
+
+/* Responsividade para dispositivos com largura abaixo de 400px */
+
+
+
+/*body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100vh;
+    padding: 20px;
+}
+
+.linha, .linhaespecial {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.caixa, .caixaespecial {
+    background-color: #3498db;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+    flex: 1;
+    max-width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.caixaespecial {
+    background-color: rgba(255, 153, 0, 1);
+}
+
+.caixa:hover, .caixaespecial:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.caixa img, .caixaespecial img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.caixa a, .caixaespecial a {
+    display: flex;
+    text-decoration: none; 
+    color: white; 
+    height: 100%; 
+    width: 100%; 
+    align-items: center; 
+}
+
+footer, header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+    
+@media (max-width: 400px) {
+   
+    header {
+        padding: 0; 
+        font-size: 9px; 
+        height: 40px; 
+        line-height: 40px;
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; 
+        background-color: #224d7a; 
+    }
+
+    .container {
+        padding: 10px; 
+        margin-top: 50px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-custom {
+        font-size: 8px; 
+        padding: 6px 8px; 
+        gap: 2px; 
+        border-radius: 5px; 
+    }
+
+    .button-icon {
+        width: 14px; 
+        height: 14px;
+    }
+
+    .d-flex.flex-wrap {
+        flex-direction: column; 
+        gap: 8px; 
+        align-items: center;
+    }
+
+    .d-flex.flex-wrap .btn-custom {
+        width: 90%; 
+        max-width: 180px; 
+        text-align: center; 
+    }
+
+    .d-flex.flex-wrap .btn-custom span {
+        font-size: 8px; 
+    }
+
+    img {
+        max-width: 100%; 
+        height: auto; 
+    }
+
+    footer {
+        font-size: 8px; 
+        padding: 5px;
+    }
+}
+*/

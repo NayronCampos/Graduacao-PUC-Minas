@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/styleBib.css">
+</head>
+
+<body>
+
+    <header class="cabecalho">
+        <a href="homepage.html"><img src="./assets/images/logo.png" class="logo"></a>
+        <div class="icones">
+            <a href="suaconta.html"><img src="./assets/images/suaconta.png" class="conta"></a>
+            <a href="config.html"><img src="./assets/images/config.png" class="config"></a>
+            <a href="notificacao.html"><img src="./assets/images/notificacoes.png" class="notificacao"></a>
+        </div>
+    </header>
+    
+        <main>
+            <!-- Formulário para cadastrar livro -->
+            <form id="usuarioForm"></form>
+                <h1>Cadastrar Livros</h1>
+                
+                <input type="hidden" id="livro-id">
+                <input type="text" id="titulo-livro" placeholder="Título do Livro" required>
+                <input type="text" id="descricao-livro" placeholder="Descrição do Livro" required>
+                <input type="text" id="editora-livro" placeholder="Editora do Livro" required>
+                <input type="text" id="materia-livro" placeholder="Matéria do Livro" required>
+                <input type="text" id="link-livro" placeholder="Link do Livro" required>
+                <button class="botoes" type="submit" onclick="cadastrarLivro(event)">Cadastrar</button>
+            </form>
+
+            <!-- Área onde os livros cadastrados serão exibidos -->
+            <div id="livros-cadastrados">
+                <h2>Livros Cadastrados</h2>
+                <div id="lista-livros"></div>
+            </div>
+        </main>
+
+       
+    </div>
+
+    
+
+        <footer>
+            <p>&copy; 2024 VagaCerta. Todos os direitos reservados.</p>
+            <p>Contato: vagacerta@gmail.com</p>
+        </footer>
+        
+        <!-- arquivo JS -->
+        <script src="./assets/js/bib.js"></script>
+    
+    
+</body>
+</html>
