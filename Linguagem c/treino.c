@@ -9,6 +9,7 @@ int soma(int x, int *p){
 
 int main (void){
 int n;
+do{
 scanf("%d", &n);
 int valores[n];
 
@@ -16,6 +17,6 @@ int valores[n];
 for(int i=0;i<n;i++){
    scanf("%d", &valores[i]);
 }
-printf("%d", soma(n,valores));
-
+printf("\n%d", soma(n,valores));
+}while(n!=0);
 }
