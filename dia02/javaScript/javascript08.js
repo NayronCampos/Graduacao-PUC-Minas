@@ -7,5 +7,5 @@ var num2 = parseInt(document.getElementById("num2").value);
 var soma = num1 + num2;
 
 
-document.getElementById("resp").innerHTML += `${num1} + ${num2} = ${soma}`;
+document.getElementById("resp").innerHTML += `${num1} + ${num2} = ${soma}<br>`;
 }
