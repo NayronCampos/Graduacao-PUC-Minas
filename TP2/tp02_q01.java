@@ -1,99 +1,141 @@
-/*  Crie uma classe Show seguindo todas as regras apresentadas no slide unidade00l conceitosBasicos introducaoOO.pdf. Sua classe ter´a os atributos privado show id:
-string, type: string, title: string, director: string, cast: string[], country:
-string, date added: date, release year: int, rating: string, duration: string, listed in: string[]. Sua classe tamb´em ter´a pelo menos dois construtores, e os m´etodos gets,
-sets, clone, imprimir e ler.
-O m´etodo imprimir mostra os atributos do registro (ver cada linha da sa´ıda padr˜ao) e o ler lˆe
-os atributos de um registro. Aten¸c˜ao para o arquivo de entrada, pois em alguns registros faltam
-valores e esse deve ser substitu´ıdo pelo valor NaN. A entrada padr˜ao ´e composta por v´arias linhas
-e cada uma cont´em um n´umero inteiro indicando o show id do Show a ser lido.
-A ´ultima linha da entrada cont´em a palavra FIM. A sa´ıda padr˜ao tamb´em cont´em v´arias
-linhas, uma para cada registro contido em uma linha da entrada padr˜ao, no seguinte formato: [=> id ## type ## title ## director ## [cast] ## country ## date added ##
-release year ## rating ## duration ## [listed in].*/
-import java.io.RandomAccessFile;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class tp02_q01{
+public class tp02_q01 {
 
-public class Show{
-    private:
-    String SHOW_ID;
-    String TYPE, TITLE, DIRECTOR, COUNTRY, RATING, DURATION;
-    LocalDate DATE_ADDED;
-    int RELASE_YEAR;
-    String[] CAST = new String[];
-    String[] LISTED_IN = new String[];
+    public static class Show {
+        private String id;
+        private String type;
+        private String title;
+        private String director;
+        private String[] cast;
+        private String country;
+        private LocalDate dateAdded;
+        private int releaseYear;
+        private String rating;
+        private String duration;
+        private String[] listedIn;
 
-}
+        // Construtor vazio
+        public Show() {
+            this.id = "";
+            this.type = "";
+            this.title = "";
+            this.director = "";
+            this.cast = new String[0];
+            this.country = "";
+            this.dateAdded = LocalDate.now();
+            this.releaseYear = 0;
+            this.rating = "";
+            this.duration = "";
+            this.listedIn = new String[0];
+        }
 
- public show() {
-        this.SHOW_ID = "";
-        this.TYPE = "";
-        this.TITLE = "";
-        this.DIRECTOR = "";
-        this.COUNTRY = "";
-        this.RATING = "";
-        this.DURATION = "";
-        this.DATE_ADDED = LocalDate.now();
-        this.RELASE_YEAR = 0;
-        this.CAST = new String[0];
-        this.LISTED_IN = new String[0];
-        
+        // Método para ler os dados de uma linha do CSV
+        public void ler(String linha) {
+            String[] partes = linha.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+
+            // Usando trim e substituindo campos vazios por "NaN"
+            this.id = partes[0].trim();
+            this.type = partes[1].trim();
+            this.title = partes[2].trim().isEmpty() ? "NaN" : partes[2].trim();
+            this.director = partes[3].trim().isEmpty() ? "NaN" : partes[3].trim();
+
+            // Cast
+            if (!partes[4].trim().isEmpty()) {
+                this.cast = partes[4].trim().split(", ");
+            } else {
+                this.cast = new String[] { "NaN" };
+            }
+
+            this.country = partes[5].trim().isEmpty() ? "NaN" : partes[5].trim();
+
+            // Data
+            if (!partes[6].trim().isEmpty()) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", java.util.Locale.ENGLISH);
+                this.dateAdded = LocalDate.parse(partes[6].trim(), formatter);
+            } else {
+                this.dateAdded = LocalDate.of(1111, 1, 1); // valor simbólico
+            }
+
+            // Ano de lançamento
+            try {
+                this.releaseYear = Integer.parseInt(partes[7].trim());
+            } catch (Exception e) {
+                this.releaseYear = 0;
+            }
+
+            this.rating = partes[8].trim().isEmpty() ? "NaN" : partes[8].trim();
+            this.duration = partes[9].trim().isEmpty() ? "NaN" : partes[9].trim();
+
+            // Listed In
+            if (!partes[10].trim().isEmpty()) {
+                this.listedIn = partes[10].trim().split(", ");
+            } else {
+                this.listedIn = new String[] { "NaN" };
+            }
+        }
+
+        public void imprimir() {
+            System.out.print("=> " + id + " ## " + type + " ## " + title + " ## " + director + " ## [");
+            for (int i = 0; i < cast.length; i++) {
+                System.out.print(cast[i]);
+                if (i < cast.length - 1) System.out.print(", ");
+            }
+            System.out.print("] ## " + country + " ## " + dateAdded + " ## " + releaseYear + " ## ");
+            System.out.print(rating + " ## " + duration + " ## [");
+            for (int i = 0; i < listedIn.length; i++) {
+                System.out.print(listedIn[i]);
+                if (i < listedIn.length - 1) System.out.print(", ");
+            }
+            System.out.println("]");
+        }
     }
 
-    public show(String SHOW_ID, String TYPE, String TITLE, String DIRECTOR, String COUNTRY, String RATING, String DURATION, LocalDate DATE_ADDED, int RELASE_YEAR, String[] CAST, String[] LISTED_IN) {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> ids = new ArrayList<>();
 
-        this.SHOW_ID = SHOW_ID;
-        this.TYPE = TYPE;
-        this.TITLE = TITLE;
-        this.DIRECTOR = DIRECTOR;
-        this.COUNTRY = COUNTRY;
-        this.RATING = RATING;
-        this.DURATION = DURATION;
-        this.DATE_ADDED = DATE_ADDED;
-        this.RELASE_YEAR = RELASE_YEAR;
-        this.CAST = CAST;
-        this.LISTED_IN = LISTED_IN;
+        // Lê entrada até "FIM"
+        while (true) {
+            String linha = sc.nextLine();
+            if (linha.equals("FIM")) break;
+            ids.add(linha.trim());
+        }
 
+        sc.close();
+
+        ArrayList<Show> lista = new ArrayList<>();
+
+        // Lê o arquivo
+        BufferedReader br = new BufferedReader(new FileReader("/tmp/disneyplus.csv"));
+        String linha = br.readLine(); // pula o cabeçalho
+
+        while ((linha = br.readLine()) != null) {
+            for (String id : ids) {
+                if (linha.startsWith(id + ",")) {
+                    Show s = new Show();
+                    s.ler(linha);
+                    lista.add(s);
+                    break;
+                }
+            }
+        }
+
+        br.close();
+
+        // Imprime os registros na ordem correta
+        for (String id : ids) {
+            for (Show s : lista) {
+                if (s.id.equals(id)) {
+                    s.imprimir();
+                    break;
+                }
+            }
+        }
     }
-
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String[] getAlternativeNames() { return alternativeNames; }
-    public String getHouse() { return house; }
-    public String getAncestry() { return ancestry; }
-    public String getSpecies() { return species; }
-    public String getPatronus() { return patronus; }
-    public Boolean getHogwartsStaff() { return hogwartsStaff; }
-    public Boolean getHogwartsStudent() { return hogwartsStudent; }
-    public String getActorName() { return actorName; }
-    public Boolean getAlive() { return alive; }
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
-    public int getYearOfBirth() { return yearOfBirth; }
-    public String getEyeColour() { return eyeColour; }
-    public String getGender() { return gender; }
-    public String getHairColour() { return hairColour; }
-    public Boolean getWizard() { return wizard; }
-    
-    // Métodos set
-    public void setId(String id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setAlternativeNames(String[] alternativeNames) { this.alternativeNames = alternativeNames; }
-    public void setHouse(String house) { this.house = house; }
-    public void setAncestry(String ancestry) { this.ancestry = ancestry; }
-    public void setSpecies(String species) { this.species = species; }
-    public void setPatronus(String patronus) { this.patronus = patronus; }
-    public void setHogwartsStaff(Boolean hogwartsStaff) { this.hogwartsStaff = hogwartsStaff; }
-    public void setHogwartsStudent(Boolean hogwartsStudent) { this.hogwartsStudent = hogwartsStudent; }
-    public void setActorName(String actorName) { this.actorName = actorName; }
-    public void setAlive(Boolean alive) { this.alive = alive; }
-    public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
-    public void setYearOfBirth(int yearOfBirth) { this.yearOfBirth = yearOfBirth; }
-    public void setEyeColour(String eyeColour) { this.eyeColour = eyeColour; }
-    public void setGender(String gender) { this.gender = gender; }
-    public void setHairColour(String hairColour) { this.hairColour = hairColour; }
-    public void setWizard(Boolean wizard) { this.wizard = wizard; }
-
 }
