@@ -6,6 +6,10 @@ O projeto visa oferecer uma plataforma de centralização de estudos para vestib
 
 O objetivo do projeto é eficientizar o fluxo de estudo dos vestibulandos para que não se perca horas ou até dias para a organização estrutural de seu estudo, com um design confortavel, limpo e de alta eficiencia.
 
+### Modelo Descritivo
+
+Deseja se fazer um projeto que visa reunir todos os concursos abertos a nível nacional e cadastrá-los em uma plataforma, através de um login especial, que irá facilitar o acesso dos mesmos, bem como suas informações principais. Os usuários acessam seus editais publicados, local de inscrição, datas, vagas, entre outros. Os usuários cadastrados podem gerar simulados de n questões, baseados em questões previamente registradas de concursos antigos com a mesma temática. Além de poder gerar um cronograma de estudo, baseado em horas de estudo disponível, dias da semana, tema e data da prova. A plataforma também deve possuir livros cadastrados pelos administradores, que ficarão disponíveis para todos os usuários.
+
 **Use a IDE de sua preferencia**
 
 Para trabalhar localmente usando a sua IDE, você pode clonar esse repositorio e ir atualizando as alterações do projeto através de pushs e pulls requests.
