@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class quicksort {
+public class quick_sort {
 
     public static void ordenacao(int[] dados, int esq, int dir){
         int i= esq, j= dir, pivo = dados[(esq+dir)/2];
