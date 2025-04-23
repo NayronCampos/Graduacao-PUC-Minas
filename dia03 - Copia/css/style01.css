@@ -2,6 +2,7 @@
     font-size: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 main{
     border: 1px solid blue;
     border-radius: .5rem;
@@ -10,4 +11,33 @@ main{
     height: 30rem;
     box-shadow: 0rem 0.5rem 0.5rem.3rem gray;
     margin: 1rem auto;
+}
+#entrada{
+    padding: 0.5rem;
+    border: 1px solid gray;
+    border-radius: .5rem;
+    text-align:center;
+    display: flex;
+}
+
+#idade{
+    padding: 0.5rem;
+    border: 1px solid gray;
+    border-radius: .5rem;
+    text-align:center;
+}
+
+button{
+    border: none;
+    padding: 0.5rem;
+    flex:1;
+    background-color: black;
+    color: white;
+    margin-left: .5rem;
+}
+
+#resp{
+    padding: 0.5rem;
+    border-radius: .5rem;
+    
 }
