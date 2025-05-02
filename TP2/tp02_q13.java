@@ -2,7 +2,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.*;             
 
 public class tp02_q13 {
 
@@ -10,10 +10,10 @@ public class tp02_q13 {
     private static int movimentacoes = 0;
 
     public static void main(String[] args) throws Exception {
-        // 1) lê todo o CSV
+
         List<Show> todos = lerCsv("/tmp/disneyplus.csv");
 
-        // 2) lê IDs até "FIM"
+
         Scanner sc = new Scanner(System.in, "UTF-8");
         List<String> ids = new ArrayList<>();
         while (sc.hasNextLine()) {
@@ -23,7 +23,7 @@ public class tp02_q13 {
         }
         sc.close();
 
-        // 3) filtra shows pelos IDs
+
         Show[] vet = new Show[ids.size()];
         int n = 0;
         for (String id : ids) {
@@ -35,19 +35,19 @@ public class tp02_q13 {
             }
         }
 
-        // 4) ordena por mergesort (chave: duration, tie-breaker title)
+
         long t0 = System.nanoTime();
         Show[] aux = new Show[n];
         mergeSort(vet, aux, 0, n - 1);
         long t1 = System.nanoTime();
         double tempo = (t1 - t0) / 1e9;
 
-        // 5) imprime resultado
+
         for (int i = 0; i < n; i++) {
             vet[i].imprimir();
         }
 
-        // 6) grava log
+
         try (PrintWriter log = new PrintWriter(new FileWriter("874422_mergesort.txt"))) {
             log.printf("874422\t%d\t%d\t%.6f%n", comparacoes, movimentacoes, tempo);
         }
@@ -56,7 +56,7 @@ public class tp02_q13 {
     private static List<Show> lerCsv(String caminho) throws Exception {
         List<Show> lista = new ArrayList<>();
         List<String> linhas = Files.readAllLines(Paths.get(caminho));
-        // pula cabeçalho
+
         for (int i = 1; i < linhas.size(); i++) {
             lista.add(parseShow(linhas.get(i)));
         }
@@ -112,7 +112,8 @@ public class tp02_q13 {
         int mid = (left + right) / 2;
         mergeSort(arr, aux, left, mid);
         mergeSort(arr, aux, mid + 1, right);
-        // merge
+
+        //ordenandoo
         int i = left, j = mid + 1, k = left;
         while (i <= mid && j <= right) {
             comparacoes++;
@@ -137,7 +138,6 @@ public class tp02_q13 {
         }
     }
 
-    /** retorna negativo se a antes de b, positivo se depois, zero se iguais **/
     private static int compareDuration(Show a, Show b) {
         int da = parseMinutes(a.duration);
         int db = parseMinutes(b.duration);
@@ -145,7 +145,6 @@ public class tp02_q13 {
         return a.title.compareTo(b.title);
     }
 
-    /** extrai minutos de uma string como "81 min" **/
     private static int parseMinutes(String s) {
         try {
             return Integer.parseInt(s.replaceAll("\\D+", ""));
@@ -163,10 +162,17 @@ public class tp02_q13 {
         Show(String id, String t, String ti, String d,
              String[] c, String p, String da, int ry,
              String r, String du, String[] li) {
-            showId    = id;    type    = t; title    = ti; director = d;
-            cast      = c;     country = p; dateAdded= da;
-            releaseYear = ry;  rating  = r; duration = du;
-            listedIn  = li;
+            showId      = id;
+            type        = t;
+            title       = ti;
+            director    = d;
+            cast        = c;
+            country     = p;
+            dateAdded   = da;
+            releaseYear = ry;
+            rating      = r;
+            duration    = du;
+            listedIn    = li;
         }
 
         void imprimir() {
