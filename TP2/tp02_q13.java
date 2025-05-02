@@ -2,7 +2,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;             
+import java.util.*;
 
 public class tp02_q13 {
 
@@ -10,10 +10,10 @@ public class tp02_q13 {
     private static int movimentacoes = 0;
 
     public static void main(String[] args) throws Exception {
-
+        // 1) lê todo o CSV
         List<Show> todos = lerCsv("/tmp/disneyplus.csv");
 
-
+        // 2) lê IDs até "FIM"
         Scanner sc = new Scanner(System.in, "UTF-8");
         List<String> ids = new ArrayList<>();
         while (sc.hasNextLine()) {
@@ -23,7 +23,7 @@ public class tp02_q13 {
         }
         sc.close();
 
-
+        // 3) filtra shows pelos IDs
         Show[] vet = new Show[ids.size()];
         int n = 0;
         for (String id : ids) {
@@ -35,19 +35,21 @@ public class tp02_q13 {
             }
         }
 
-
+        // 4) ordena por mergesort (duration, tie-breaker title)
         long t0 = System.nanoTime();
-        Show[] aux = new Show[n];
-        mergeSort(vet, aux, 0, n - 1);
+        if (n > 0) {
+            Show[] aux = new Show[n];
+            mergeSort(vet, aux, 0, n - 1);
+        }
         long t1 = System.nanoTime();
         double tempo = (t1 - t0) / 1e9;
 
-
+        // 5) imprime resultado
         for (int i = 0; i < n; i++) {
             vet[i].imprimir();
         }
 
-
+        // 6) grava log
         try (PrintWriter log = new PrintWriter(new FileWriter("874422_mergesort.txt"))) {
             log.printf("874422\t%d\t%d\t%.6f%n", comparacoes, movimentacoes, tempo);
         }
@@ -56,7 +58,7 @@ public class tp02_q13 {
     private static List<Show> lerCsv(String caminho) throws Exception {
         List<Show> lista = new ArrayList<>();
         List<String> linhas = Files.readAllLines(Paths.get(caminho));
-
+        // pula cabeçalho
         for (int i = 1; i < linhas.size(); i++) {
             lista.add(parseShow(linhas.get(i)));
         }
@@ -113,7 +115,6 @@ public class tp02_q13 {
         mergeSort(arr, aux, left, mid);
         mergeSort(arr, aux, mid + 1, right);
 
-        //ordenandoo
         int i = left, j = mid + 1, k = left;
         while (i <= mid && j <= right) {
             comparacoes++;
@@ -176,8 +177,14 @@ public class tp02_q13 {
         }
 
         void imprimir() {
-            String castStr = (cast.length == 0) ? "[NaN]" : Arrays.toString(cast);
+            // garante cast e listedIn sempre ordenados
+            Arrays.sort(cast);
+            Arrays.sort(listedIn);
+
+            String castStr = (cast.length == 0)    ? "[NaN]" : Arrays.toString(cast);
             String listStr = (listedIn.length == 0) ? "[NaN]" : Arrays.toString(listedIn);
+
+            // imprime conforme formato exato, finalizando com "## ##"
             System.out.printf(
                 "=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %d ## %s ## %s ## %s ##%n",
                 showId, title, type, director,

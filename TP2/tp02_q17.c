@@ -16,9 +16,7 @@ typedef struct {
     char **listedIn; int listedSize;
 } Show;
 
-//--------------------------------------------------
-// Helpers para leitura e parsing
-//--------------------------------------------------
+// trim de espaços em branco
 static char *trim(char *s) {
     char *end;
     while (isspace((unsigned char)*s)) s++;
@@ -29,15 +27,16 @@ static char *trim(char *s) {
     return s;
 }
 
+// duplica string
 static char *dupstr(const char *s) {
     char *d = malloc(strlen(s)+1);
     return d ? strcpy(d, s) : NULL;
 }
 
-// Divide uma lista separada por vírgulas e já ordena com qsort
+// divide campo CSV e ordena alfabeticamente
 static void split_and_sort(char *field, char ***out, int *outSize) {
     *outSize = 0;
-    if (!field || !*field || strcmp(field,"NaN")==0) {
+    if (!field || !*field || strcmp(field, "NaN") == 0) {
         *out = NULL;
         return;
     }
@@ -59,6 +58,7 @@ static void split_and_sort(char *field, char ***out, int *outSize) {
     }
 }
 
+// parse de uma linha CSV para Show
 static void parse_show(Show *s, const char *line) {
     char buf[MAX_LINE], *fields[11];
     int inQ = 0, bi = 0, fi = 0;
@@ -76,12 +76,12 @@ static void parse_show(Show *s, const char *line) {
     }
     buf[bi] = '\0';
     fields[fi++] = dupstr(trim(buf));
-    // atribuições
+
     s->showId      = dupstr(fields[0]);
     s->type        = dupstr(fields[1]);
     s->title       = dupstr(fields[2]);
     s->director    = dupstr(fields[3]);
-    split_and_sort(fields[4], &s->cast,    &s->castSize);
+    split_and_sort(fields[4], &s->cast,     &s->castSize);
     s->country     = dupstr(fields[5]);
     s->dateAdded   = fields[6][0] ? dupstr(fields[6])
                                    : dupstr("March 1, 1900");
@@ -89,11 +89,23 @@ static void parse_show(Show *s, const char *line) {
     s->rating      = dupstr(fields[8]);
     s->duration    = dupstr(fields[9]);
     split_and_sort(fields[10], &s->listedIn, &s->listedSize);
-    // libera temporários
+
     for (int i = 0; i < fi; i++) free(fields[i]);
 }
 
+// imprime Show no formato exato
 static void print_show(const Show *s) {
+    // garante elenco ordenado
+    if (s->castSize > 1) {
+        qsort(s->cast, s->castSize, sizeof(char*),
+              (int(*)(const void*,const void*)) strcmp);
+    }
+    // garante categorias ordenadas
+    if (s->listedSize > 1) {
+        qsort(s->listedIn, s->listedSize, sizeof(char*),
+              (int(*)(const void*,const void*)) strcmp);
+    }
+
     printf("=> %s ## %s ## %s ## %s ## [",
            s->showId, s->title, s->type, s->director);
     for (int i = 0; i < s->castSize; i++) {
@@ -110,146 +122,96 @@ static void print_show(const Show *s) {
     printf("] ##\n");
 }
 
+static int comparacoes = 0, movimentacoes = 0;
 
-//--------------------------------------------------
-// Comparador: type, tie-breaker title
-//--------------------------------------------------
+// comparação por type e depois title
 static int cmp_show(const Show *a, const Show *b) {
     int c = strcmp(a->type, b->type);
     if (c != 0) return c;
     return strcmp(a->title, b->title);
 }
 
-//--------------------------------------------------
-// Contadores para o log
-//--------------------------------------------------
-static int comparacoes = 0, movimentacoes = 0;
-
-//--------------------------------------------------
-// Heap‐sort “ao estilo Java”
-//--------------------------------------------------
-
-// troca dois ponteiros no heap
-static void troca(Show **heap, int i, int j){
-    Show *tmp = heap[i];
-    heap[i] = heap[j];
-    heap[j] = tmp;
-    movimentacoes++;
-}
-
-// sobe o nó i até restaurar max‐heap
-static void construir(Show **heap, int tamHeap, int i) {
-    while (i > 1 && (++comparacoes, cmp_show(heap[i], heap[i/2]) > 0)) {
-        troca(heap, i, i/2);
-        i /= 2;
-    }
-}
-
-// desce a raiz até restaurar max‐heap
-static void reconstruir(Show **heap, int tamHeap) {
-    int i = 1;
-    while (i <= tamHeap/2) {
-        int esq = 2*i, dir = 2*i+1, maior = esq;
-        if (dir <= tamHeap && (++comparacoes, cmp_show(heap[dir], heap[esq]) > 0)) {
-            maior = dir;
+// inserção (mostra apenas os 10 primeiros após ordenar)
+static void insertion_sort(Show *v, int n) {
+    for (int i = 1; i < n; i++) {
+        Show tmp = v[i];
+        int j = i - 1;
+        while (j >= 0) {
+            comparacoes++;
+            if (cmp_show(&v[j], &tmp) > 0) {
+                v[j+1] = v[j];
+                movimentacoes++;
+                j--;
+            } else {
+                break;
+            }
         }
-        if (++comparacoes, cmp_show(heap[maior], heap[i]) > 0) {
-            troca(heap, i, maior);
-            i = maior;
-        } else {
-            break;
-        }
+        v[j+1] = tmp;
+        movimentacoes++;
     }
 }
 
-// ordena vet[0..n-1] usando heap temporário em 1..n
-static void heap_sort(Show **vet, int n) {
-    Show **heap = malloc((n+1)*sizeof(Show*));
-    // copia para heap[1..n]
-    for (int i = 0; i < n; i++) heap[i+1] = vet[i];
-    // construção incremental
-    for (int tam = 2; tam <= n; tam++) {
-        construir(heap, tam, tam);
-    }
-    // ordenação
-    int tam = n;
-    while (tam > 1) {
-        troca(heap, 1, tam--);
-        reconstruir(heap, tam);
-    }
-    // copia de volta para vet[0..n-1]
-    for (int i = 0; i < n; i++) {
-        vet[i] = heap[i+1];
-    }
-    free(heap);
-}
-
-//--------------------------------------------------
-// main
-//--------------------------------------------------
 int main() {
     char line[MAX_LINE], idbuf[MAX_LINE];
     char *ids[MAX_SHOWS];
     int idCount = 0;
 
-    // 1) lê IDs até "FIM"
+    // lê IDs até "FIM"
     while (fgets(line, sizeof(line), stdin)) {
-        line[strcspn(line,"\n")] = '\0';
+        line[strcspn(line, "\n")] = '\0';
         trim(line);
-        if (strcmp(line,"FIM")==0) break;
+        if (strcmp(line, "FIM") == 0) break;
         ids[idCount++] = dupstr(line);
     }
 
-    // 2) carrega CSV filtrando por ID
-    Show arr[MAX_SHOWS];
+    Show shows[MAX_SHOWS];
     int showCount = 0;
-    FILE *f = fopen("/tmp/disneyplus.csv","r");
+
+    FILE *f = fopen("/tmp/disneyplus.csv", "r");
     if (!f) { perror("fopen"); return 1; }
     fgets(line, sizeof(line), f); // pula cabeçalho
 
+    // carrega apenas shows cujos IDs estavam na lista
     while (fgets(line, sizeof(line), f)) {
-        line[strcspn(line,"\n")] = '\0';
-        // extrai showId (até vírgula, respeitando aspas)
-        int inQ=0, bi=0;
-        for (int i=0; line[i] && line[i]!='\n'; i++) {
+        line[strcspn(line, "\n")] = '\0';
+        int inQ = 0, bi = 0;
+        for (int i = 0; line[i] && line[i] != '\n'; i++) {
             char c = line[i];
-            if (c=='"') inQ = !inQ;
-            else if (c==',' && !inQ) break;
+            if (c == '"') inQ = !inQ;
+            else if (c == ',' && !inQ) break;
             else idbuf[bi++] = c;
         }
         idbuf[bi] = '\0';
         trim(idbuf);
-        // se ID estiver na lista, parseia
-        for (int k=0;k<idCount;k++) {
-            if (strcmp(idbuf, ids[k])==0) {
-                parse_show(&arr[showCount++], line);
+
+        for (int k = 0; k < idCount; k++) {
+            if (strcmp(idbuf, ids[k]) == 0) {
+                parse_show(&shows[showCount++], line);
                 break;
             }
         }
     }
     fclose(f);
 
-    // 3) cria vetor de ponteiros e ordena
-    Show *vet[MAX_SHOWS];
-    for (int i = 0; i < showCount; i++) vet[i] = &arr[i];
-
     clock_t t0 = clock();
-    heap_sort(vet, showCount);
-    double tempo = (double)(clock()-t0)/CLOCKS_PER_SEC;
+    if (showCount > 0) insertion_sort(shows, showCount);
+    double t = (double)(clock() - t0) / CLOCKS_PER_SEC;
 
-    // 4) imprime só os 10 primeiros
+    // imprime apenas os 10 primeiros (ou menos, se houver menos)
     int toPrint = showCount < 10 ? showCount : 10;
     for (int i = 0; i < toPrint; i++) {
-        print_show(vet[i]);
+        print_show(&shows[i]);
     }
 
-    // 5) grava log
-    FILE *log = fopen("874422_heapsort.txt","w");
+    // grava log
+    FILE *log = fopen("874422_insercao.txt", "w");
     fprintf(log, "874422\t%d\t%d\t%.6f\n",
-            comparacoes, movimentacoes, tempo);
+            comparacoes, movimentacoes, t);
     fclose(log);
 
-    // libera IDs
-    for (int i=0;i<idCount;i++) free(ids[i]);
+    // libera memória dos IDs
+    for (int i = 0; i < idCount; i++) free(ids[i]);
+    // (caso queira liberar todo o conteúdo de Show, poderia ser feito aqui)
+
     return 0;
 }
