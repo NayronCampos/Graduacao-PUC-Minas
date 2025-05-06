@@ -3,192 +3,234 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <stdbool.h>
 
-#define MAX_SHOWS 10000
 #define MAX_LINE 10000
+#define DEFAULT_STR "NaN"
+#define DEFAULT_DATE_STR "March 1, 1900"
 
+// --- Estrutura Show ---
 typedef struct {
-    char *showId, *type, *title, *director;
-    char **cast;    int castSize;
-    char *country, *dateAdded;
-    int releaseYear;
-    char *rating, *duration;
-    char **listedIn; int listedSize;
+    char    *showId,
+            *type,
+            *title,
+            *director;
+    char   **cast;    size_t castSize;
+    char    *country;
+    struct tm dateAdded;
+    int      releaseYear;
+    char    *rating,
+            *duration;
+    char   **listedIn; size_t listedSize;
 } Show;
 
-// trim leading/trailing whitespace
+// --- Helpers ---
+// Checa malloc/strdup
+static void *must_alloc(void *p) {
+    if (!p) { perror("malloc/strdup"); exit(EXIT_FAILURE); }
+    return p;
+}
+// Trim genérico
 static char *trim(char *s) {
     char *end;
     while (isspace((unsigned char)*s)) s++;
-    if (*s == '\0') return s;
+    if (!*s) return s;
     end = s + strlen(s) - 1;
     while (end > s && isspace((unsigned char)*end)) end--;
     *(end+1) = '\0';
     return s;
 }
-
-// duplicate string
-static char *dupstr(const char *s) {
-    char *d = malloc(strlen(s)+1);
-    return d ? strcpy(d, s) : NULL;
-}
-
-// split a comma-separated field, sort tokens alphabetically
-static void split_and_sort(char *field, char ***out, int *outSize) {
-    *outSize = 0;
-    if (!field || !*field || strcmp(field, "NaN")==0) {
-        *out = NULL;
-        return;
-    }
-    char *copy = dupstr(field), *tok = strtok(copy, ",");
-    int cap = 4;
-    *out = malloc(cap * sizeof(char*));
-    while (tok) {
-        if (*outSize >= cap) {
-            cap *= 2;
-            *out = realloc(*out, cap * sizeof(char*));
-        }
-        (*out)[(*outSize)++] = dupstr(trim(tok));
-        tok = strtok(NULL, ",");
-    }
-    free(copy);
-    if (*outSize > 1) {
-        qsort(*out, *outSize, sizeof(char*), (int(*)(const void*,const void*))strcmp);
-    }
-}
-
-// parse one CSV line into a Show struct
-static void parse_show(Show *s, const char *line) {
-    char buf[MAX_LINE], *fields[11];
-    int inQ=0, bi=0, fi=0;
-    for (int i=0; line[i] && line[i]!='\n'; i++) {
-        char c = line[i];
-        if (c=='"') inQ = !inQ;
-        else if (c==',' && !inQ) {
-            buf[bi]='\0';
-            fields[fi++] = dupstr(trim(buf));
+// split CSV, respeita aspas, faz trim e retorna vetor
+static char **split_csv_line(const char *line, size_t *outCount) {
+    size_t cap = 8, cnt = 0;
+    char **arr = must_alloc(malloc(cap * sizeof(char*)));
+    char buf[MAX_LINE];
+    bool inQ = false;
+    size_t bi = 0;
+    for (const char *p = line; *p && *p!='\n'; ++p) {
+        if (*p == '"') {
+            inQ = !inQ;
+        } else if (*p == ',' && !inQ) {
+            buf[bi] = '\0';
+            char *tok = must_alloc(strdup(buf));
+            arr[cnt++] = trim(tok);
             bi = 0;
+            if (cnt >= cap) arr = must_alloc(realloc(arr, (cap*=2)*sizeof(char*)));
         } else {
-            buf[bi++] = c;
+            buf[bi++] = *p;
         }
     }
-    buf[bi]='\0';
-    fields[fi++] = dupstr(trim(buf));
-
-    s->showId      = dupstr(fields[0]);
-    s->type        = dupstr(fields[1]);
-    s->title       = dupstr(fields[2]);
-    s->director    = dupstr(fields[3]);
-    split_and_sort(fields[4], &s->cast,    &s->castSize);
-    s->country     = dupstr(fields[5]);
-    s->dateAdded   = fields[6][0] ? dupstr(fields[6]) : dupstr("March 1, 1900");
-    s->releaseYear = atoi(fields[7]);
-    s->rating      = dupstr(fields[8]);
-    s->duration    = dupstr(fields[9]);
-    split_and_sort(fields[10], &s->listedIn,&s->listedSize);
-
-    for (int i=0; i<fi; i++) free(fields[i]);
+    buf[bi] = '\0';
+    char *tok = must_alloc(strdup(buf));
+    arr[cnt++] = trim(tok);
+    *outCount = cnt;
+    return arr;
 }
 
-// print a Show in the exact required format
-static void print_show(const Show *s) {
-    // ensure cast and listedIn are sorted
-    if (s->castSize>1) qsort(s->cast, s->castSize, sizeof(char*),
-                             (int(*)(const void*,const void*))strcmp);
-    if (s->listedSize>1) qsort(s->listedIn, s->listedSize, sizeof(char*),
-                                (int(*)(const void*,const void*))strcmp);
+// date parsing simplificado (versão do exemplo)
+static char *my_strptime(const char *s, const char *fmt, struct tm *tm) {
+    // implementa apenas "%B %d, %Y" e DEFAULT_DATE_STR
+    if (strcmp(fmt, "%B %d, %Y")==0) {
+        const char *meses[] = {"January","February","March","April","May","June",
+                               "July","August","September","October","November","December"};
+        char m[20]; int d,y;
+        if (sscanf(s, "%19s %d, %d", m,&d,&y)!=3) return NULL;
+        int im;
+        for (im=0; im<12; im++) if (!strcmp(m,meses[im])) break;
+        if (im==12) return NULL;
+        tm->tm_mon  = im;
+        tm->tm_mday = d;
+        tm->tm_year = y - 1900;
+        return (char*)s + strlen(s);
+    }
+    return NULL;
+}
+static void set_default_date(struct tm *tm) {
+    if (!my_strptime(DEFAULT_DATE_STR, "%B %d, %Y", tm)) {
+        time_t now = time(NULL);
+        *tm = *localtime(&now);
+    }
+}
 
+// free de Show completo
+static void free_show(Show *s) {
+    if (!s) return;
+    free(s->showId); free(s->type); free(s->title); free(s->director);
+    for (size_t i=0;i<s->castSize;i++) free(s->cast[i]);
+    free(s->cast);
+    free(s->country);
+    free(s->rating); free(s->duration);
+    for (size_t i=0;i<s->listedSize;i++) free(s->listedIn[i]);
+    free(s->listedIn);
+    free(s);
+}
+
+// parse de linha CSV em Show
+static void parse_show(Show *s, const char *line) {
+    size_t nFields;
+    char **f = split_csv_line(line, &nFields);
+    // garante ao menos 11 campos
+    if (nFields < 11) {
+        f = must_alloc(realloc(f, 11*sizeof(char*)));
+        for (size_t i=nFields; i<11; i++)
+            f[i] = must_alloc(strdup(DEFAULT_STR));
+        nFields = 11;
+    }
+    // duplica campos principais
+    s->showId      = must_alloc(strdup(f[0]));
+    s->type        = must_alloc(strdup(f[1]));
+    s->title       = must_alloc(strdup(f[2]));
+    s->director    = must_alloc(strdup(f[3]));
+
+    // cast
+    if (!strcmp(f[4], "NaN")) {
+        s->castSize = 1;
+        s->cast = must_alloc(malloc(sizeof(char*)));
+        s->cast[0] = must_alloc(strdup(DEFAULT_STR));
+    } else {
+        s->cast = split_csv_line(f[4], &s->castSize);
+        qsort(s->cast, s->castSize, sizeof(char*),
+              (int(*)(const void*,const void*))strcmp);
+    }
+    // country
+    s->country = must_alloc(strdup(f[5]));
+
+    // dateAdded
+    if (!my_strptime(f[6], "%B %d, %Y", &s->dateAdded))
+        set_default_date(&s->dateAdded);
+
+    // outros simples
+    s->releaseYear = atoi(f[7]);
+    s->rating      = must_alloc(strdup(f[8]));
+    s->duration    = must_alloc(strdup(f[9]));
+
+    // listedIn
+    if (!strcmp(f[10], "NaN")) {
+        s->listedSize = 1;
+        s->listedIn = must_alloc(malloc(sizeof(char*)));
+        s->listedIn[0] = must_alloc(strdup(DEFAULT_STR));
+    } else {
+        s->listedIn = split_csv_line(f[10], &s->listedSize);
+        qsort(s->listedIn, s->listedSize, sizeof(char*),
+              (int(*)(const void*,const void*))strcmp);
+    }
+
+    // libera campos temporários
+    for (size_t i=0;i<nFields;i++) free(f[i]);
+    free(f);
+}
+
+// impressão no formato exigido
+static void print_show(const Show *s) {
+    char date_buf[50];
+    strftime(date_buf, sizeof(date_buf), "%B %d, %Y", &s->dateAdded);
     printf("=> %s ## %s ## %s ## %s ## [",
            s->showId, s->title, s->type, s->director);
-    for (int i=0; i<s->castSize; i++) {
-        printf("%s", s->cast[i]);
-        if (i<s->castSize-1) printf(", ");
-    }
+    for (size_t i=0;i<s->castSize;i++)
+        printf("%s%s", s->cast[i], i+1<s->castSize?", ":"");
     printf("] ## %s ## %s ## %d ## %s ## %s ## [",
-           s->country, s->dateAdded, s->releaseYear,
-           s->rating, s->duration);
-    for (int i=0; i<s->listedSize; i++) {
-        printf("%s", s->listedIn[i]);
-        if (i<s->listedSize-1) printf(", ");
-    }
+           s->country, date_buf, s->releaseYear, s->rating, s->duration);
+    for (size_t i=0;i<s->listedSize;i++)
+        printf("%s%s", s->listedIn[i], i+1<s->listedSize?", ":"");
     printf("] ##\n");
 }
 
-// compare by duration (minutes) then by title
-static int cmp_duration_title(const Show *a, const Show *b) {
-    int da = atoi(a->duration);
-    int db = atoi(b->duration);
-    if (da != db) return da - db;
-    return strcmp(a->title, b->title);
-}
+int main(void) {
+    // lê IDs
+    char line[MAX_LINE];
+    char *ids[10000];
+    size_t nIds = 0;
+    while (fgets(line,sizeof(line),stdin) && strcmp(trim(line),"FIM"))
+        ids[nIds++] = must_alloc(strdup(trim(line)));
 
-// insertion sort, full array, but later we print only first 10
-static void insertion_sort(Show *v, int n) {
-    for (int i = 1; i < n; i++) {
-        Show tmp = v[i];
-        int j = i - 1;
-        while (j >= 0 && cmp_duration_title(&v[j], &tmp) > 0) {
-            v[j+1] = v[j];
-            j--;
+    // carrega CSV
+    Show **shows = must_alloc(malloc(nIds * sizeof(Show*)));
+    size_t nShows=0;
+    FILE *f = fopen("disneyplus.csv","r");
+    if (!f) { perror("fopen"); return EXIT_FAILURE; }
+    fgets(line,sizeof(line),f); // header
+
+    while (fgets(line,sizeof(line),f)) {
+        char tmp[MAX_LINE];
+        // extrai showId (até vírgula, respeitando aspas)
+        bool inQ=false; size_t ti=0;
+        for (char *p=line; *p && *p!='\n'; ++p) {
+            if (*p=='"') inQ=!inQ;
+            else if (*p==',' && !inQ) break;
+            else tmp[ti++]=*p;
         }
-        v[j+1] = tmp;
-    }
-}
-
-int main() {
-    char line[MAX_LINE], idbuf[MAX_LINE];
-    char *ids[MAX_SHOWS];
-    int idCount = 0;
-
-    // read IDs until "FIM"
-    while (fgets(line, sizeof(line), stdin)) {
-        line[strcspn(line,"\n")] = '\0';
-        trim(line);
-        if (strcmp(line,"FIM")==0) break;
-        ids[idCount++] = dupstr(line);
-    }
-
-    Show shows[MAX_SHOWS];
-    int showCount = 0;
-
-    FILE *f = fopen("/tmp/disneyplus.csv","r");
-    if (!f) { perror("fopen"); return 1; }
-    // skip header
-    fgets(line, sizeof(line), f);
-
-    // load only requested shows
-    while (fgets(line, sizeof(line), f)) {
-        line[strcspn(line,"\n")] = '\0';
-        // extract showId up to first comma (respecting quotes)
-        int inQ=0, bi=0;
-        for (int i=0; line[i] && line[i]!='\n'; i++) {
-            char c = line[i];
-            if (c=='"') inQ = !inQ;
-            else if (c==',' && !inQ) break;
-            else idbuf[bi++] = c;
-        }
-        idbuf[bi]='\0';
-        trim(idbuf);
-
-        for (int k=0; k<idCount; k++) {
-            if (strcmp(idbuf, ids[k])==0) {
-                parse_show(&shows[showCount++], line);
+        tmp[ti]='\0';
+        trim(tmp);
+        // compara e parse
+        for (size_t i=0;i<nIds;i++) {
+            if (!strcmp(tmp, ids[i])) {
+                Show *s = must_alloc(malloc(sizeof(Show)));
+                parse_show(s, line);
+                shows[nShows++] = s;
                 break;
             }
         }
     }
     fclose(f);
 
-    // sort by duration then title
-    if (showCount>0) insertion_sort(shows, showCount);
+    // ordena por duração (int) e title
+    qsort(shows, nShows, sizeof(Show*),
+          (int(*)(const void*,const void*)) (void*) (               \
+            (int (*)(const Show**,const Show**))                     \
+            [](const Show **a, const Show **b){                     \
+                int da=atoi((*a)->duration), db=atoi((*b)->duration);\
+                return da!=db? da-db : strcmp((*a)->title,(*b)->title);\
+            }));
 
-    // print only first 10 (or fewer)
-    int toPrint = showCount<10 ? showCount : 10;
-    for (int i=0; i<toPrint; i++) {
-        print_show(&shows[i]);
+    // imprime até 10
+    size_t m = nShows<10? nShows:10;
+    for (size_t i=0;i<m;i++) {
+        print_show(shows[i]);
+        free_show(shows[i]);
     }
+    // cleanup IDs e array
+    for (size_t i=0;i<nIds;i++) free(ids[i]);
+    free(shows);
 
-    // free ID strings
-    for (int i=0; i<idCount; i++) free(ids[i]);
-    return 0;
+    return EXIT_SUCCESS;
 }
