@@ -19,13 +19,14 @@ void imprime(char vetor[], int count){
 int main (void){
     int j=0;
     scanf("%d", &j);
+    char ch;
+    scanf("%c", &ch);
 
     for(int i=0;i<j;i++){
 
         int count=0;
-        char vetor[30], ch;
+        char vetor[30];
 
-        
         for(int i=0; vetor[i]!='\0'; i++){
 
         scanf("%c", &vetor[i]);
@@ -35,6 +36,6 @@ int main (void){
         count++;
         }
         imprime(vetor, count);
-
+        printf("\n");
     }
 }
