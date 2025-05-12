@@ -31,6 +31,7 @@ public class ex4 {
         for(int j=0; j<n; j++){
             if(idioma[j].equals(lingua)){
                 System.out.println(mensagem[j]);
+                System.out.print("\n");
                 break;
             }
         }
