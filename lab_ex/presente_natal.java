@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 
-public class ex4 {
+public class presente_natal {
 
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);    
