@@ -35,15 +35,22 @@ int main (void){
     scanf("%d", &n);
     int vetor[n];
 
-    for(int i=0;i<n;i++){
-        scanf("%c%c", &p1, &p2);
+    int count = 0;     // quantos itens estão na “pilha”
 
-        if(p1=='P' && p2=='U'){
-            scanf("%d", &vetor[i]);
-            printf("%d",vetor[i]);
+
+    for (int i = 0; i < n; i++) {
+        // nota o espaço antes de %c para descartar '\n' ou espaços pendentes
+        scanf(" %c%c", &p1, &p2);
+
+        // PUSH
+        if (p1 == 'P' && p2 == 'U') {
+            int v;
+            scanf("%d", &v);
+            vetor[count] = v;
+            count++;
         }
         else if(p1=='P' && p2=='O'){
-            vetor[i-1] = '\0';
+            count--;
         }
         else if(p1=='M' && p2=='I'){
             int menor;
