@@ -1,16 +1,13 @@
-CREATE DATABASE concurso; -- CREATE SCHEMA IF NOT EXISTS concurso;
+CREATE DATABASE concurso; 
 
 USE concurso;
 
 CREATE TABLE IF NOT EXISTS edital(
 	id_edital int unsigned auto_increment primary key,
     arquivo varchar(100) not null,
-    data_publi date not null -- comentário
+    data_publi date not null 
 )ENGINE=InnoDB;
 
-/* comentário */
-# Comentario
--- comentário
 CREATE TABLE IF NOT EXISTS concurso (
 	id_concurso int unsigned auto_increment primary key,
     nome varchar(50) not null,
@@ -37,7 +34,8 @@ CREATE TABLE IF NOT EXISTS livro (
     nome varchar(50) not null,
     autor varchar(50) not null,
     versao int unsigned default null,
-    materia varchar(50)
+    materia varchar(50),
+    link varchar(200)
     
 )ENGINE=InnoDB;
 
@@ -79,12 +77,6 @@ CREATE TABLE IF NOT EXISTS inscrever (
     CONSTRAINT fk_inscrever_concurso FOREIGN KEY (concurso_id) REFERENCES concurso (id_concurso)
     
 )ENGINE=InnoDB;
-
--- drop table if exists inscrever;
-
--- alter table inscrever
--- add CONSTRAINT pk_inscrever_usuario_concurso PRIMARY KEY (usuario_id,concurso_id);
-
 
 CREATE TABLE IF NOT EXISTS ler (
 
