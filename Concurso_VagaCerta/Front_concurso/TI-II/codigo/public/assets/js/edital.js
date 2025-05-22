@@ -1,31 +1,26 @@
-document.addEventListener('DOMContentLoaded', function() {
-  fetcheditals();
-
-  document.getElementById('botaoBuscar').addEventListener('click', function() {
-    const query = document.getElementById('search').value.toLowerCase();
-    fetcheditals(query);
-  });
-});
-
-function fetcheditals(query = '') {
-  fetch('http://localhost:3000/editals')
+function fetchEditais(query = '') {
+  fetch('http://localhost:3000/editais')
     .then(response => response.json())
     .then(data => {
+      console.log("Dados recebidos:", data); // <- debug aqui
+
       const editalContainer = document.getElementById('edital-container');
       editalContainer.innerHTML = '';
-      const filterededitals = data.filter(edital => edital.concurso.toLowerCase().includes(query));
-      filterededitals.forEach(edital => {
+
+      const filteredEditais = data.filter(edital =>
+        edital.nome.toLowerCase().includes(query)
+      );
+
+      filteredEditais.forEach(edital => {
         const editalElement = document.createElement('div');
         editalElement.className = 'edital-caixinha';
         editalElement.innerHTML = `
-          <h2>${edital.concurso}</h2>
-          <p>${edital.descricao}</p>
-          <p>Data de Aplicação: ${edital.dataAplicacao}</p>
-          <p>Número de Questões: ${edital.numeroQuestoes}</p>
-          <a href="${edital.link}" target="_blank">Acessar edital</a>
+          <h2>${edital.nome}</h2>
+          <p>Data de Publicação: ${edital.data_publi}</p>
+          <a href="${edital.arquivo}" target="_blank">Acessar edital</a>
         `;
         editalContainer.appendChild(editalElement);
       });
     })
-    .catch(error => console.error('Error fetching editals:', error));
+    .catch(error => console.error('Erro ao buscar editais:', error));
 }

@@ -1317,5 +1317,18 @@
       "id": "a7hf"
     }
   ],
-  "cronogramas": []
+  "editais": [
+    {
+      "id": 1,
+      "nome": "Edital Prefeitura 2023",
+      "data_publi": "2023-11-01",
+      "arquivo": "https://exemplo.com/edital-prefeitura.pdf"
+    },
+    {
+      "id": 2,
+      "nome": "Edital Câmara Municipal",
+      "data_publi": "2024-02-15",
+      "arquivo": "https://exemplo.com/edital-camara.pdf"
+    }
+  ]
 }
