@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Questão</title>
+    <link rel="stylesheet" href="/assets/css/form.css">
+</head>
+<body>
+    <form action="/questao/atualizar/{{id}}\" method=\"post\">
+        <h2>Editar Questão</h2>
+
+        <label for="concurso_id">ID do Concurso:</label>
+        <input type="number" id="concurso_id" name="concurso_id" value="{{concurso_id}}" required>
+
+        <label for="enunciado">Enunciado:</label>
+        <textarea id="enunciado" name="enunciado" rows="3" required>{{enunciado}}</textarea>
+
+        <label for="alternativas">Alternativas:</label>
+        <textarea id="alternativas" name="alternativas" rows="3" required>{{alternativas}}</textarea>
+
+        <label for="resposta">Resposta Correta:</label>
+        <input type="text" id="resposta" name="resposta" value="{{resposta}}" required>
+
+        <button type="submit">Atualizar</button>
+        <a href="/questoes">Voltar</a>
+    </form>
+</body>
+</html>
