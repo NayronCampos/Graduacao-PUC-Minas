@@ -11,7 +11,8 @@ public class Concurso {
 	private String banca;
 	private String descricao;
 	private String orgao;
-	private String linkEdital;
+	private String cargo;
+	private int editalID;
 	private String materiaisDeEstudo;
 	private String horario;
 	private boolean status;
@@ -27,7 +28,8 @@ public class Concurso {
 		this.banca = "";
 		this.descricao = "";
 		this.orgao = "";
-		this.linkEdital = "";
+		this.cargo = "";
+		this.editalID = -1;
 		this.materiaisDeEstudo = "";
 		this.horario = "";
 		this.status = false;
@@ -35,7 +37,7 @@ public class Concurso {
 		this.terminoIncricoes = null;
 	}
 	
-	public Concurso(int ID, String nome, String escolaridade, String localizacao, String categoria, String banca, String descricao, String banca, String orgao, String linkEdital, String materiaisDeEstudo, String horario, boolean status, Date inicioIncricoes, Date terminoIncricoes) {
+	public Concurso(int ID, String nome, String escolaridade, String localizacao, String categoria, String banca, String descricao, String orgao, String cargo, String materiaisDeEstudo, String horario, boolean status, Date inicioIncricoes, Date terminoIncricoes, int editalID) {
 		this.ID = ID;
 		this.nome = nome;
 		this.escolaridade = escolaridade;
@@ -44,7 +46,8 @@ public class Concurso {
 		this.banca = banca;
 		this.descricao = descricao;
 		this.orgao = orgao;
-		this.linkEdital = linkEdital;
+		this.cargo = cargo;
+		this.editalID = editalID;
 		this.materiaisDeEstudo = materiaisDeEstudo;
 		this.horario = horario;
 		this.status = status;
@@ -116,12 +119,20 @@ public class Concurso {
 	    this.orgao = orgao;
 	}
 
-	public String getLinkEdital() {
-	    return linkEdital;
+	public String getCargo() {
+	    return cargo;
 	}
 
-	public void setLinkEdital(String linkEdital) {
-	    this.linkEdital = linkEdital;
+	public void setCargo(String cargo) {
+	    this.cargo = cargo;
+	}
+
+	public int getEditalID() {
+	    return editalID;
+	}
+
+	public void setEditalID(int editalID) {
+	    this.editalID = editalID;
 	}
 
 	public String getMateriaisDeEstudo() {
@@ -175,7 +186,8 @@ public class Concurso {
 	           ", banca='" + banca + '\'' +
 	           ", descricao='" + descricao + '\'' +
 	           ", orgao='" + orgao + '\'' +
-	           ", linkEdital='" + linkEdital + '\'' +
+	           ", cargo='" + cargo + '\'' +
+	           ", linkEdital='" + editalID + '\'' +
 	           ", materiaisDeEstudo='" + materiaisDeEstudo+ '\'' +
 	           ", horario='" + horario + '\'' +
 	           ", status=" + (status ? "Ativo" : "Inativo") +

@@ -4,146 +4,171 @@ import java.sql.*;
 import java.util.*;
 
 public class DAO {
-	protected Connection conexao;
+	protected static Connection conexao;
 	
 	public DAO() {
 		conexao = null;
 	}
 	
-    public boolean conectar() {
-        String driverName = "org.postgresql.Driver";
-        String serverName = "localhost";
-        String database = "concursos";
-        int porta = 5432;
-        String urlPadrao = "jdbc:postgresql://" + serverName + ":" + porta + "/";
-        String username = "postgres";
-        String password = "marcos";
-        boolean status = false;
+	public boolean conectar() {
+	    String driverName = "org.postgresql.Driver";
+	    String serverName = "localhost";
+	    String database = "concurso_vagacerta"; 
+	    int porta = 5432;
+	    String urlPadrao = "jdbc:postgresql://" + serverName + ":" + porta + "/";
+	    String username = "postgres";
+	    String password = "pucminas25";
+	    boolean status = false;
 
-        try {
-            Class.forName(driverName);
-            try (Connection connInicial = DriverManager.getConnection(urlPadrao + "postgres", username, password)) {
-                PreparedStatement stmt = connInicial.prepareStatement(
-                        "SELECT 1 FROM pg_database WHERE datname = ?");
-                stmt.setString(1, database);
-                ResultSet rs = stmt.executeQuery();
+	    try {
+	        Class.forName(driverName);
 
-                if (!rs.next()) {
-                    System.out.println("Banco 'concursos' não existe. Criando...");
-                    Statement createStmt = connInicial.createStatement();
-                    createStmt.executeUpdate("CREATE DATABASE " + database);
-                    createStmt.close();
-                } else {
-                    System.out.println("Banco 'concursos' já existe.");
-                }
-                stmt.close();
-            }
+	        try (Connection connInicial = DriverManager.getConnection(urlPadrao + "postgres", username, password)) {
+	            PreparedStatement stmt = connInicial.prepareStatement(
+	                "SELECT 1 FROM pg_database WHERE datname = ?");
+	            stmt.setString(1, database);
+	            ResultSet rs = stmt.executeQuery();
 
-            conexao = DriverManager.getConnection(urlPadrao + database, username, password);
-            status = (conexao != null);
+	            if (!rs.next()) {
+	                System.out.println("Banco '" + database + "' não existe. Criando...");
+	                Statement createStmt = connInicial.createStatement();
+	                createStmt.executeUpdate("CREATE DATABASE " + database);
+	                createStmt.close();
+	            } else {
+	                System.out.println("Banco '" + database + "' já existe.");
+	            }
 
-            Statement stmt = conexao.createStatement();
-            String sql = """
-                CREATE TABLE IF NOT EXISTS Usuario (
-                    id SERIAL PRIMARY KEY,
-                    email VARCHAR(255) NOT NULL UNIQUE,
-                    nome VARCHAR(255) NOT NULL,
-                    senha VARCHAR(255) NOT NULL,
-                    nivel_de_escolaridade VARCHAR(100)
-                );
+	            stmt.close();
+	        }
 
-                CREATE TABLE IF NOT EXISTS Concurso (
-                    id SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    orgao VARCHAR(255),
-                    cargo VARCHAR(255),
-                    requisitos TEXT,
-                    data_de_inscricao DATE,
-                    data_da_prova DATE,
-                    status BOOLEAN
-                );
+	        conexao = DriverManager.getConnection(urlPadrao + database, username, password);
+	        status = (conexao != null);
 
-                CREATE TABLE IF NOT EXISTS Edital (
-                    id SERIAL PRIMARY KEY,
-                    concurso_id INT NOT NULL,
-                    arquivo VARCHAR(255) NOT NULL,
-                    data_de_publicacao DATE,
-                    CONSTRAINT fk_edital_concurso FOREIGN KEY (concurso_id)
-                        REFERENCES Concurso(id) ON DELETE CASCADE
-                );
+	        Statement stmt = conexao.createStatement();
+	        String sql = """
+	                CREATE TABLE IF NOT EXISTS edital (
+	                id_edital SERIAL PRIMARY KEY,
+	                arquivo VARCHAR(100) NOT NULL,
+	                data_publi DATE NOT NULL
+	            );
 
-                CREATE TABLE IF NOT EXISTS Questao (
-                    id SERIAL PRIMARY KEY,
-                    concurso_id INT NOT NULL,
-                    enunciado TEXT NOT NULL,
-                    alternativas TEXT NOT NULL,
-                    resposta_certa TEXT NOT NULL,
-                    CONSTRAINT fk_questao_concurso FOREIGN KEY (concurso_id)
-                        REFERENCES Concurso(id) ON DELETE CASCADE
-                );
+	            CREATE TABLE IF NOT EXISTS concurso (
+	                id_concurso SERIAL PRIMARY KEY,
+	                nome VARCHAR(50) NOT NULL,
+	                escolaridade VARCHAR(50) NOT NULL,
+	                localizacao VARCHAR(50) NOT NULL,
+	                categoria VARCHAR(100) NOT NULL,
+	                banca VARCHAR(50) NOT NULL,
+	                descricao VARCHAR(600) NOT NULL,
+	                orgao VARCHAR(50) NOT NULL,
+	                cargo VARCHAR(60) NOT NULL,
+	                materiaisDeEstudo VARCHAR(600) NOT NULL,
+	                horario VARCHAR(50) NOT NULL,
+	                status BOOLEAN NOT NULL,
+	                data_inscricao DATE NOT NULL,
+	                data_termino DATE NOT NULL,
+	                editalId INTEGER,
+	                CONSTRAINT fk_concurso_edital FOREIGN KEY (editalId) REFERENCES edital(id_edital)
+	            );
 
-                CREATE TABLE IF NOT EXISTS Livro (
-                    id SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    autor VARCHAR(255),
-                    versao VARCHAR(50),
-                    materia VARCHAR(100)
-                );
+	            CREATE TABLE IF NOT EXISTS materia (
+	                sigla VARCHAR(8) PRIMARY KEY,
+	                nome VARCHAR(30) NOT NULL
+	            );
 
-                CREATE TABLE IF NOT EXISTS Simulado (
-                    id SERIAL PRIMARY KEY,
-                    materia VARCHAR(100) NOT NULL,
-                    numero_de_questoes INT NOT NULL
-                );
+	            CREATE TABLE IF NOT EXISTS livro (
+	                id_livro SERIAL PRIMARY KEY,
+	                nome VARCHAR(50) NOT NULL,
+	                autor VARCHAR(50) NOT NULL,
+	                versao INTEGER,
+	                materia VARCHAR(50)
+	            );
 
-                CREATE TABLE IF NOT EXISTS UsuarioSimulado (
-                    usuario_id INT,
-                    simulado_id INT,
-                    PRIMARY KEY (usuario_id, simulado_id),
-                    CONSTRAINT fk_usuariosimulado_usuario FOREIGN KEY (usuario_id)
-                        REFERENCES Usuario(id) ON DELETE CASCADE,
-                    CONSTRAINT fk_usuariosimulado_simulado FOREIGN KEY (simulado_id)
-                        REFERENCES Simulado(id) ON DELETE CASCADE
-                );
+	            CREATE TABLE IF NOT EXISTS cronograma (
+	                id_cronograma SERIAL PRIMARY KEY,
+	                planejamento VARCHAR(50) NOT NULL
+	            );
 
-                CREATE TABLE IF NOT EXISTS SimuladoQuestao (
-                    simulado_id INT,
-                    questao_id INT,
-                    PRIMARY KEY (simulado_id, questao_id),
-                    CONSTRAINT fk_simuladoquestao_simulado FOREIGN KEY (simulado_id)
-                        REFERENCES Simulado(id) ON DELETE CASCADE,
-                    CONSTRAINT fk_simuladoquestao_questao FOREIGN KEY (questao_id)
-                        REFERENCES Questao(id) ON DELETE CASCADE
-                );
+	            CREATE TABLE IF NOT EXISTS usuario (
+	                cpf BIGINT PRIMARY KEY,
+	                nome VARCHAR(50) NOT NULL,
+	                email VARCHAR(50) DEFAULT 'não informado',
+	                senha VARCHAR(10) NOT NULL,
+	                escolaridade VARCHAR(20) NOT NULL,
+	                cronogramaId INTEGER,
+	                CONSTRAINT fk_usuario_cronograma FOREIGN KEY (cronogramaId) REFERENCES cronograma(id_cronograma)
+	            );
 
-                CREATE TABLE IF NOT EXISTS Cronograma (
-                    id SERIAL PRIMARY KEY,
-                    usuario_id INT NOT NULL,
-                    planejamento_de_estudo TEXT,
-                    livro_id INT,
-                    questao_id INT,
-                    CONSTRAINT fk_cronograma_usuario FOREIGN KEY (usuario_id)
-                        REFERENCES Usuario(id) ON DELETE CASCADE,
-                    CONSTRAINT fk_cronograma_livro FOREIGN KEY (livro_id)
-                        REFERENCES Livro(id) ON DELETE SET NULL,
-                    CONSTRAINT fk_cronograma_questao FOREIGN KEY (questao_id)
-                        REFERENCES Questao(id) ON DELETE SET NULL
-                );
-            """;
+	            CREATE TABLE IF NOT EXISTS vincular (
+	                materia_id VARCHAR(8) NOT NULL,
+	                concurso_id INTEGER,
+	                CONSTRAINT fk_vincular_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
+	                CONSTRAINT fk_vincular_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso)
+	            );
 
-            stmt.executeUpdate(sql);
-            stmt.close();
+	            CREATE TABLE IF NOT EXISTS inscrever (
+	                alternativa CHAR NOT NULL,
+	                resposta CHAR NOT NULL,
+	                usuario_id BIGINT,
+	                concurso_id INTEGER,
+	                CONSTRAINT pk_inscrever_usuario_concurso PRIMARY KEY (usuario_id, concurso_id),
+	                CONSTRAINT fk_inscrever_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf),
+	                CONSTRAINT fk_inscrever_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso)
+	            );
 
-            System.out.println("Conexão efetuada.");
+	            CREATE TABLE IF NOT EXISTS ler (
+	                usuario_id BIGINT,
+	                livro_id INTEGER,
+	                CONSTRAINT fk_ler_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf),
+	                CONSTRAINT fk_ler_livro FOREIGN KEY (livro_id) REFERENCES livro(id_livro)
+	            );
 
-        } catch (ClassNotFoundException e) {
-            System.err.println("Driver PostgreSQL não encontrado: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Erro de SQL: " + e.getMessage());
-        }
+	            CREATE TABLE IF NOT EXISTS simular (
+	                numero_questao INTEGER PRIMARY KEY,
+	                usuario_id BIGINT,
+	                materia_id VARCHAR(8) NOT NULL,
+	                concurso_id INTEGER,
+	                CONSTRAINT fk_simular_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
+	                CONSTRAINT fk_simular_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso),
+	                CONSTRAINT fk_simular_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf)
+	            );
 
-        return status;
-    }
+	            CREATE TABLE IF NOT EXISTS questao (
+	                identificador INTEGER PRIMARY KEY,
+	                enunciado VARCHAR(200) NOT NULL,
+	                resposta CHAR NOT NULL,
+	                usuario_id BIGINT,
+	                materia_id VARCHAR(8) NOT NULL,
+	                concurso_id INTEGER,
+	                numero_quest INTEGER,
+	                CONSTRAINT fk_questao_numero FOREIGN KEY (numero_quest) REFERENCES simular(numero_questao),
+	                CONSTRAINT fk_questao_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
+	                CONSTRAINT fk_questao_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso),
+	                CONSTRAINT fk_questao_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf)
+	            );
+
+	            CREATE TABLE IF NOT EXISTS alternativa (
+	                frase VARCHAR(100) PRIMARY KEY,
+	                letra CHAR NOT NULL,
+	                id_questao INTEGER,
+	                CONSTRAINT fk_alternativa_identificador FOREIGN KEY (id_questao) REFERENCES questao(identificador)
+	            );
+	            """;
+
+	        stmt.executeUpdate(sql);
+	        stmt.close();
+
+	        System.out.println("Conexão efetuada.");
+
+	    } catch (ClassNotFoundException e) {
+	        System.err.println("Driver PostgreSQL não encontrado: " + e.getMessage());
+	    } catch (SQLException e) {
+	        System.err.println("Erro de SQL: " + e.getMessage());
+	    }
+
+	    return status;
+	}
+
 	
 	public boolean close() {
 		boolean status = false;
