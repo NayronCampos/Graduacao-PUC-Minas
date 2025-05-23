@@ -18,7 +18,7 @@
     </header>
     <div class="container">
         <h1>CADASTRO DE CONCURSOS</h1>
-        <form id="cadastro-form" action="/concurso" method="POST">
+        <form id="cadastro-form" action="/concursos" method="POST">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
             </div>
@@ -28,11 +28,11 @@
             </div>
 
             <div class="form-group">
-                <input type="date" id="data-inscricao_cadastro" name="data-inscricao_cadastro" placeholder="Data inscrição">
+                <input type="text" name="data-inscricao_cadastro" name="data-inscricao_cadastro" placeholder="28/05/2004" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" required />
             </div>
 
             <div class="form-group">
-                <input type="date" id="data-prova_cadastro" name="data-prova_cadastro" placeholder="Data prova">
+                <input type="text" id="data-prova_cadastro" name="data-prova_cadastro" placeholder="28/05/2004" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" required>
             </div>
 
             <div class="form-group">
@@ -87,7 +87,7 @@
 
     <div class="container">
         <h1>ATUALIZAÇÃO DE CONCURSOS</h1>
-        <form id="atualizacao-form" onsubmit="this.action = '/concurso/update/' + document.getElementById('cod').value;" method="POST">
+        <form id="atualizacao-form" onsubmit="this.action = '/concursos/update/' + document.getElementById('cod').value;" method="POST">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
             </div>
@@ -161,7 +161,8 @@
 
     <div class="container">
         <h1>DELETAR CONCURSOS</h1>
-        <form id="delecao-form" onsubmit="this.action = '/concurso/delete/' + document.getElementById('id').value;" method="GET">
+        <form id="delecao-form" onsubmit="this.action = '/concursos/' + document.getElementById('id').value;" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
             </div>
@@ -177,7 +178,7 @@
 
     <div class="container">
         <h1>BUSCAR CONCURSOS</h1>
-        <form id="busca-form" onsubmit="this.action = '/concurso/' + document.getElementById('detalhes_id').value;" method="GET">
+        <form id="busca-form" onsubmit="this.action = '/concursos/' + document.getElementById('detalhes_id').value;" method="GET">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
             </div>

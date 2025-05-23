@@ -16,7 +16,7 @@ public class DAO {
 	    String database = "concurso_vagacerta"; 
 	    int porta = 5432;
 	    String urlPadrao = "jdbc:postgresql://" + serverName + ":" + porta + "/";
-	    String username = "postgres";
+	    String username = "adm_vagacerta";
 	    String password = "pucminas25";
 	    boolean status = false;
 
@@ -64,11 +64,9 @@ public class DAO {
 	                cargo VARCHAR(60) NOT NULL,
 	                materiaisDeEstudo VARCHAR(600) NOT NULL,
 	                horario VARCHAR(50) NOT NULL,
-	                status BOOLEAN NOT NULL,
+	                status VARCHAR(10) NOT NULL,
 	                data_inscricao DATE NOT NULL,
-	                data_termino DATE NOT NULL,
-	                editalId INTEGER,
-	                CONSTRAINT fk_concurso_edital FOREIGN KEY (editalId) REFERENCES edital(id_edital)
+	                data_termino DATE NOT NULL
 	            );
 
 	            CREATE TABLE IF NOT EXISTS materia (
@@ -77,11 +75,12 @@ public class DAO {
 	            );
 
 	            CREATE TABLE IF NOT EXISTS livro (
-	                id_livro SERIAL PRIMARY KEY,
-	                nome VARCHAR(50) NOT NULL,
-	                autor VARCHAR(50) NOT NULL,
-	                versao INTEGER,
-	                materia VARCHAR(50)
+	                id SERIAL PRIMARY KEY,
+					titulo VARCHAR(255) NOT NULL,
+	                autor VARCHAR(255) NOT NULL,
+	                versao INT NOT NULL,
+	                materia VARCHAR(255) NOT NULL,
+					link TEXT NOT NULL
 	            );
 
 	            CREATE TABLE IF NOT EXISTS cronograma (
@@ -120,7 +119,7 @@ public class DAO {
 	                usuario_id BIGINT,
 	                livro_id INTEGER,
 	                CONSTRAINT fk_ler_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf),
-	                CONSTRAINT fk_ler_livro FOREIGN KEY (livro_id) REFERENCES livro(id_livro)
+	                CONSTRAINT fk_ler_livro FOREIGN KEY (livro_id) REFERENCES livro(id)
 	            );
 
 	            CREATE TABLE IF NOT EXISTS simular (

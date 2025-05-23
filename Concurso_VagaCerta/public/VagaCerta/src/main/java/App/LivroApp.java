@@ -3,15 +3,17 @@ package App;
 import Services.LivroService;
 import static spark.Spark.*;
 
+import dao.*;
+
 public class LivroApp {
     public static void main(String[] args) {
         // Porta
-        port(3000);
+        port(8086);
 
         // Serve HTML/CSS/JS de src/main/resources/public
-        arquivos = staticFiles.location("src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/ti-1-ppl-cc-m-20242-g7-concursos-master/codigo/public/biblioteca.html");
+        staticFiles.externalLocation("src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/" + "ti-1-ppl-cc-m-20242-g7-concursos-master/codigo/public");
 
-        System.out.println();
+        DAO dao = new DAO();
 
         // Habilita POST “especiais” para atualizar e deletar via formulário HTML
         // ao invés de usar antes((req,res)->req.requestMethod(...))
@@ -30,6 +32,8 @@ public class LivroApp {
 
         // Inicia rotas REST “normais”
         new LivroService();
+
+        dao.conectar();
 
     }
 }

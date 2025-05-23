@@ -15,7 +15,7 @@ public class Concurso {
 	private int editalID;
 	private String materiaisDeEstudo;
 	private String horario;
-	private boolean status;
+	private String status;
 	private Date inicioIncricoes;
 	private Date terminoIncricoes;
 	
@@ -32,12 +32,12 @@ public class Concurso {
 		this.editalID = -1;
 		this.materiaisDeEstudo = "";
 		this.horario = "";
-		this.status = false;
+		this.status = "";
 		this.inicioIncricoes = null;
 		this.terminoIncricoes = null;
 	}
 	
-	public Concurso(int ID, String nome, String escolaridade, String localizacao, String categoria, String banca, String descricao, String orgao, String cargo, String materiaisDeEstudo, String horario, boolean status, Date inicioIncricoes, Date terminoIncricoes, int editalID) {
+	public Concurso(int ID, String nome, String escolaridade, String localizacao, String categoria, String banca, String descricao, String orgao, String cargo, String materiaisDeEstudo, String horario, String status, Date inicioIncricoes, Date terminoIncricoes) {
 		this.ID = ID;
 		this.nome = nome;
 		this.escolaridade = escolaridade;
@@ -47,7 +47,7 @@ public class Concurso {
 		this.descricao = descricao;
 		this.orgao = orgao;
 		this.cargo = cargo;
-		this.editalID = editalID;
+		//this.editalID = editalID;
 		this.materiaisDeEstudo = materiaisDeEstudo;
 		this.horario = horario;
 		this.status = status;
@@ -127,9 +127,9 @@ public class Concurso {
 	    this.cargo = cargo;
 	}
 
-	public int getEditalID() {
-	    return editalID;
-	}
+	// public int getEditalID() {
+	//     return editalID;
+	// }
 
 	public void setEditalID(int editalID) {
 	    this.editalID = editalID;
@@ -151,11 +151,11 @@ public class Concurso {
 	    this.horario = horario;
 	}
 
-	public boolean getStatus() {
+	public String getStatus() {
 	    return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 	    this.status = status;
 	}
 
@@ -190,7 +190,7 @@ public class Concurso {
 	           ", linkEdital='" + editalID + '\'' +
 	           ", materiaisDeEstudo='" + materiaisDeEstudo+ '\'' +
 	           ", horario='" + horario + '\'' +
-	           ", status=" + (status ? "Ativo" : "Inativo") +
+	           ", status=" + (status.length() > 0 ? "Ativo" : "Inativo") +
 	           ", inicioIncricoes=" + inicioIncricoes +
 	           ", terminoIncricoes=" + terminoIncricoes +
 	           '}';
