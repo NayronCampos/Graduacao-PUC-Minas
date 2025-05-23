@@ -66,25 +66,29 @@ public class ConcursoService extends DAO{
 		Concurso concurso = concursoDAO.getConcurso(id);
 		if(concurso != null) {
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			
-			//concurso.setID(Integer.parseInt(request.queryParams("nome")));
-			concurso.setEscolaridade(request.queryParams("escolaridade"));
-			concurso.setLocalizacao(request.queryParams("localizacao"));
-			concurso.setCategoria(request.queryParams("categoria"));
-			concurso.setBanca(request.queryParams("banca"));
-			concurso.setDescricao(request.queryParams("descricao"));
-			concurso.setOrgao(request.queryParams("orgao"));
-			concurso.setCargo(request.queryParams("cargo"));
-			concurso.setEditalID(Integer.parseInt(request.queryParams("editalID")));
-			concurso.setMateriaisDeEstudo(request.queryParams("materiaisDeEstudo"));
-			concurso.setHorario(request.queryParams("horario"));
-			concurso.setStatus(Boolean.parseBoolean(request.queryParams("localizacao")));
-			String dataIncricaoStr = request.queryParams("inicioIncricoes");
-			String dataFinalStr = request.queryParams("terminoIncricoes");
-			concurso.setInicioIncricoes(formato.parse(dataIncricaoStr));
-			concurso.setTerminoIncricoes(formato.parse(dataFinalStr));
-			concursoDAO.update(concurso);
-			return id;
+			try {
+				//concurso.setID(Integer.parseInt(request.queryParams("nome")));
+				concurso.setEscolaridade(request.queryParams("escolaridade"));
+				concurso.setLocalizacao(request.queryParams("localizacao"));
+				concurso.setCategoria(request.queryParams("categoria"));
+				concurso.setBanca(request.queryParams("banca"));
+				concurso.setDescricao(request.queryParams("descricao"));
+				concurso.setOrgao(request.queryParams("orgao"));
+				concurso.setCargo(request.queryParams("cargo"));
+				concurso.setEditalID(Integer.parseInt(request.queryParams("editalID")));
+				concurso.setMateriaisDeEstudo(request.queryParams("materiaisDeEstudo"));
+				concurso.setHorario(request.queryParams("horario"));
+				concurso.setStatus(Boolean.parseBoolean(request.queryParams("localizacao")));
+				String dataIncricaoStr = request.queryParams("inicioIncricoes");
+				String dataFinalStr = request.queryParams("terminoIncricoes");
+				concurso.setInicioIncricoes(formato.parse(dataIncricaoStr));
+				concurso.setTerminoIncricoes(formato.parse(dataFinalStr));
+				concursoDAO.update(concurso);
+				return String.valueOf(id);
+			} catch (ParseException e) {
+				response.status(400);
+				return "Erro ao converter datas: " + e.getMessage();
+			}
 		}else {
 			response.status(404);
 			return "Concurso não encontrado!";

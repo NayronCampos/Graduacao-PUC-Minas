@@ -17,8 +17,8 @@
         </div>
     </header>
     <div class="container">
-        <h1>CADASTRO DE CONCURSOS</h1>
-        <form id="cadastro-form" action="/concurso" method="POST">
+        <h1>CADASTRO DE QUESTÕES</h1>
+        <form id="cadastro-form" action="/questao/cadastrar" method="POST">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
             </div>
@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 <input type="date" id="data-inscricao_cadastro" name="data-inscricao_cadastro" placeholder="Data inscrição">
-            </div>
+            </div>  
 
             <div class="form-group">
                 <input type="date" id="data-prova_cadastro" name="data-prova_cadastro" placeholder="Data prova">
@@ -86,7 +86,7 @@
     </div>
 
     <div class="container">
-        <h1>ATUALIZAÇÃO DE CONCURSOS</h1>
+        <h1>ATUALIZAÇÃO DE QUESTÕES</h1>
         <form id="atualizacao-form" onsubmit="this.action = '/concurso/update/' + document.getElementById('cod').value;" method="POST">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
@@ -160,7 +160,7 @@
     </div>
 
     <div class="container">
-        <h1>DELETAR CONCURSOS</h1>
+        <h1>DELETAR QUESTÕES</h1>
         <form id="delecao-form" onsubmit="this.action = '/concurso/delete/' + document.getElementById('id').value;" method="GET">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>
@@ -176,7 +176,7 @@
 
 
     <div class="container">
-        <h1>BUSCAR CONCURSOS</h1>
+        <h1>BUSCAR QUESTÕES</h1>
         <form id="busca-form" onsubmit="this.action = '/concurso/' + document.getElementById('detalhes_id').value;" method="GET">
             <div class="form-group upload-group">
                 <div class="upload-btn"></div>

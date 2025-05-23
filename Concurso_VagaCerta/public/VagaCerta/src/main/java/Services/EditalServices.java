@@ -1,152 +1,129 @@
 package Services;
 
-import java.sql.*;
-import java.util.*;
-import java.sql.Date
-import java.util.Date;
-import java.text.*;
-import java.security.*;
-import dao.*;
-import Classes.Concurso;
-import Classes.Edital;
+import static spark.Spark.*;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
-public class EditalServices extends DAO{
-	public EditalDAO editalDAO = new EditalDAO();
-	
-	public String insert(Request request, Response response) throws ParseException {
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		
-		int ID = geradorDeId();
-		String arquivo = request.queryParams("arquivo");
-		String data_publiStr = request.queryParams("data_publi");
-		Date data_publi = formato.parse(data_publi);
-		String resp = "";
-		
-		Edital edital = new Edital(ID, arquivo, data_publi);
-		
-		if(editalDAO.insert(edital)) {
-            resp = "Edital (" + arquivo + ") inserido!";
-            response.status(201); 
-		} else {
-			resp = "Edital (" + arquivo + ") não inserido!";
-			response.status(404);
-		}
-		return resp;
-	}
-	
-	public String update(Request request, Response response) {
-		int id =  Integer.parseInt(request.params(":id"));
-		Edital edital = editalDAO.getEdital(id);
-		if(edital != null) {
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-			
-			//edital.setID(Integer.parseInt(request.queryParams("id")));
-			edital.setArquivo(request.queryParams("arquivo"));
-			String data_publiStr = request.queryParams("data_publi");
-			edital.setData_publicacao(formato.parse(data_publiStr));
-			editalDAO.update(edital);
-			return id;
-		}else {
-			response.status(404);
-			return "Edital não encontrado!";
-		}
-	}
-	
-	public Object get(Request request, Response response) {
-		int id =  Integer.parseInt(request.params(":id"));
-		Edital edital = editalDAO.getEdital(id);
-		
-		if(edital != null) {
-			response.header("Content-Type", "application/xml");
-			response.header("Content-Encoding", "UTF-8");
-			
-			return "<edital>\n" +
-					"\t<id>" + edital.getID() + "</id>\n" +
-					"\t<arquivo>" + edital.getArquivo() + "</arquivo>\n" +
-					"\t<Data_publicacao>" + edital.getData_publicacao() + "</Data_publicacao>\n" +
-					"</edital>\n";
-		}else {
-			response.status(404);
-			return "Edital " + id + " não encontrado";
-		}
-	}
-	
-	public Object getAll(Request request, Response response) {
-	    List<Edital> editais = editalDAO.getAllEditais();
+import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
-	    if (editais != null && !editais.isEmpty()) {
-	        response.header("Content-Type", "application/xml");
-	        response.header("Content-Encoding", "UTF-8");
+import dao.EditalDAO;
+import Classes.Edital;
 
-	        StringBuilder xml = new StringBuilder();
-	        xml.append("<concursos>\n");
+public class EditalServices {
+    private EditalDAO editalDAO = new EditalDAO();
+    private SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
-	        for (Edital edital : editais) {
-	            xml.append("\t<edital>\n")
-	                .append("\t\t<id>").append(edital.getID()).append("</id>\n")
-	                .append("\t\t<arquivo>").append(edital.getArquivo()).append("</arquivo>\n")
-	                .append("\t\t<data_publi>").append(edital.getData_publicacao()).append("</data_publi>\n")
-	                .append("\t</edital>\n");
-	        }
+    public static void registerRoutes() {
+        EditalServices service = new EditalServices();
+        post("/editais", service::insert);
+        get("/editais", service::getAll);
+        get("/editais/:id", service::getById);
+        put("/editais/:id", service::update);
+        Spark.delete("/editais/:id", service::delete);
+    }
 
-	        xml.append("</edital>");
+    public Object insert(Request req, Response res) {
+        try {
+            String arquivo = req.queryParams("arquivo");
+            String dataPubliStr = req.queryParams("data_publicacao");
 
-	        return xml.toString();
-	    } else {
-	        response.status(404);
-	        return "Nenhum edital encontrado";
-	    }
-	}
-	
-	public Object delete(Request request, Response response) {
-		int id =  Integer.parseInt(request.params(":id"));
+            Date utilDate = formato.parse(dataPubliStr);
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-		Edital edital = editalDAO.getEdital(id);
-		if(edital != null) {
-			editalDAO.delete(id);
-			response.status(200);
-			return "Edital com ID " + id + " foi deletado com sucesso!";
-		}else {
-			response.status(404);
-			return "Edital não encontrado!";
-		}
-	}
-	
-	public boolean idExiste(long id) {
-        boolean existe = false;
-        String sql = "SELECT 1 FROM edital WHERE id_edital = ?";
-
-        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    existe = true;
-                }
+            Edital e = new Edital(0, arquivo, sqlDate);
+            boolean ok = editalDAO.insert(e);
+            if (ok) {
+                res.status(201);
+                return "Edital (" + arquivo + ") inserido!";
+            } else {
+                res.status(500);
+                return "Erro ao inserir edital.";
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (ParseException pe) {
+            res.status(400);
+            return "Formato data inválido.";
         }
-
-        return existe;
     }
 
-    public int geradorDeId() {
-        String ALFABETO = "0123456789";
-        SecureRandom random = new SecureRandom();
-        int id;
+    public Object getAll(Request req, Response res) {
+        List<Edital> lista = editalDAO.getAllEditais();
+        if (lista == null || lista.isEmpty()) {
+            res.status(404);
+            return "Nenhum edital encontrado.";
+        }
+        res.type("application/json");
+        return new com.google.gson.Gson().toJson(lista);
+    }
 
-        do {
-            StringBuilder sb = new StringBuilder("13");
-            for (int i = 0; i < 9; i++) {
-                int index = random.nextInt(ALFABETO.length());
-                sb.append(ALFABETO.charAt(index));
+    public Object getById(Request req, Response res) {
+        try {
+            int id = Integer.parseInt(req.params("id"));
+            Edital e = editalDAO.getEdital(id);
+            if (e == null) {
+                res.status(404);
+                return "Edital não encontrado.";
             }
-            id = (int) Long.parseLong(sb.toString());
-        } while (idExiste(id));
-
-        return id;
+            res.type("application/json");
+            return new com.google.gson.Gson().toJson(e);
+        } catch (NumberFormatException ex) {
+            res.status(400);
+            return "ID inválido.";
+        }
     }
 
+    public Object update(Request req, Response res) {
+        try {
+            int id = Integer.parseInt(req.params("id"));
+            Edital e = editalDAO.getEdital(id);
+            if (e == null) {
+                res.status(404);
+                return "Edital não encontrado.";
+            }
+
+            String arquivo = req.queryParams("arquivo");
+            String dataPubliStr = req.queryParams("data_publicacao");
+
+            if (arquivo != null && !arquivo.isEmpty()) e.setArquivo(arquivo);
+            if (dataPubliStr != null && !dataPubliStr.isEmpty()) {
+                Date d = formato.parse(dataPubliStr);
+                e.setData_publicacao(new java.sql.Date(d.getTime()));
+            }
+
+            boolean ok = editalDAO.update(e);
+            if (ok) {
+                res.status(200);
+                return "Edital atualizado.";
+            } else {
+                res.status(500);
+                return "Erro ao atualizar edital.";
+            }
+        } catch (ParseException pe) {
+            res.status(400);
+            return "Formato data inválido.";
+        } catch (NumberFormatException ne) {
+            res.status(400);
+            return "ID inválido.";
+        }
+    }
+
+    public Object delete(Request req, Response res) {
+        try {
+            int id = Integer.parseInt(req.params("id"));
+            boolean ok = editalDAO.delete(id);
+            if (ok) {
+                res.status(200);
+                return "Edital deletado.";
+            } else {
+                res.status(404);
+                return "Erro ao deletar edital.";
+            }
+        } catch (NumberFormatException ne) {
+            res.status(400);
+            return "ID inválido.";
+        }
+    }
 }

@@ -1,0 +1,13 @@
+App\EditalApp.class
+App\LivroApp.class
+Services\EditalServices.class
+App\ConcursoApp.class
+Services\LivroService.class
+dao\EditalDAO.class
+Services\ConcursoService.class
+Classes\Concurso.class
+Classes\Edital.class
+dao\DAO.class
+Classes\Livro.class
+dao\ConcursoDAO.class
+dao\LivroDAO.class
