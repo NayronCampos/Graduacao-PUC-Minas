@@ -10,7 +10,7 @@ public class ConcursoApp {
         staticFiles.externalLocation("src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/" + "ti-1-ppl-cc-m-20242-g7-concursos-master/codigo/public");
         DAO dao = new DAO();
 
-        port(8086);
+        port(8085);
 
         // Habilita POST “especiais” para atualizar e deletar via formulário HTML
         // ao invés de usar antes((req,res)->req.requestMethod(...))
