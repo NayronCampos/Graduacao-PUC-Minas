@@ -1,141 +1,116 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login de Usuário</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - VagaCerta</title>
   <link rel="stylesheet" href="./assets/css/login.css">
 </head>
+<body>
 
-<body class="">
   <header class="cabecalho">
-    <a href="homepage.html"><img src="./assets/images/logo.png" class="logo"></a>
-</header>
-  <div id="login">
-    <div class="container">
-      <div id="login-row">
-        <div id="login-column" class="col-md-6">
-          <div id="login-box" class="col-md-12">
-            <form id="login-form" class="form" method="post" onsubmit="loginUser (this)">
-              <h3 class="text-center text-light">Login</h3>
-              <div class="form-group">
-                <input type="text" name="username" placeholder="Username" id="username" class="form-control">
-                <input type="password" name="password"  placeholder="Senha" id="password" class="form-control">
-              </div>
-              <div class="form-group text-center mt-3">
-                <input type="submit" name="submit" class="btn btn-primary text-light" value="Login"> 
-                <button type="button" class="btn btn-primary text-light" data-toggle="modal" data-target="#loginModal">Registrar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+    <a href="index.html">
+      <img src="./assets/images/logo.png" class="logo" alt="Logo VagaCerta">
+    </a>
+  </header>
+
+  <main class="container">
+    <div class="abas">
+      <button class="aba active" onclick="mostrarAba('concurseiro')">Concurseiro</button>
+      <button class="aba" onclick="mostrarAba('admin')">Administrador</button>
     </div>
-  </div>
+
+    <div class="formulario" id="concurseiro">
+      <h2>Login de Concurseiro</h2>
+      <form onsubmit="event.preventDefault(); window.location.href='homepage_usuario.html';">
+        <input type="text" name="CPF" placeholder="CPF" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <div class="botoes">
+          <button type="submit">Entrar</button>
+          <button type="button" onclick="abrirModal('concurseiro')">Registrar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="formulario hidden" id="admin">
+      <h2>Login de Administrador</h2>
+      <form onsubmit="event.preventDefault(); window.location.href='homepage_adm.html';">
+        <input type="text" name="CPF" placeholder="CPF" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <div class="botoes">
+          <button type="submit">Entrar</button>
+          <button type="button" onclick="abrirModal('admin')">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </main>
 
   <!-- Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Login App</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="login-box" class="col-md-12">
-            <form id="login-form" class="form" method="post" onsubmit="loginUser (this)">
-              <h3 class="text-center text-info">Novo usuário</h3>
-              <div class="form-group">
-                <input type="text" name="txt_login" placeholder="Usuário" id="txt_login" class="form-control">
-                <input type="text" name="txt_nome" placeholder="Nome Completo" id="txt_nome" class="form-control">
-                <input type="text" name="txt_email" placeholder="Email" id="txt_email" class="form-control">
-                <input type="password" name="txt_senha" placeholder="Senha" id="txt_senha" class="form-control">
-                <input type="password" name="txt_senha2" placeholder="Confirmação de Senha" id="txt_senha2" class="form-control">
-              </div>
-            </form>
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Cadastro de Novo Usuário</h5>
+        <span class="close" onclick="fecharModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="registroForm">
+          <input type="text" id="txt_login" placeholder="CPF" required>
+          <input type="text" id="txt_nome" placeholder="Nome Completo" required>
+          <input type="email" id="txt_email" placeholder="Email" required>
+          <input type="password" id="txt_senha" placeholder="Senha" required>
+          <input type="password" id="txt_senha2" placeholder="Confirmação de Senha" required>
+          <div id="camposAdmin" style="display: none;">
+            <input type="text" id="txt_cargo" placeholder="Cargo" required>
+            <input type="text" id="txt_identificador" placeholder="Número Identificador" required>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" id="btn_salvar" class="btn btn-info">Salvar</button>
-        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="fecharModal()">Cancelar</button>
+        <button onclick="salvarCadastro()">Salvar</button>
       </div>
     </div>
   </div>
 
-  <script src="../../assets/js/login.js"></script>
   <script>
+    let tipoCadastro = '';
 
-    // Declara uma função para processar o formulário de login
-    function processaFormLogin(event) {
-      // Cancela a submissão do formulário para tratar sem fazer refresh da tela
-      event.preventDefault();
-
-      // Obtem os dados de login e senha a partir do formulário de login
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
-
-      // Valida login e se estiver ok, redireciona para tela inicial da aplicação
-      resultadoLogin = loginUser(username, password);
-      if (resultadoLogin) {
-        window.location.href = RETURN_URL;
-      }
-      else { // Se login falhou, avisa ao usuário
-        alert('Usuário ou senha incorretos');
-      }
+    function mostrarAba(id) {
+      document.querySelectorAll('.aba').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.formulario').forEach(f => f.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+      event.target.classList.add('active');
     }
 
-    function salvaLogin(event) {
-      // Cancela a submissão do formulário para tratar sem fazer refresh da tela
-      event.preventDefault();
-
-      // Obtem os dados do formulário
-      let login = document.getElementById('txt_login').value;
-      let nome = document.getElementById('txt_nome').value;
-      let email = document.getElementById('txt_email').value;
-      let senha = document.getElementById('txt_senha').value;
-      let senha2 = document.getElementById('txt_senha2').value;
-      if (senha != senha2) {
-        alert('As senhas informadas não conferem.');
-        return
-      }
-
-      // Adiciona o usuário no banco de dados
-      addUser(nome, login, senha, email);
-      alert('Usuário salvo com sucesso. Proceda com o login para ');
-
-      // Oculta a div modal do login
-      //document.getElementById ('loginModal').style.display = 'none';
-      $('#loginModal').modal('hide');
+    function abrirModal(tipo) {
+      tipoCadastro = tipo;
+      document.getElementById('loginModal').style.display = 'flex';
+      document.getElementById('camposAdmin').style.display = tipo === 'admin' ? 'block' : 'none';
     }
 
-    // Associa a funçao processaFormLogin  formulário adicionado um manipulador do evento submit
-    document.getElementById('login-form').addEventListener('submit', processaFormLogin);
+    function fecharModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
 
+    function salvarCadastro() {
+      const senha = document.getElementById('txt_senha').value;
+      const senha2 = document.getElementById('txt_senha2').value;
+      if (senha !== senha2) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+      const tipo = tipoCadastro === 'admin' ? 'Administrador' : 'Concurseiro';
+      alert(tipo + " cadastrado com sucesso!");
+      fecharModal();
+    }
 
-    // Associar salvamento ao botao
-    document.getElementById('btn_salvar').addEventListener('click', salvaLogin);        
+    window.onclick = function(event) {
+      const modal = document.getElementById('loginModal');
+      if (event.target === modal) {
+        fecharModal();
+      }
+    };
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
 </body>
-
 </html>
