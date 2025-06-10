@@ -4,13 +4,13 @@ import java.util.*;
 public class TP3Q09 {
 
     public static class Programa {
-        public String id, tipo, titulo, diretor, pais, dataAdicao, classificacao, duracao;
-        public String[] elenco;
-        public String[] categorias;
-        public int anoLancamento;
+        String id, tipo, titulo, diretor, pais, dataAdicao, classificacao, duracao;
+        String[] elenco;
+        String[] categorias;
+        int anoLancamento;
 
         public Programa(String linha) {
-            String[] partes = dividirLinhaCSV(linha);
+            String[] partes = dividirCSV(linha);
             id = partes[0];
             tipo = partes[1];
             titulo = partes[2];
@@ -24,7 +24,7 @@ public class TP3Q09 {
             categorias = partes[10].split(", ");
         }
 
-        private String[] dividirLinhaCSV(String linha) {
+        private String[] dividirCSV(String linha) {
             ArrayList<String> campos = new ArrayList<>();
             boolean dentroAspas = false;
             StringBuilder atual = new StringBuilder();
@@ -51,37 +51,79 @@ public class TP3Q09 {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader leitor = new BufferedReader(new FileReader("/tmp/disneyplus.csv"));
-        ArrayList<Programa> listaProgramas = new ArrayList<>();
+    public static class Celula {
+        Programa elemento;
+        Celula prox;
 
-        String linha;
-        leitor.readLine(); // cabeçalho
-        while ((linha = leitor.readLine()) != null) {
-            listaProgramas.add(new Programa(linha));
+        Celula(Programa elemento) {
+            this.elemento = elemento;
+            this.prox = null;
         }
-        leitor.close();
+    }
+
+    public static class Pilha {
+        private Celula topo;
+
+        public Pilha() {
+            topo = null;
+        }
+
+        public void empilhar(Programa p) {
+            Celula nova = new Celula(p);
+            nova.prox = topo;
+            topo = nova;
+        }
+
+        public Programa desempilhar() throws Exception {
+            if (topo == null) throw new Exception("Pilha vazia");
+            Programa p = topo.elemento;
+            topo = topo.prox;
+            return p;
+        }
+
+        public void mostrar() {
+            mostrarRec(topo);
+        }
+
+        private void mostrarRec(Celula c) {
+            if (c != null) {
+                mostrarRec(c.prox);
+                System.out.println(c.elemento.formatado());
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("/tmp/disneyplus.csv"));
+        ArrayList<Programa> base = new ArrayList<>();
+        String linha;
+        br.readLine(); // cabeçalho
+        while ((linha = br.readLine()) != null) {
+            base.add(new Programa(linha));
+        }
+        br.close();
 
         Scanner sc = new Scanner(System.in);
-        ArrayList<Programa> encontrados = new ArrayList<>();
+        Pilha pilha = new Pilha();
 
-        while (sc.hasNext()) {
-            String entrada = sc.nextLine();
-            if (entrada.equals("FIM")) break;
-            for (Programa p : listaProgramas) {
-                if (p.titulo.equals(entrada)) {
-                    encontrados.add(p);
-                    break;
+        while (sc.hasNextLine()) {
+            String comando = sc.nextLine();
+            if (comando.equals("FIM")) break;
+            if (comando.startsWith("I ")) {
+                String titulo = comando.substring(2);
+                for (Programa p : base) {
+                    if (p.titulo.equals(titulo)) {
+                        pilha.empilhar(p);
+                        break;
+                    }
                 }
+            } else if (comando.equals("R")) {
+                Programa removido = pilha.desempilhar();
+                System.out.println("(R) " + removido.titulo);
             }
         }
 
-        Collections.sort(encontrados, Comparator.comparing(p -> p.titulo));
-
-        for (Programa p : encontrados) {
-            System.out.println("(R) " + p.titulo);
-        }
-
+        pilha.mostrar();
         sc.close();
     }
 }

@@ -11,13 +11,13 @@ typedef struct {
     char type[64];
     char title[128];
     char director[128];
-    char cast[256];
+    char cast[512];
     char country[64];
     char date_added[64];
     int release_year;
     char rating[32];
     char duration[32];
-    char listed_in[128];
+    char listed_in[256];
 } Show;
 
 typedef struct {
@@ -55,7 +55,6 @@ void inserirFila(FilaCircular *fila, Show s) {
     fila->rear = (fila->rear + 1) % MAX_QUEUE;
     fila->count++;
 
-    // Calcular média
     int soma = 0;
     for (int i = 0, idx = fila->front; i < fila->count; i++, idx = (idx + 1) % MAX_QUEUE) {
         soma += fila->queue[idx].release_year;
@@ -74,87 +73,57 @@ void imprimirFila(FilaCircular *fila) {
     }
 }
 
-void limparCampo(char *str) {
-    if (str[0] == '"') {
-        size_t len = strlen(str);
-        if (str[len - 1] == '"') {
-            memmove(str, str + 1, len - 2);
-            str[len - 2] = '\0';
-        }
-    }
-}
+// Função robusta de parsing de linha CSV com suporte a campos entre aspas
+void parseCSVLine(char* line, Show* s) {
+    char* token;
+    int campo = 0, i = 0;
+    int len = strlen(line);
+    char buffer[MAX_LINE];
+    int b = 0;
+    int entreAspas = 0;
 
-void extrairLista(char *dest, const char *src) {
-    char copia[256];
-    strncpy(copia, src, sizeof(copia));
-    copia[sizeof(copia) - 1] = '\0';
-
-    limparCampo(copia);
-    for (int i = 0; copia[i]; i++) {
-        if (copia[i] == ',') {
-            if (i > 0 && copia[i - 1] != ' ')
-                dest[strlen(dest)] = ',';
-            dest[strlen(dest)] = ' ';
+    memset(buffer, 0, sizeof(buffer));
+    for (i = 0; i <= len; i++) {
+        if (line[i] == '"') entreAspas = !entreAspas;
+        else if ((line[i] == ',' && !entreAspas) || line[i] == '\0' || line[i] == '\n') {
+            buffer[b] = '\0';
+            switch (campo) {
+                case 0: strcpy(s->show_id, buffer); break;
+                case 1: strcpy(s->type, buffer); break;
+                case 2: strcpy(s->title, buffer); break;
+                case 3: strcpy(s->director, buffer); break;
+                case 4: strcpy(s->cast, buffer); break;
+                case 5: strcpy(s->country, buffer); break;
+                case 6: strcpy(s->date_added, buffer); break;
+                case 7: s->release_year = atoi(buffer); break;
+                case 8: strcpy(s->rating, buffer); break;
+                case 9: strcpy(s->duration, buffer); break;
+                case 10: strcpy(s->listed_in, buffer); break;
+            }
+            campo++;
+            b = 0;
+            memset(buffer, 0, sizeof(buffer));
         } else {
-            dest[strlen(dest)] = copia[i];
+            buffer[b++] = line[i];
         }
     }
-    dest[strlen(dest)] = '\0';
 }
 
-Show buscarShowPorId(const char *id) {
-    FILE *arq = fopen("disneyplus.csv", "r");
+Show buscarShowPorId(const char* id) {
+    FILE* file = fopen("disneyplus.csv", "r");
     Show s;
-    strcpy(s.show_id, id);
-    strcpy(s.type, "NaN");
-    strcpy(s.title, "NaN");
-    strcpy(s.director, "NaN");
-    strcpy(s.cast, "NaN");
-    strcpy(s.country, "NaN");
-    strcpy(s.date_added, "NaN");
-    s.release_year = 0;
-    strcpy(s.rating, "NaN");
-    strcpy(s.duration, "NaN");
-    strcpy(s.listed_in, "NaN");
+    memset(&s, 0, sizeof(Show));
 
-    if (!arq) return s;
+    if (!file) return s;
 
     char linha[MAX_LINE];
-    while (fgets(linha, sizeof(linha), arq)) {
-        char *token = strtok(linha, ",");
-        if (token && strcmp(token, id) == 0) {
-            strcpy(s.show_id, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.type, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.title, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.director, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.cast, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.country, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.date_added, token);
-            token = strtok(NULL, ","); if (token) s.release_year = atoi(token);
-            token = strtok(NULL, ","); if (token) strcpy(s.rating, token);
-            token = strtok(NULL, ","); if (token) strcpy(s.duration, token);
-            token = strtok(NULL, "\n"); if (token) strcpy(s.listed_in, token);
-
-            limparCampo(s.title);
-            limparCampo(s.director);
-            limparCampo(s.country);
-            limparCampo(s.date_added);
-            limparCampo(s.rating);
-            limparCampo(s.duration);
-
-            char temp_cast[256] = "";
-            char temp_listed[128] = "";
-
-            extrairLista(temp_cast, s.cast);
-            extrairLista(temp_listed, s.listed_in);
-
-            snprintf(s.cast, sizeof(s.cast), "%s", temp_cast);
-            snprintf(s.listed_in, sizeof(s.listed_in), "%s", temp_listed);
-
+    while (fgets(linha, sizeof(linha), file)) {
+        if (strstr(linha, id) == linha) {
+            parseCSVLine(linha, &s);
             break;
         }
     }
-    fclose(arq);
+    fclose(file);
     return s;
 }
 
@@ -162,10 +131,11 @@ int main() {
     FilaCircular fila;
     inicializarFila(&fila);
 
-    char entrada[32];
+    char entrada[64];
     while (scanf("%s", entrada) && strcmp(entrada, "FIM") != 0) {
         Show s = buscarShowPorId(entrada);
-        inserirFila(&fila, s);
+        if (strlen(s.title) > 0)
+            inserirFila(&fila, s);
     }
 
     imprimirFila(&fila);
