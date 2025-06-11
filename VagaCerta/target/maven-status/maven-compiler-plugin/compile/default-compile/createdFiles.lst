@@ -2,7 +2,6 @@ Services\ConcursoService.class
 dao\DAO.class
 dao\ConcursoDAO.class
 dao\LivroDAO.class
-App\EditalApp.class
 App\LivroApp.class
 App\Main.class
 App\SistemaInteligenteApp.class
