@@ -30,7 +30,6 @@ public class ConcursoDAO extends DAO {
             st.setString(10, concurso.getMateriaisDeEstudo());
             st.setString(11, concurso.getHorario());
             st.setString(12, concurso.getStatus());
-            // converte java.util.Date para java.sql.Date (formato dd/MM/yyyy já parseado na Service)
             st.setDate(13, new java.sql.Date(concurso.getInicioIncricoes().getTime()));
             st.setDate(14, new java.sql.Date(concurso.getTerminoIncricoes().getTime()));
 
@@ -71,34 +70,39 @@ public class ConcursoDAO extends DAO {
         return status;
     }
 
+    // ✅ Método que estava faltando
     public Concurso getConcurso(int id) {
         Concurso concurso = null;
-        String sql = "SELECT * FROM concurso WHERE id_concurso = ?";
-        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    concurso = new Concurso(
-                        rs.getInt("id_concurso"),
-                        rs.getString("nome"),
-                        rs.getString("escolaridade"),
-                        rs.getString("localizacao"),
-                        rs.getString("categoria"),
-                        rs.getString("banca"),
-                        rs.getString("descricao"),
-                        rs.getString("orgao"),
-                        rs.getString("cargo"),
-                        rs.getString("materiaisDeEstudo"),
-                        rs.getString("horario"),
-                        rs.getString("status"),
-                        rs.getDate("data_inscricao"),
-                        rs.getDate("data_termino")
-                    );
-                }
+        try {
+            String sql = "SELECT * FROM concurso WHERE id_concurso = ?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                concurso = new Concurso();
+                concurso.setID(rs.getInt("id_concurso"));
+                concurso.setNome(rs.getString("nome"));
+                concurso.setEscolaridade(rs.getString("escolaridade"));
+                concurso.setLocalizacao(rs.getString("localizacao"));
+                concurso.setCategoria(rs.getString("categoria"));
+                concurso.setBanca(rs.getString("banca"));
+                concurso.setDescricao(rs.getString("descricao"));
+                concurso.setOrgao(rs.getString("orgao"));
+                concurso.setCargo(rs.getString("cargo"));
+                concurso.setMateriaisDeEstudo(rs.getString("materiaisDeEstudo"));
+                concurso.setHorario(rs.getString("horario"));
+                concurso.setStatus(rs.getString("status"));
+                concurso.setInicioIncricoes(rs.getDate("data_inscricao"));
+                concurso.setTerminoIncricoes(rs.getDate("data_termino"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar concurso por ID: " + e.getMessage());
         }
+
         return concurso;
     }
 
