@@ -8,9 +8,13 @@ import java.util.Arrays;
 import java.nio.file.Files;
 import java.nio.file.Paths; 
 import com.azure.core.util.BinaryData; 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.File;
+import java.util.Base64;
 
 public class ExtractTextFromImage {
-    public static void main(String[] args) throws Exception {
+    public static String analisarImagem(byte[] imageDataBytes) throws Exception {
 
     	String endpoint = "https://aiservicesvagacerta.cognitiveservices.azure.com/";
     	String key = "Dn9hXIBPQWuLVXCZouOmN3d8tuAR2kGmvmZC7ArCQeZ3neVXuXVgJQQJ99BFACYeBjFXJ3w3AAAEACOGLH8P";
@@ -25,7 +29,7 @@ public class ExtractTextFromImage {
         //String imageUrl = "https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png";
         String imagePath = "src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/ti-1-ppl-cc-m-20242-g7-concursos-master/docs/images/capa-adm3.jpg";
         
-        byte[] imageDataBytes = Files.readAllBytes(Paths.get(imagePath));
+        //byte[] imageDataBytes = Files.readAllBytes(Paths.get(imagePath));
         BinaryData imageData = BinaryData.fromBytes(imageDataBytes);
         
         // Faz análise com OCR (leitura de texto)
@@ -41,10 +45,10 @@ public class ExtractTextFromImage {
 
         // Imprime o texto detectado
         
-        System.out.println("Texto detectado:");
+        /*System.out.println("Texto detectado:");
         for (DetectedTextLine line : result.getRead().getBlocks().get(0).getLines()) {
             System.out.println("Linha: " + line.getText());
-        }
+        }*/
         
         // Converte para String o titulo do livro
         StringBuilder textoDetectado = new StringBuilder();
@@ -54,6 +58,8 @@ public class ExtractTextFromImage {
         }
         
         String tituloDoLivro = textoDetectado.toString();
-        System.out.println("\nTitulo: " + tituloDoLivro); 
+        //System.out.println("\nTitulo: " + tituloDoLivro);
+        
+        return tituloDoLivro;
     }
 }
