@@ -25,7 +25,7 @@ public class Main {
         post("/concursos/:id", (req, res) -> {
             String method = req.queryParams("_method");
             if ("PUT".equalsIgnoreCase(method)) {
-                return new ConcursoService().update(req, res);
+                return new ConcursoService().updateConcurso(req, res);
             } else if ("DELETE".equalsIgnoreCase(method)) {
                 return new ConcursoService().delete(req, res);
             } else {
