@@ -30,10 +30,10 @@ public class LivroApp {
             }
         });
 
+        dao.conectar();
+
         // Inicia rotas REST “normais”
         new LivroService();
-
-        dao.conectar();
 
     }
 }

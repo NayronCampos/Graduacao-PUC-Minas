@@ -7,7 +7,7 @@ public class DAO {
 	protected static Connection conexao;
 	
 	public DAO() {
-		conexao = null;
+		
 	}
 	
 	public boolean conectar() {

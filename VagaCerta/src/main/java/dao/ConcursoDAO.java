@@ -14,61 +14,73 @@ public class ConcursoDAO extends DAO {
 
     public boolean insert(Concurso concurso) {
         boolean status = false;
-        String sql = "INSERT INTO concurso (" +
-                     "id_concurso, nome, escolaridade, localizacao, categoria, banca, descricao, orgao, cargo, materiaisDeEstudo, horario, status, data_inscricao, data_termino) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+            "INSERT INTO concurso (" +
+            "id_concurso, nome, escolaridade, localizacao, categoria, banca, descricao, " +
+            "orgao, cargo, materiaisDeEstudo, horario, status, data_inscricao, data_termino" +
+            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = conexao.prepareStatement(sql)) {
-            st.setInt(1, concurso.getID());
-            st.setString(2, concurso.getNome());
-            st.setString(3, concurso.getEscolaridade());
-            st.setString(4, concurso.getLocalizacao());
-            st.setString(5, concurso.getCategoria());
-            st.setString(6, concurso.getBanca());
-            st.setString(7, concurso.getDescricao());
-            st.setString(8, concurso.getOrgao());
-            st.setString(9, concurso.getCargo());
+            st.setInt(1,  concurso.getID());
+            st.setString(2,  concurso.getNome());
+            st.setString(3,  concurso.getEscolaridade());
+            st.setString(4,  concurso.getLocalizacao());
+            st.setString(5,  concurso.getCategoria());
+            st.setString(6,  concurso.getBanca());
+            st.setString(7,  concurso.getDescricao());
+            st.setString(8,  concurso.getOrgao());
+            st.setString(9,  concurso.getCargo());
             st.setString(10, concurso.getMateriaisDeEstudo());
             st.setString(11, concurso.getHorario());
             st.setString(12, concurso.getStatus());
-            // converte java.util.Date para java.sql.Date (formato dd/MM/yyyy já parseado na Service)
             st.setDate(13, new java.sql.Date(concurso.getInicioIncricoes().getTime()));
             st.setDate(14, new java.sql.Date(concurso.getTerminoIncricoes().getTime()));
-
+    
             st.executeUpdate();
             status = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return status;
     }
 
     public boolean update(Concurso concurso) {
-        boolean status = false;
-        String sql = "UPDATE concurso SET " +
-                     "nome = ?, escolaridade = ?, localizacao = ?, categoria = ?, banca = ?, descricao = ?, orgao = ?, cargo = ?, materiaisDeEstudo = ?, horario = ?, status = ?, data_inscricao = ?, data_termino = ? " +
-                     "WHERE id_concurso = ?";
-        try (PreparedStatement st = conexao.prepareStatement(sql)) {
-            st.setString(1, concurso.getNome());
-            st.setString(2, concurso.getEscolaridade());
-            st.setString(3, concurso.getLocalizacao());
-            st.setString(4, concurso.getCategoria());
-            st.setString(5, concurso.getBanca());
-            st.setString(6, concurso.getDescricao());
-            st.setString(7, concurso.getOrgao());
-            st.setString(8, concurso.getCargo());
-            st.setString(9, concurso.getMateriaisDeEstudo());
-            st.setString(10, concurso.getHorario());
-            st.setString(11, concurso.getStatus());
-            st.setDate(12, new java.sql.Date(concurso.getInicioIncricoes().getTime()));
-            st.setDate(13, new java.sql.Date(concurso.getTerminoIncricoes().getTime()));
-            st.setInt(14, concurso.getID());
-
-            st.executeUpdate();
-            status = true;
+        String sql = 
+            "UPDATE concurso SET " +
+            "nome = ?, " +
+            "escolaridade = ?, " +
+            "localizacao = ?, " +
+            "categoria = ?, " +
+            "banca = ?, " +
+            "descricao = ?, " +
+            "orgao = ?, " +
+            "cargo = ?, " +
+            "materiaisDeEstudo = ?, " +
+            "horario = ?, " +
+            "status = ?, " +
+            "data_inscricao = ?, " +
+            "data_termino = ? " +
+            "WHERE id_concurso = ?";
+    
+        try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, concurso.getNome());
+            ps.setString(2, concurso.getEscolaridade());
+            ps.setString(3, concurso.getLocalizacao());
+            ps.setString(4, concurso.getCategoria());
+            ps.setString(5, concurso.getBanca());
+            ps.setString(6, concurso.getDescricao());
+            ps.setString(7, concurso.getOrgao());
+            ps.setString(8, concurso.getCargo());
+            ps.setString(9, concurso.getMateriaisDeEstudo());
+            ps.setString(10, concurso.getHorario());
+            ps.setString(11, concurso.getStatus());
+            ps.setDate(12, new java.sql.Date(concurso.getInicioIncricoes().getTime()));
+            ps.setDate(13, new java.sql.Date(concurso.getTerminoIncricoes().getTime()));
+            ps.setInt(14, concurso.getID());
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        return status;
     }
 
     public Concurso getConcurso(int id) {

@@ -5,6 +5,7 @@ dao\ConcursoDAO.class
 dao\LivroDAO.class
 App\EditalApp.class
 App\LivroApp.class
+App\Main.class
 Services\EditalServices.class
 Services\LivroService.class
 dao\EditalDAO.class
