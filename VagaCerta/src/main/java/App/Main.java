@@ -2,6 +2,14 @@ package App;
 
 import static spark.Spark.*;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Base64;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import SI.ExtractTextFromImage;
 import Services.*;
 import dao.DAO;
 
@@ -47,6 +55,46 @@ public class Main {
                 return null;
             }
         });
+        
+        //Conecta o Sistema Inteligente
+        post("/upload", (req, res) -> {
+            res.type("application/json");
+
+            JsonObject json = JsonParser.parseString(req.body()).getAsJsonObject();
+            String base64Image = json.get("image").getAsString();
+
+            try {
+                byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+                
+                if(imageBytes != null) {
+                	String tituloDoLivro = ExtractTextFromImage.analisarImagem(imageBytes);
+                	System.out.println("\n******************************************************\n");
+                	System.out.println("\nTitulo: " + tituloDoLivro);
+                	System.out.println("\n\n******************************************************\n");
+                }
+                
+                String fileName = "foto_" + System.currentTimeMillis() + ".png";
+
+                try (OutputStream out = new FileOutputStream("uploads/" + fileName)) {
+                    out.write(imageBytes);
+                }
+
+                JsonObject response = new JsonObject();
+                response.addProperty("status", "ok");
+                response.addProperty("file", fileName);
+                return response.toString();
+
+            } catch (Exception e) {
+                res.status(500);
+                JsonObject error = new JsonObject();
+                error.addProperty("status", "error");
+                error.addProperty("message", e.getMessage());
+                return error.toString();
+            }
+        });
+        new SistemaInteligenteApp();
+        System.out.println("Sistema Inteligente iniciado!");
+        
         new LivroService();
         System.out.println("LivroService iniciado!");
         

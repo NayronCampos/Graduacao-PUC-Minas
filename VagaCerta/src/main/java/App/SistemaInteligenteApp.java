@@ -22,9 +22,8 @@ public class SistemaInteligenteApp {
             uploadDir.mkdir();
         }
 
-        port(8088); // Define a porta do servidor
-        //staticFiles.externalLocation("src/main/resources/codigo/public");
-        staticFiles.externalLocation("src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/" + "ti-1-ppl-cc-m-20242-g7-concursos-master/codigo/public");
+        //port(8086); // Define a porta do servidor
+        //staticFiles.externalLocation("src/main/resources/ti-1-ppl-cc-m-20242-g7-concursos-master/ti-1-ppl-cc-m-20242-g7-concursos-master/codigo/public");
 
         post("/upload", (req, res) -> {
             res.type("application/json");
@@ -39,7 +38,7 @@ public class SistemaInteligenteApp {
                 	String tituloDoLivro = ExtractTextFromImage.analisarImagem(imageBytes);
                 	System.out.println("\n******************************************************\n");
                 	System.out.println("\nTitulo: " + tituloDoLivro);
-                	System.out.println("\n******************************************************\n");
+                	System.out.println("\n\n******************************************************\n");
                 }
                 
                 String fileName = "foto_" + System.currentTimeMillis() + ".png";

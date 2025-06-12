@@ -22,6 +22,7 @@ public class DAO {
         int    porta       = 5432;
         String username    = "adm_vagacerta";
         String password    = "pucminas25@";
+        
 
         // URL base apontando para o postgres "mãe"
         String urlBase = String.format(
