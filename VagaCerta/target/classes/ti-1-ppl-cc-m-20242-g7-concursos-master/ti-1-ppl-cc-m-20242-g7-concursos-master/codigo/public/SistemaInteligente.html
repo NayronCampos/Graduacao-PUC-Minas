@@ -1,25 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Webcam com Recorte</title>
-  <link rel="stylesheet" href="assets/css/SistemaInteligente.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaga Certa - Captura Inteligente</title>
+    
+    <!-- Link para o novo arquivo CSS específico desta página -->
+    <link rel="stylesheet" href="assets/css/SistemaInteligente.css">
 </head>
 <body>
+    <header class="cabecalho">
+        <!-- Links para as imagens que você forneceu -->
+        <a href="homepage_usuario.html"><img src="assets/images/logo.png" alt="Logo VagaCerta" class="logo"></a>
+        <div class="icones">
+            <a href="suaconta.html"><img src="assets/images/suaconta.png" alt="Sua Conta" class="conta"></a>
+            <a href="config.html"><img src="assets/images/config.png" alt="Configurações" class="config"></a>
+            <a href="notificacao.html"><img src="assets/images/notificacoes.png" alt="Notificações" class="notificacao"></a>
+        </div>
+    </header>
 
-  <h2>Webcam com Recorte</h2>
+    <main>
+        <div class="webcam-container">
+            <h2>Sistema Inteligente de Captura</h2>
+            <p>Posicione o livro na área demarcada.</p>
+            
+            <div id="videoContainer">
+                <video id="video" autoplay playsinline muted></video>
+                <div id="cropArea"></div>
+            </div>
 
-  <div id="videoContainer">
-    <video id="video" width="480" height="360" autoplay></video>
-    <div id="cropArea"></div>
-  </div>
-  <br>
-  <button id="snap">Tirar Foto</button>
-  <button id="download">Baixar Foto</button>
-  <button id="send">Enviar Foto</button>
-  <br>
-  <canvas id="canvas" width="300" height="225"></canvas>
+            <div class="controls">
+                <button id="snap" class="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828-.828A2 2 0 0 1 3.172 4H2zm.5 4a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                    </svg>
+                    Tirar Foto
+                </button>
+            </div>
 
-  <script src="assets/js/SistemaInteligente.js"></script>
+            <!-- A área de resultado (output) começa escondida -->
+            <div class="output-area" id="outputArea">
+                <h3>Pré-visualização</h3>
+                <canvas id="canvas"></canvas>
+                <div class="output-controls">
+                    <button id="download" class="button secondary" disabled>Baixar Foto</button>
+                    <button id="send" class="button" disabled>Enviar Foto</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 VagaCerta. Todos os direitos reservados.</p>
+        <p>Contato: vagacerta@gmail.com</p>
+    </footer>
 
+    <!-- Elemento para exibir as notificações -->
+    <div id="notification-box" class="notification"></div>
+
+    <!-- Link para o novo arquivo JavaScript -->
+    <script src="assets/js/SistemaInteligente.js"></script>
 </body>
 </html>
