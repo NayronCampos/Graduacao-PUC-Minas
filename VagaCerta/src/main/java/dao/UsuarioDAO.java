@@ -6,10 +6,6 @@ import java.util.*;
 import Classes.Usuario;
 
 public class UsuarioDAO extends DAO {
-	public UsuarioDAO(){
-		super();
-	    conectar();
-	}
 	    
     public boolean inserirUsuario(Usuario usuario) {
         boolean status = false;
@@ -51,17 +47,15 @@ public class UsuarioDAO extends DAO {
         return status;
     }
 
-    public boolean excluirUsuario(String cpf) {
-        boolean status = false;
-        try {
-            Statement st = conexao.createStatement();
-            st.executeUpdate("DELETE FROM usuario WHERE cpf = '" + cpf + "'");
-            st.close();
-            status = true;
+    public boolean delete(String cpf) {
+    	String sql = "DELETE FROM usuario WHERE id = ?";
+        try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1,cpf);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return false;
         }
-        return status;
     }
     
     public Usuario getUsuarioByCpf(String cpf) {

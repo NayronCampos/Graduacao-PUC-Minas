@@ -1,18 +1,13 @@
 package Services;
 
 import static spark.Spark.*;
-
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-
 import dao.UsuarioDAO;
 import Classes.Usuario;
 import spark.Request;
 import spark.Response;
 
 public class UsuarioService {
-	private UsuarioDAO usuarioDAO = new UsuarioDAO();
+	private UsuarioDAO dao = new UsuarioDAO();
 	
 	public UsuarioService() {
         path("/", () -> {
@@ -26,24 +21,26 @@ public class UsuarioService {
             put("usuario/:cpf", this::update);
 
             // DELETE via form HTML (override _method=DELETE)
-            delete("usuario/:cpf", this::delete);
+            delete("usuario/:cpf", this::deleteUsuario);
         });
     }
-	
+
 	private Object insert(Request req, Response res) {
         // lê campos do form
-		String cpf = req.queryParams("cpf");
+		String cpf = req.queryParams("login");
         String nome = req.queryParams("nome");
+        String email = req.queryParams("email");
         String escolaridade = req.queryParams("escolaridade");
         String senha = req.queryParams("senha");
-        String email = req.queryParams("email");
 
         // gera objeto e persiste
         Usuario u = new Usuario(cpf, nome, escolaridade, senha, email);
-        boolean ok = usuarioDAO.inserirUsuario(u);
+        boolean ok = dao.inserirUsuario(u);
 
         // após criar, redireciona de volta à página
-        if (!ok) {
+        if (ok) {
+        	res.redirect("/login.html");
+        } else {
         	res.status(500);
             return "Erro ao cadastrar usuario.";
         }
@@ -53,7 +50,7 @@ public class UsuarioService {
     public Object getByCpf(Request req, Response res) {
         try {
             String cpf = req.params("cpf");
-            Usuario u = usuarioDAO.getUsuarioByCpf(cpf);
+            Usuario u = dao.getUsuarioByCpf(cpf);
             if (u == null) {
                 res.status(404);
                 return "Usuario não encontrado.";
@@ -68,7 +65,7 @@ public class UsuarioService {
     
     public Object update(Request req, Response res) {
         String cpf = req.params("cpf");
-		Usuario u = usuarioDAO.getUsuarioByCpf(cpf);
+		Usuario u = dao.getUsuarioByCpf(cpf);
 		if (u == null) {
 		    res.status(404);
 		    return "Usuario não encontrado.";
@@ -79,7 +76,7 @@ public class UsuarioService {
 		u.setSenha(req.queryParams("senha"));
 		u.setEmail(req.queryParams("email"));
 
-		boolean ok = usuarioDAO.atualizarUsuario(u);
+		boolean ok = dao.atualizarUsuario(u);
 		if (ok) {
 		    res.status(200);
 		    return "Usuario atualizado.";
@@ -89,20 +86,16 @@ public class UsuarioService {
 		}
     }
     
-    public Object delete(Request req, Response res) {
-        try {
-            String cpf = req.params("cpf");
-            boolean ok = usuarioDAO.excluirUsuario(cpf);
-            if (ok) {
-                res.status(200);
-                return "Usuario deletado.";
-            } else {
-                res.status(404);
-                return "Erro ao deletar usuario.";
-            }
-        } catch (NumberFormatException ne) {
-            res.status(400);
-            return "CPF inválido.";
+    public Object deleteUsuario(Request req, Response res) {
+        String cpf = req.params("cpf");
+        boolean ok = dao.delete(cpf);
+        if (ok) {
+            res.redirect("/login.html");
+        } else {
+            res.status(404);
+            return "Erro ao deletar usuario";
         }
+        return "";
+    
     }
 }

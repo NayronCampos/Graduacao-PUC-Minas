@@ -2,8 +2,7 @@ package App;
 
 import static spark.Spark.*;
 
-import Services.ConcursoService;
-import Services.LivroService;
+import Services.*;
 import dao.DAO;
 
 public class Main {
@@ -50,7 +49,13 @@ public class Main {
         });
         new LivroService();
         System.out.println("LivroService iniciado!");
-
+        
+        new UsuarioService();
+        System.out.println("UsuarioService iniciado!");
+        
+        new AdminService();
+        System.out.println("AdminService iniciado!");
+        
         // Aqui, a aplicação fica escutando todas as rotas configuradas
         System.out.println("Main rodando na porta 8086 com todas as rotas.");
 
