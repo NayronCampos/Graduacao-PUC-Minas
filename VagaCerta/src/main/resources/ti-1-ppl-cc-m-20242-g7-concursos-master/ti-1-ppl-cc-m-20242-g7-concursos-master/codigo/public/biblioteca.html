@@ -79,7 +79,13 @@
 
     <div class="container">
         <h1>BUSCAR LIVRO</h1>
-        <form id="busca-form" onsubmit="this.action = '/livros/' + document.getElementById('livro-id-search').value;" method="GET">
+        <!-- Ajuste: action apontará para /livros/exibir/{id}, não /livros/{id} -->
+        <form id="busca-form" method="GET" 
+              onsubmit="
+                const idVal = document.getElementById('livro-id-search').value;
+                // Define action para redirecionar à rota de exibição de detalhes
+                this.action = '/livros/exibir/' + encodeURIComponent(idVal);
+              ">
             <div class="form-group">
                 <input type="number" id="livro-id-search" name="id" placeholder="ID do Livro" required>
             </div>
