@@ -1,183 +1,99 @@
 package dao;
 
 import java.sql.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class DAO {
-	protected static Connection conexao;
-	
-	public DAO() {
-		
-	}
-	
-	public boolean conectar() {
-	    String driverName = "org.postgresql.Driver";
-	    String serverName = "localhost";
-	    String database = "concurso_vagacerta"; 
-	    int porta = 5432;
-	    String urlPadrao = "jdbc:postgresql://" + serverName + ":" + porta + "/";
-	    String username = "adm_vagacerta";
-	    String password = "pucminas25";
-	    boolean status = false;
+    protected static Connection conexao;
 
-	    try {
-	        Class.forName(driverName);
+	public DAO() { }
+    // Lista de tabelas que o sistema precisa ter
+    private static final List<String> REQUIRED_TABLES = Arrays.asList(
+        "edital", "concurso", "materia", "livro", "cronograma",
+        "usuario", "vincular", "inscrever", "ler",
+        "simular", "questao", "alternativa"
+    );
 
-	        try (Connection connInicial = DriverManager.getConnection(urlPadrao + "postgres", username, password)) {
-	            PreparedStatement stmt = connInicial.prepareStatement(
-	                "SELECT 1 FROM pg_database WHERE datname = ?");
-	            stmt.setString(1, database);
-	            ResultSet rs = stmt.executeQuery();
+    public boolean conectar() {
+        String driverName  = "org.postgresql.Driver";
+        String serverName  = "vaga-certa.postgres.database.azure.com";
+        String database    = "concurso_vagacerta";
+        int    porta       = 5432;
+        String username    = "adm_vagacerta";
+        String password    = "pucminas25@";
 
-	            if (!rs.next()) {
-	                System.out.println("Banco '" + database + "' não existe. Criando...");
-	                Statement createStmt = connInicial.createStatement();
-	                createStmt.executeUpdate("CREATE DATABASE " + database);
-	                createStmt.close();
-	            } else {
-	                System.out.println("Banco '" + database + "' já existe.");
-	            }
+        // URL base apontando para o postgres "mãe"
+        String urlBase = String.format(
+            "jdbc:postgresql://%s:%d/postgres?sslmode=require",
+            serverName, porta
+        );
 
-	            stmt.close();
-	        }
+        try {
+            Class.forName(driverName);
 
-	        conexao = DriverManager.getConnection(urlPadrao + database, username, password);
-	        status = (conexao != null);
+            // 1) conecta ao postgres padrão e verifica existência do DB
+            try (Connection connInit = DriverManager.getConnection(urlBase, username, password);
+                 PreparedStatement ps = connInit.prepareStatement(
+                     "SELECT 1 FROM pg_database WHERE datname = ?"
+                 )
+            ) {
+                ps.setString(1, database);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) {
+                        System.err.println("Banco '" + database + "' NÃO existe.");
+                        return false;
+                    }
+                }
+            }
 
-	        Statement stmt = conexao.createStatement();
-	        String sql = """
-	                CREATE TABLE IF NOT EXISTS edital (
-	                id_edital SERIAL PRIMARY KEY,
-	                arquivo VARCHAR(100) NOT NULL,
-	                data_publi DATE NOT NULL
-	            );
+            // 2) reconecta agora ao seu database alvo
+            String urlDb = String.format(
+                "jdbc:postgresql://%s:%d/%s?sslmode=require",
+                serverName, porta, database
+            );
+            conexao = DriverManager.getConnection(urlDb, username, password);
 
-	            CREATE TABLE IF NOT EXISTS concurso (
-	                id_concurso SERIAL PRIMARY KEY,
-	                nome VARCHAR(50) NOT NULL,
-	                escolaridade VARCHAR(50) NOT NULL,
-	                localizacao VARCHAR(50) NOT NULL,
-	                categoria VARCHAR(100) NOT NULL,
-	                banca VARCHAR(50) NOT NULL,
-	                descricao VARCHAR(600) NOT NULL,
-	                orgao VARCHAR(50) NOT NULL,
-	                cargo VARCHAR(60) NOT NULL,
-	                materiaisDeEstudo VARCHAR(600) NOT NULL,
-	                horario VARCHAR(50) NOT NULL,
-	                status VARCHAR(10) NOT NULL,
-	                data_inscricao DATE NOT NULL,
-	                data_termino DATE NOT NULL
-	            );
+            // 3) checa existência das tabelas obrigatórias
+            String checkTableSql =
+                "SELECT 1 " +
+                "FROM information_schema.tables " +
+                "WHERE table_schema = 'public' AND table_name = ?";
 
-	            CREATE TABLE IF NOT EXISTS materia (
-	                sigla VARCHAR(8) PRIMARY KEY,
-	                nome VARCHAR(30) NOT NULL
-	            );
+            try (PreparedStatement ps = conexao.prepareStatement(checkTableSql)) {
+                for (String table : REQUIRED_TABLES) {
+                    ps.setString(1, table);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (!rs.next()) {
+                            System.err.println("Tabela obrigatória ausente: " + table);
+                            conexao.close();
+                            return false;
+                        }
+                    }
+                }
+            }
 
-	            CREATE TABLE IF NOT EXISTS livro (
-	                id SERIAL PRIMARY KEY,
-					titulo VARCHAR(255) NOT NULL,
-	                autor VARCHAR(255) NOT NULL,
-	                versao INT NOT NULL,
-	                materia VARCHAR(255) NOT NULL,
-					link TEXT NOT NULL
-	            );
+            System.out.println("Conexão estabelecida e todas as tabelas existem.");
+            return true;
 
-	            CREATE TABLE IF NOT EXISTS cronograma (
-	                id_cronograma SERIAL PRIMARY KEY,
-	                planejamento VARCHAR(50) NOT NULL
-	            );
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver PostgreSQL não encontrado: " + e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Erro de SQL: " + e.getMessage());
+            return false;
+        }
+    }
 
-	            CREATE TABLE IF NOT EXISTS usuario (
-	                cpf BIGINT PRIMARY KEY,
-	                nome VARCHAR(50) NOT NULL,
-	                email VARCHAR(50) DEFAULT 'não informado',
-	                senha VARCHAR(10) NOT NULL,
-	                escolaridade VARCHAR(20) NOT NULL,
-	                cronogramaId INTEGER,
-	                CONSTRAINT fk_usuario_cronograma FOREIGN KEY (cronogramaId) REFERENCES cronograma(id_cronograma)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS vincular (
-	                materia_id VARCHAR(8) NOT NULL,
-	                concurso_id INTEGER,
-	                CONSTRAINT fk_vincular_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
-	                CONSTRAINT fk_vincular_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS inscrever (
-	                alternativa CHAR NOT NULL,
-	                resposta CHAR NOT NULL,
-	                usuario_id BIGINT,
-	                concurso_id INTEGER,
-	                CONSTRAINT pk_inscrever_usuario_concurso PRIMARY KEY (usuario_id, concurso_id),
-	                CONSTRAINT fk_inscrever_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf),
-	                CONSTRAINT fk_inscrever_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS ler (
-	                usuario_id BIGINT,
-	                livro_id INTEGER,
-	                CONSTRAINT fk_ler_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf),
-	                CONSTRAINT fk_ler_livro FOREIGN KEY (livro_id) REFERENCES livro(id)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS simular (
-	                numero_questao INTEGER PRIMARY KEY,
-	                usuario_id BIGINT,
-	                materia_id VARCHAR(8) NOT NULL,
-	                concurso_id INTEGER,
-	                CONSTRAINT fk_simular_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
-	                CONSTRAINT fk_simular_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso),
-	                CONSTRAINT fk_simular_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS questao (
-	                identificador INTEGER PRIMARY KEY,
-	                enunciado VARCHAR(200) NOT NULL,
-	                resposta CHAR NOT NULL,
-	                usuario_id BIGINT,
-	                materia_id VARCHAR(8) NOT NULL,
-	                concurso_id INTEGER,
-	                numero_quest INTEGER,
-	                CONSTRAINT fk_questao_numero FOREIGN KEY (numero_quest) REFERENCES simular(numero_questao),
-	                CONSTRAINT fk_questao_materia FOREIGN KEY (materia_id) REFERENCES materia(sigla),
-	                CONSTRAINT fk_questao_concurso FOREIGN KEY (concurso_id) REFERENCES concurso(id_concurso),
-	                CONSTRAINT fk_questao_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(cpf)
-	            );
-
-	            CREATE TABLE IF NOT EXISTS alternativa (
-	                frase VARCHAR(100) PRIMARY KEY,
-	                letra CHAR NOT NULL,
-	                id_questao INTEGER,
-	                CONSTRAINT fk_alternativa_identificador FOREIGN KEY (id_questao) REFERENCES questao(identificador)
-	            );
-	            """;
-
-	        stmt.executeUpdate(sql);
-	        stmt.close();
-
-	        System.out.println("Conexão efetuada.");
-
-	    } catch (ClassNotFoundException e) {
-	        System.err.println("Driver PostgreSQL não encontrado: " + e.getMessage());
-	    } catch (SQLException e) {
-	        System.err.println("Erro de SQL: " + e.getMessage());
-	    }
-
-	    return status;
-	}
-
-	
-	public boolean close() {
-		boolean status = false;
-		
-		try {
-			conexao.close();
-			status = true;
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-		}
-		return status;
-	}
+    public boolean close() {
+        try {
+            if (conexao != null && !conexao.isClosed()) {
+                conexao.close();
+            }
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar conexão: " + e.getMessage());
+            return false;
+        }
+    }
 }

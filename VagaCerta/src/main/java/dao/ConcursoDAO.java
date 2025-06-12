@@ -17,7 +17,7 @@ public class ConcursoDAO extends DAO {
         String sql =
             "INSERT INTO concurso (" +
             "id_concurso, nome, escolaridade, localizacao, categoria, banca, descricao, " +
-            "orgao, cargo, materiaisDeEstudo, horario, status, data_inscricao, data_termino" +
+            "orgao, cargo, \"materiaisDeEstudo\", horario, status, data_inscricao, data_termino" +
             ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = conexao.prepareStatement(sql)) {
             st.setInt(1,  concurso.getID());
@@ -54,7 +54,7 @@ public class ConcursoDAO extends DAO {
             "descricao = ?, " +
             "orgao = ?, " +
             "cargo = ?, " +
-            "materiaisDeEstudo = ?, " +
+            "\"materiaisDeEstudo\" = ?, " +
             "horario = ?, " +
             "status = ?, " +
             "data_inscricao = ?, " +

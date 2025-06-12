@@ -1,0 +1,14 @@
+Services\ConcursoService.class
+dao\DAO.class
+dao\ConcursoDAO.class
+dao\LivroDAO.class
+App\LivroApp.class
+App\Main.class
+App\SistemaInteligenteApp.class
+Services\EditalServices.class
+Services\LivroService.class
+SI\ExtractTextFromImage.class
+dao\EditalDAO.class
+Classes\Concurso.class
+Classes\Edital.class
+Classes\Livro.class
