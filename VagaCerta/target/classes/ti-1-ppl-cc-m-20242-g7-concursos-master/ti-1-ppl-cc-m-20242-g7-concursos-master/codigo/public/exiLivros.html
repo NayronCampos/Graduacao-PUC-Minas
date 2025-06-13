@@ -14,7 +14,6 @@
             <a href="./suaconta.html"><img src="./assets/images/suaconta.png" class="conta"></a>
             <a href="./config.html"><img src="./assets/images/config.png" class="config"></a>
             <a href="./notificacao.html"><img src="./assets/images/notificacoes.png" class="notificacao"></a>
-    
         </div>
     </header>
 
@@ -22,7 +21,6 @@
         <section class="livros">
             <h1>Lista de Livros</h1>
             <div class="livros-header">
-                
                 <div>
                     <label for="search-bar">Pesquisar:</label>
                     <input type="text" id="search-bar" placeholder="Digite para pesquisar...">
@@ -36,9 +34,8 @@
                         <option value="Informática">Informática</option>
                     </select>
                 </div>
-                
             </div>
-            <div id="lista-livros"></div>
+            <div id="lista-livros" class="lista-livros"></div>
         </section>
     </main>
     
@@ -47,6 +44,57 @@
         <p>Contato: vagacerta@gmail.com</p>
     </footer>
 
-    <script src="./assets/js/exeBib.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBar = document.getElementById('search-bar');
+  const filterMat = document.getElementById('filter-materia');
+  const listaDiv = document.getElementById('lista-livros');
+
+  // 1) Leitura de parâmetros URL
+  const params = new URLSearchParams(window.location.search);
+  const initialSearch = params.get('search') || '';
+  const initialMateria = params.get('materia') || 'all';
+
+  // 2) Preenche campos
+  searchBar.value = initialSearch;
+  filterMat.value = initialMateria;
+
+  // Função de busca e renderização
+  async function fetchEExibe() {
+    const termo = searchBar.value.trim();
+    const materia = filterMat.value;
+    const qs = new URLSearchParams();
+    if (termo)   qs.set('search', termo);
+    if (materia) qs.set('materia', materia);
+    const res = await fetch(`/livros?${qs.toString()}`);
+    const livros = await res.json();
+
+    listaDiv.innerHTML = '';
+    if (livros.length === 0) {
+      listaDiv.innerHTML = '<p>Nenhum livro encontrado.</p>';
+      return;
+    }
+    for (const l of livros) {
+      const item = document.createElement('div');
+      item.className = 'livro-item';
+      item.innerHTML = `
+        <h2>${l.titulo}</h2>
+        <p><strong>Autor:</strong> ${l.autor}</p>
+        <p><strong>Versão:</strong> ${l.versao}</p>
+        <p><strong>Matéria:</strong> ${l.materia}</p>
+        <a href="${l.link}" target="_blank">Download</a>
+      `;
+      listaDiv.appendChild(item);
+    }
+  }
+
+  // 3) Disparo de busca ao digitar/mudar filtro
+  searchBar.addEventListener('input', fetchEExibe);
+  filterMat.addEventListener('change', fetchEExibe);
+
+  // 4) Busca inicial
+  fetchEExibe();
+});
+</script>
 </body>
 </html>

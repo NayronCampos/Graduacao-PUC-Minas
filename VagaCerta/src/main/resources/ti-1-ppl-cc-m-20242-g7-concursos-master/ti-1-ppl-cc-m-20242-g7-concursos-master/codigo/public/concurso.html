@@ -65,6 +65,72 @@
         <p>&copy; 2024 VagaCerta. Todos os direitos reservados.</p>
         <p>Contato: vagacerta@gmail.com</p>
     </footer>
+    
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('btn-pesquisar');
+  const nomeInput = document.getElementById('nome');
+  const dataInput = document.getElementById('data');
+  const nivelInput = document.getElementById('nivelEnsino');
+  const localInput = document.getElementById('localizacao');
+  const resultadosDiv = document.getElementById('lista-resultados');
+
+  // função que chama o backend e renderiza
+  async function fetchEExibe() {
+    const params = new URLSearchParams();
+    if (nomeInput.value)         params.set('nome', nomeInput.value);
+    if (dataInput.value)         params.set('data', dataInput.value);
+    if (nivelInput.value)        params.set('nivelEnsino', nivelInput.value);
+    if (localInput.value)        params.set('localizacao', localInput.value);
+
+    const res = await fetch(`/concursos?${params.toString()}`);
+    const concursos = await res.json();
+
+    resultadosDiv.innerHTML = '';
+    if (concursos.length === 0) {
+      resultadosDiv.innerHTML = '<p>Nenhum concurso encontrado.</p>';
+      return;
+    }
+
+    for (const c of concursos) {
+      const card = document.createElement('div');
+      card.className = 'concurso-card';
+      card.innerHTML = `
+        <h3>${c.nome}</h3>
+        <p><strong>Inscrições:</strong> ${new Date(c.inicioIncricoes).toLocaleDateString()} 
+            até ${new Date(c.terminoIncricoes).toLocaleDateString()}</p>
+        <p><strong>Nível:</strong> ${c.escolaridade}</p>
+        <p><strong>Local:</strong> ${c.localizacao}</p>
+        <p><strong>Banca:</strong> ${c.banca}</p>
+        <a href="concursos/exibir/${c.ID}">Ver Mais</a>
+      `;
+      resultadosDiv.appendChild(card);
+    }
+  }
+
+  // dispara via botão
+  btn.addEventListener('click', fetchEExibe);
+
+  // opcional: dispara quando usuário digita enter no campo nome
+  nomeInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      fetchEExibe();
+    }
+  });
+
+  // se quiser buscar já ao carregar com parâmetros de URL:
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('nome') || urlParams.has('data') ||
+      urlParams.has('nivelEnsino') || urlParams.has('localizacao')) {
+    nomeInput.value        = urlParams.get('nome') || '';
+    dataInput.value        = urlParams.get('data') || '';
+    nivelInput.value       = urlParams.get('nivelEnsino') || '';
+    localInput.value       = urlParams.get('localizacao') || '';
+    fetchEExibe();
+  }
+});
+</script>
 </body>
 
 </html>

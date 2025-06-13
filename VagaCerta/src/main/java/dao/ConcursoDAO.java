@@ -176,4 +176,71 @@ public class ConcursoDAO extends DAO {
         }
         return maxId + 1;
     }
+    
+    /**
+     * Lista concursos filtrando por:
+     *  - nome (prefixo case‐insensitive)
+     *  - data de inscrição (YYYY‑MM‑DD)
+     *  - escolaridade (exato)
+     *  - localizacao (prefixo case‐insensitive)
+     *
+     * Se qualquer parâmetro vier null ou vazio, ignora aquele filtro.
+     */
+    public List<Concurso> listar(String nome, String dataInscricao, String escolaridade, String localizacao) {
+        List<Concurso> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM concurso WHERE 1=1");
+
+        if (nome != null && !nome.trim().isEmpty()) {
+            sql.append(" AND lower(nome) LIKE ?");
+        }
+        if (dataInscricao != null && !dataInscricao.trim().isEmpty()) {
+            sql.append(" AND data_inscricao = ?");
+        }
+        if (escolaridade != null && !escolaridade.trim().isEmpty()) {
+            sql.append(" AND escolaridade = ?");
+        }
+        if (localizacao != null && !localizacao.trim().isEmpty()) {
+            sql.append(" AND lower(localizacao) LIKE ?");
+        }
+
+        try (PreparedStatement ps = conexao.prepareStatement(sql.toString())) {
+            int idx = 1;
+            if (nome != null && !nome.trim().isEmpty()) {
+                ps.setString(idx++, nome.trim().toLowerCase() + "%");
+            }
+            if (dataInscricao != null && !dataInscricao.trim().isEmpty()) {
+                ps.setDate(idx++, java.sql.Date.valueOf(dataInscricao));
+            }
+            if (escolaridade != null && !escolaridade.trim().isEmpty()) {
+                ps.setString(idx++, escolaridade);
+            }
+            if (localizacao != null && !localizacao.trim().isEmpty()) {
+                ps.setString(idx++, localizacao.trim().toLowerCase() + "%");
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Concurso(
+                        rs.getInt("id_concurso"),
+                        rs.getString("nome"),
+                        rs.getString("escolaridade"),
+                        rs.getString("localizacao"),
+                        rs.getString("categoria"),
+                        rs.getString("banca"),
+                        rs.getString("descricao"),
+                        rs.getString("orgao"),
+                        rs.getString("cargo"),
+                        rs.getString("materiaisDeEstudo"),
+                        rs.getString("horario"),
+                        rs.getString("status"),
+                        rs.getDate("data_inscricao"),
+                        rs.getDate("data_termino")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

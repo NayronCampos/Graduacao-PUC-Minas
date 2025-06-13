@@ -80,8 +80,9 @@ public class LivroService {
 
     // GET /livros
     public Object getAllLivros(Request req, Response res) {
-        // Se você quiser suportar ?id=1 e redirecionar, pode incluir a lógica aqui; senão:
-        List<Livro> lista = dao.listar();
+        String search = req.queryParams("search");
+        String materia = req.queryParams("materia");
+        List<Livro> lista = dao.listar(search, materia);
         res.type("application/json");
         return gson.toJson(lista);
     }

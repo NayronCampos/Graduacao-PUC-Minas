@@ -38,6 +38,49 @@ public class LivroDAO extends DAO {
         }
         return lista;
     }
+    
+    /**
+     * Lista livros cujo título começa com 'prefixo' (case-insensitive)
+     * e/ou pertencem à matéria especificada.
+     * Se prefixo for null ou vazio, ignora esse critério.
+     * Se materia for null, vazia ou "all", ignora esse critério.
+     */
+    public List<Livro> listar(String prefixo, String materia) {
+        List<Livro> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM livro WHERE 1=1");
+        if (prefixo != null && !prefixo.trim().isEmpty()) {
+            sql.append(" AND lower(titulo) LIKE ?");
+        }
+        if (materia != null && !materia.equalsIgnoreCase("all")) {
+            sql.append(" AND materia = ?");
+        }
+
+        try (PreparedStatement ps = conexao.prepareStatement(sql.toString())) {
+            int idx = 1;
+            if (prefixo != null && !prefixo.trim().isEmpty()) {
+                ps.setString(idx++, prefixo.trim().toLowerCase() + "%");
+            }
+            if (materia != null && !materia.equalsIgnoreCase("all")) {
+                ps.setString(idx++, materia);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Livro(
+                        rs.getInt("id"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getInt("versao"),
+                        rs.getString("materia"),
+                        rs.getString("link")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 
     public Livro get(int id) {
         String sql = "SELECT * FROM livro WHERE id = ?";

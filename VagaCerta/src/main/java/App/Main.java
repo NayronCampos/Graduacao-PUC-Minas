@@ -56,6 +56,7 @@ public class Main {
             }
         });
         
+        /*
         //Conecta o Sistema Inteligente
         post("/upload", (req, res) -> {
             res.type("application/json");
@@ -92,9 +93,10 @@ public class Main {
                 return error.toString();
             }
         });
+        
         new SistemaInteligenteApp();
         System.out.println("Sistema Inteligente iniciado!");
-        
+        */
         new LivroService();
         System.out.println("LivroService iniciado!");
         
@@ -103,6 +105,9 @@ public class Main {
         
         new AdminService();
         System.out.println("AdminService iniciado!");
+        
+        new SistemaInteligenteService();
+        System.out.println("SistemaInteligenteService iniciado!");
         
         // Aqui, a aplicação fica escutando todas as rotas configuradas
         System.out.println("Main rodando na porta 8086 com todas as rotas.");

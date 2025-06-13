@@ -5,6 +5,8 @@ import static spark.Spark.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 import com.google.gson.Gson;
 
 
@@ -59,7 +61,15 @@ public class ConcursoService {
     }
 
     public Object getAllConcursos(Request req, Response res) {
-        return concursoDAO.getAllConcursos();
+        // lê possíveis query params
+        String nome        = req.queryParams("nome");
+        String data        = req.queryParams("data");
+        String escolaridade= req.queryParams("nivelEnsino");
+        String localizacao = req.queryParams("localizacao");
+
+        List<Concurso> lista = concursoDAO.listar(nome, data, escolaridade, localizacao);
+        res.type("application/json");
+        return new Gson().toJson(lista);
     }
 
 
