@@ -1,136 +1,183 @@
-import java.util.*;
+public import java.util.*;
 import java.io.*;
 import java.text.*;
 
-class No2{
+class No {
     public Show elemento;
-    public No2 dir;
-    public No2 esq;
-    
-    public No2(Show elemento){
-        this.elemento = elemento;
-        this.dir = null;
-        this.esq = null;
-    }
-}
-
-class No{
-    public int elemento;
+    public boolean cor;
     public No esq;
     public No dir;
-    public No2 raiz;
-    
-    public No(int elemento){
+
+    public No(Show elemento) {
         this.elemento = elemento;
-        this.dir = null;
+        this.cor = false;
         this.esq = null;
-        this.raiz = null;
+        this.dir = null;
+    }
+
+    public No(Show elemento, boolean cor) {
+        this.elemento = elemento;
+        this.cor = cor;
+        this.esq = null;
+        this.dir = null;
     }
 }
 
-class ArvoreDeArvore{
-    public No raiz;
-    
-    public ArvoreDeArvore(){
+class ArvoreRB {
+    No raiz;
+
+    public ArvoreRB() {
         this.raiz = null;
-        int[] lista = { 7, 3, 11, 1, 5, 9, 13, 0, 2, 4, 6, 8, 10, 12, 14 };
-        for(int i = 0; i < 15; i++){
-            inserir(lista[i]);
+    }
+
+    public No rotacionarDir(No i) {
+        No noEsq = i.esq;
+        No noEsqDir = noEsq.dir;
+
+        noEsq.dir = i;
+        i.esq = noEsqDir;
+
+        return noEsq;
+    }
+
+    public No rotacionarEsq(No i) {
+        No noDir = i.dir;
+        No noDirEsq = noDir.esq;
+
+        noDir.esq = i;
+        i.dir = noDirEsq;
+        
+        return noDir;
+    }
+
+    public No rotacionarDirEsq(No i) {
+        i.dir = rotacionarDir(i.dir);
+        return rotacionarEsq(i);
+    }
+
+    public No rotacionarEsqDir(No i) {
+        i.esq = rotacionarEsq(i.esq);
+        return rotacionarDir(i);
+    }
+
+    public void balanciar(No bisavo, No avo, No pai, No i) {
+        if (pai.cor) {
+            if (pai.elemento.getTitle().compareTo(avo.elemento.getTitle()) > 0) {
+                if (i.elemento.getTitle().compareTo(pai.elemento.getTitle()) > 0) {
+                    avo = rotacionarEsq(avo);
+                } else {
+                    avo = rotacionarDirEsq(avo);
+                }
+            } else {
+                if (i.elemento.getTitle().compareTo(pai.elemento.getTitle()) < 0) {
+                    avo = rotacionarDir(avo);
+                } else {
+                    avo = rotacionarEsqDir(avo);
+                }
+            }
+            if (bisavo == null) {
+                raiz = avo;
+            } else if (avo.elemento.getTitle().compareTo(bisavo.elemento.getTitle()) < 0) {
+                bisavo.esq = avo;
+            } else {
+                bisavo.dir = avo;
+            }
+            avo.cor = false;
+            avo.esq.cor = avo.dir.cor = true;
         }
     }
-    
-    public void inserir(int x){
-        raiz = inserir(x, raiz);
+
+    public void inserir(Show x, No bisavo, No avo, No pai, No i){
+        if (i == null) {
+            if (x.getTitle().compareTo(pai.elemento.getTitle()) < 0) {
+                i = pai.esq = new No(x, true);
+            } else {
+                i = pai.dir = new No(x, true);
+            }
+            if (pai.cor == true) {
+                balanciar(bisavo, avo, pai, i);
+            }
+        } else {
+            if (i.esq != null && i.dir != null && i.esq.cor == true && i.dir.cor == true) {
+                i.cor = true;
+                i.esq.cor = i.dir.cor = false;
+                if (i == raiz) {
+                    i.cor = false;
+                } else if (pai.cor == true) {
+                    balanciar(bisavo, avo, pai, i);
+                }
+            }
+            if (x.getTitle().compareTo(i.elemento.getTitle()) < 0) {
+                inserir(x, avo, pai, i, i.esq);
+            } else if (x.getTitle().compareTo(i.elemento.getTitle()) > 0) {
+                inserir(x, avo, pai, i, i.dir);
+            }
+        }
     }
-    
-    public No inserir(int x, No i) {
-		if(i == null) {
-		    return new No(x);
-		} else if(x < i.elemento) {
-			i.esq = inserir(x, i.esq);
-		} else if(x > i.elemento) {
-			i.dir = inserir(x, i.dir);
-		} else{
-		    throw new RuntimeException("Erro!");
-		}
-		
-		return i;
-	}
-	
-	public void inserirNaArvore(Show x){
-	    int mod = x.getReleaseYear() % 15;
-	    raiz = inserirNaArvore(x, raiz, mod);
-	}
-	
-	public No inserirNaArvore(Show x, No i, int mod){
-	    if (i == null) {
-            return new No(mod); 
+
+    public void inserir(Show x){
+        if (raiz == null) {
+            raiz = new No(x);
+        } else if (raiz.esq == null && raiz.dir == null) {
+            if (x.getTitle().compareTo(raiz.elemento.getTitle()) < 0) {
+                raiz.esq = new No(x);
+            } else {
+                raiz.dir = new No(x);
+            }
+        } else if (raiz.esq == null) {
+            if (x.getTitle().compareTo(raiz.elemento.getTitle()) < 0) {
+                raiz.esq = new No(x);
+            } else if (x.getTitle().compareTo(raiz.dir.elemento.getTitle()) < 0) {
+                raiz.esq = new No(raiz.elemento);
+                raiz.elemento = x;
+            } else {
+                raiz.esq = new No(raiz.elemento);
+                raiz.elemento = raiz.dir.elemento;
+                raiz.dir.elemento = x;
+            }
+            raiz.esq.cor = raiz.dir.cor = false;
+        } else if (raiz.dir == null) {
+            if (x.getTitle().compareTo(raiz.elemento.getTitle()) > 0) {
+                raiz.dir = new No(x);
+            } else if (x.getTitle().compareTo(raiz.esq.elemento.getTitle()) > 0) {
+                raiz.dir = new No(raiz.elemento);
+                raiz.elemento = x;
+            } else {
+                raiz.dir = new No(raiz.elemento);
+                raiz.elemento = raiz.esq.elemento;
+                raiz.esq.elemento = x;
+            }
+            raiz.esq.cor = raiz.dir.cor = false;
+
+        } else {
+            inserir(x, null, null, null, raiz);
         }
-	    if(mod < i.elemento) {
-			i.esq = inserirNaArvore(x, i.esq, mod);
-		} else if(mod > i.elemento) {
-			i.dir = inserirNaArvore(x, i.dir, mod);
-		} else if(mod == i.elemento){
-		    i.raiz = inserir2(x, i.raiz);
-		}
-		
-		return i;
-	}
-	
-	public No2 inserir2(Show x, No2 i){
-	    if(i == null) {
-		    return new No2(x);
-		} else if(x.getTitle().compareTo(i.elemento.getTitle()) < 0) {
-			i.esq = inserir2(x, i.esq);
-		} else if(x.getTitle().compareTo(i.elemento.getTitle()) > 0) {
-			i.dir = inserir2(x, i.dir);
-		} else{
-		    throw new RuntimeException("Erro!");
-		}
-		
-		return i;
-	}
-	
-	public boolean pesquisar(String x, int[] comparacoes){
-	    System.out.print("raiz ");
-	    boolean resp = pesquisar(x, raiz, comparacoes);
-	    System.out.println(resp ? "SIM" : "NAO");
-	    return resp;
-	}
-	
-	public boolean pesquisar(String x, No i, int[] comparacoes){
-	    if (i == null) {
+        raiz.cor = false;
+    }
+
+    public boolean pesquisar(String x, No i, int[] comparacoes) {
+        if (i == null) {
             return false;
         }
-        if (pesquisar2(x, i.raiz, comparacoes)){
-            return true;
-        }
-        System.out.print("ESQ ");
+        
         comparacoes[0]++;
-        if (pesquisar(x, i.esq, comparacoes)){
+        if(x.compareTo(i.elemento.getTitle()) == 0){
             return true;
-        }
-        System.out.print("DIR ");
-        comparacoes[0]++;
-        return pesquisar(x, i.dir, comparacoes);
-	}
-	
-	public boolean pesquisar2(String x, No2 i, int[] comparacoes){
-        if(i == null){
-            return false;
+        }else if (x.compareTo(i.elemento.getTitle()) > 0) {
+            System.out.print("dir ");
+            return pesquisar(x, i.dir, comparacoes);
         }else{
-            comparacoes[0]++;
-            if(x.compareTo(i.elemento.getTitle()) < 0){
-                System.out.print("esq ");
-                return pesquisar2(x, i.esq, comparacoes);
-            }else if(x.compareTo(i.elemento.getTitle()) > 0){
-                System.out.print("dir ");
-                return pesquisar2(x, i.dir, comparacoes);
-            }else{
-                return true;
-            } 
+            System.out.print("esq ");
+            return pesquisar(x, i.esq, comparacoes);
         }
-	}
+    }
+
+    public boolean pesquisar(String x, int[] comparacoes) {
+        System.out.print("=>raiz  ");
+        boolean resp = pesquisar(x, raiz, comparacoes);
+        System.out.println(resp ? "SIM" : "NAO");
+        return resp;
+    }
 }
 
 public class Show {
@@ -423,9 +470,9 @@ public class Show {
     }
     
     public static void arquivoLog(double duracao, int[] comparacoes){
-        String matricula = "1543790";
+        String matricula = "874422";
         try {
-            PrintWriter w = new PrintWriter(matricula + "_arvoreArvore.txt");
+            PrintWriter w = new PrintWriter(matricula + "_avinegra.txt");
             w.printf("%s\t%d\t%fms", matricula, comparacoes[0], duracao);
             w.close();
         } catch (IOException e) {
@@ -442,14 +489,13 @@ public class Show {
         
         Show[] lista = new Show[2000];
         String[] listaPesquisa = new String[100];
-        ArvoreDeArvore arvore = new ArvoreDeArvore();
+        ArvoreRB arvore = new ArvoreRB();
         
         id = input.nextLine();
         while (!id.equals("FIM")) {
             for (int i = 0; i < listaShow.size(); i++) {
                 if (listaShow.get(i).getShowId().equals(id)) {
-                    lista[j] = listaShow.get(i);
-                    arvore.inserirNaArvore(listaShow.get(i));
+                    arvore.inserir(listaShow.get(i));
                     j++;
                 }
             }
@@ -470,9 +516,11 @@ public class Show {
         }
         long fimTempo = System.nanoTime();
         
-        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; // em milisegundos
-        //Escrever no arquivo de log
+        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; 
+
         arquivoLog(duracao, comparacoes);
         input.close();
     }
+} {
+    
 }

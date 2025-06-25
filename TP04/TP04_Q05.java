@@ -2,138 +2,74 @@ import java.util.*;
 import java.io.*;
 import java.text.*;
 
-class No2{
-    public Show elemento;
-    public No2 dir;
-    public No2 esq;
+class Hash{
+    public int contReserva;
+    public int tamReserva;
+    public int tamTabela;
+    public Show[] tabela;
     
-    public No2(Show elemento){
-        this.elemento = elemento;
-        this.dir = null;
-        this.esq = null;
-    }
-}
-
-class No{
-    public int elemento;
-    public No esq;
-    public No dir;
-    public No2 raiz;
-    
-    public No(int elemento){
-        this.elemento = elemento;
-        this.dir = null;
-        this.esq = null;
-        this.raiz = null;
-    }
-}
-
-class ArvoreDeArvore{
-    public No raiz;
-    
-    public ArvoreDeArvore(){
-        this.raiz = null;
-        int[] lista = { 7, 3, 11, 1, 5, 9, 13, 0, 2, 4, 6, 8, 10, 12, 14 };
-        for(int i = 0; i < 15; i++){
-            inserir(lista[i]);
-        }
+    public Hash(){
+        this.contReserva = 0;
+        this.tamTabela = 21;
+        this.tamReserva = 9;
+        this.tabela = new Show[(tamReserva+tamTabela)];
     }
     
-    public void inserir(int x){
-        raiz = inserir(x, raiz);
+    public int parseToAscii(String x){
+        int resp = 0;
+        for(int i = 0; i < x.length(); i++){
+            resp += (int)x.charAt(i);
+        }
+        
+        return resp;
     }
     
-    public No inserir(int x, No i) {
-		if(i == null) {
-		    return new No(x);
-		} else if(x < i.elemento) {
-			i.esq = inserir(x, i.esq);
-		} else if(x > i.elemento) {
-			i.dir = inserir(x, i.dir);
-		} else{
-		    throw new RuntimeException("Erro!");
-		}
-		
-		return i;
-	}
-	
-	public void inserirNaArvore(Show x){
-	    int mod = x.getReleaseYear() % 15;
-	    raiz = inserirNaArvore(x, raiz, mod);
-	}
-	
-	public No inserirNaArvore(Show x, No i, int mod){
-	    if (i == null) {
-            return new No(mod); 
+    public int hash(String x){
+        return parseToAscii(x) % tamTabela;
+    }
+    
+    public void inserir(Show x){
+        if(x == null){
+            throw new RuntimeException("Erro!");
         }
-	    if(mod < i.elemento) {
-			i.esq = inserirNaArvore(x, i.esq, mod);
-		} else if(mod > i.elemento) {
-			i.dir = inserirNaArvore(x, i.dir, mod);
-		} else if(mod == i.elemento){
-		    i.raiz = inserir2(x, i.raiz);
-		}
-		
-		return i;
-	}
-	
-	public No2 inserir2(Show x, No2 i){
-	    if(i == null) {
-		    return new No2(x);
-		} else if(x.getTitle().compareTo(i.elemento.getTitle()) < 0) {
-			i.esq = inserir2(x, i.esq);
-		} else if(x.getTitle().compareTo(i.elemento.getTitle()) > 0) {
-			i.dir = inserir2(x, i.dir);
-		} else{
-		    throw new RuntimeException("Erro!");
-		}
-		
-		return i;
-	}
-	
-	public boolean pesquisar(String x, int[] comparacoes){
-	    System.out.print("raiz ");
-	    boolean resp = pesquisar(x, raiz, comparacoes);
-	    System.out.println(resp ? "SIM" : "NAO");
-	    return resp;
-	}
-	
-	public boolean pesquisar(String x, No i, int[] comparacoes){
-	    if (i == null) {
-            return false;
-        }
-        if (pesquisar2(x, i.raiz, comparacoes)){
-            return true;
-        }
-        System.out.print("ESQ ");
-        comparacoes[0]++;
-        if (pesquisar(x, i.esq, comparacoes)){
-            return true;
-        }
-        System.out.print("DIR ");
-        comparacoes[0]++;
-        return pesquisar(x, i.dir, comparacoes);
-	}
-	
-	public boolean pesquisar2(String x, No2 i, int[] comparacoes){
-        if(i == null){
-            return false;
+        
+        int i = hash(x.getTitle());
+        
+        if(tabela[i] == null){
+            tabela[i] = x;
         }else{
-            comparacoes[0]++;
-            if(x.compareTo(i.elemento.getTitle()) < 0){
-                System.out.print("esq ");
-                return pesquisar2(x, i.esq, comparacoes);
-            }else if(x.compareTo(i.elemento.getTitle()) > 0){
-                System.out.print("dir ");
-                return pesquisar2(x, i.dir, comparacoes);
-            }else{
-                return true;
-            } 
+            if(contReserva < tamReserva){
+                tabela[tamTabela+contReserva] = x;
+                contReserva++;
+            }
         }
-	}
+    }
+    
+    public boolean pesquisa(String x, int[] comparacoes){
+        int i = hash(x);
+        boolean resp = false;
+        
+        comparacoes[0]++;
+        if(tabela[i].getTitle().compareTo(x) == 0){
+            resp = true;
+        }else{
+            for(int j = tamTabela; j < (tamTabela+contReserva); j++){
+                comparacoes[0]++;
+                if(tabela[j].getTitle().compareTo(x) == 0){
+                    resp = true;
+                    j = tamReserva + tamTabela;
+                }
+            }
+        }
+        
+        
+        
+        System.out.println(" (Posicao: " + i + ") " + (resp ? "SIM" : "NAO"));
+        return resp;
+    }
 }
 
-public class Show {
+public class TP04_Q05 {
     private String showId;
     private String type;
     private String title;
@@ -305,7 +241,7 @@ public class Show {
     public void atribuir(String linha) {
         String[] str = new String[11];
         Arrays.fill(str, "");
-        str = separarLinha(linha);
+        str = linhas(linha);
         SimpleDateFormat formato = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
 
         setShowId((str[0] != null) ? str[0] : "NaN");
@@ -313,7 +249,7 @@ public class Show {
         setTitle((str[2] != null) ? str[2] : "NaN");
         setDirector((str[3] != null) ? str[3] : "NaN");
         if (str[4] != null) {
-            setCast(ordenaArray(str[4]));
+            setCast(ordenar(str[4]));
         } else {
             setCast(new String[]{"NaN"});
         }
@@ -327,20 +263,20 @@ public class Show {
                 setDateAdded(data);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao adicionar a data: " + str[6]);
+            System.out.println("Erro" + str[6]);
             this.dateAdded = null;
         }
         setReleaseYear((str[7] != null) ? Integer.parseInt(str[7]) : -1);
         setRating((str[8] != null) ? str[8] : "NaN");
         setDuration((str[9] != null) ? str[9] : "NaN");
         if (str[10] != null) {
-            setListedIn(ordenaArray(str[10]));
+            setListedIn(ordenar(str[10]));
         } else {
             setListedIn(new String[]{"NaN"});
         }
     }
 
-    public static String[] ordenaArray(String str) {
+    public static String[] ordenar(String str) {
         int temp = 0, tam = 0;
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == ',') {
@@ -355,7 +291,7 @@ public class Show {
             if (str.charAt(i) != ',') {
                 array[temp] += str.charAt(i);
             } else if (str.charAt(i) == ',') {
-                i++; // para retirar o espaço extra
+                i++;
                 temp++;
             }
 
@@ -373,7 +309,7 @@ public class Show {
         return array;
     }
 
-    public static String[] separarLinha(String linha) {
+    public static String[] linhas(String linha) {
         String[] str = new String[11];
         Arrays.fill(str, "");
         int aux = 0, i = 0;
@@ -423,40 +359,37 @@ public class Show {
     }
     
     public static void arquivoLog(double duracao, int[] comparacoes){
-        String matricula = "1543790";
+        String matricula = "874422";
         try {
-            PrintWriter w = new PrintWriter(matricula + "_arvoreArvore.txt");
+            PrintWriter w = new PrintWriter(matricula + "_hashReserva.txt");
             w.printf("%s\t%d\t%fms", matricula, comparacoes[0], duracao);
             w.close();
         } catch (IOException e) {
-            System.err.println("Erro para escrever no arquivo de log: " + e.getMessage());
+            System.err.println("Erro" + e.getMessage());
         }
     }
  
     public static void main(String[] args) {
         int[] comparacoes = {0};
-        int j = 0;
         Scanner input = new Scanner(System.in);
         ArrayList<Show> listaShow = ler();
         String id = "";
         
         Show[] lista = new Show[2000];
         String[] listaPesquisa = new String[100];
-        ArvoreDeArvore arvore = new ArvoreDeArvore();
+        Hash tabelaHash = new Hash();
         
         id = input.nextLine();
         while (!id.equals("FIM")) {
             for (int i = 0; i < listaShow.size(); i++) {
                 if (listaShow.get(i).getShowId().equals(id)) {
-                    lista[j] = listaShow.get(i);
-                    arvore.inserirNaArvore(listaShow.get(i));
-                    j++;
+                    tabelaHash.inserir(listaShow.get(i));
                 }
             }
             id = input.nextLine();
         }
         
-        j = 0;
+        int j = 0;
         String titulo = input.nextLine();
         while (!titulo.equals("FIM")) {
             listaPesquisa[j] = titulo;
@@ -466,12 +399,12 @@ public class Show {
         
         long inicioTempo = System.nanoTime();
         for(int i = 0; i < j; i++){
-            arvore.pesquisar(listaPesquisa[i], comparacoes);
+            tabelaHash.pesquisa(listaPesquisa[i], comparacoes);
         }
         long fimTempo = System.nanoTime();
         
-        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; // em milisegundos
-        //Escrever no arquivo de log
+        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; 
+
         arquivoLog(duracao, comparacoes);
         input.close();
     }

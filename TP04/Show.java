@@ -102,7 +102,7 @@ class ArvoreDeArvore{
 	    if (i == null) {
             return false;
         }
-        if (pesquisar2(x, i.raiz, comparacoes)){
+        if (pesquisar__(x, i.raiz, comparacoes)){
             return true;
         }
         System.out.print("ESQ ");
@@ -115,17 +115,17 @@ class ArvoreDeArvore{
         return pesquisar(x, i.dir, comparacoes);
 	}
 	
-	public boolean pesquisar2(String x, No2 i, int[] comparacoes){
+	public boolean pesquisar__(String x, No2 i, int[] comparacoes){
         if(i == null){
             return false;
         }else{
             comparacoes[0]++;
             if(x.compareTo(i.elemento.getTitle()) < 0){
                 System.out.print("esq ");
-                return pesquisar2(x, i.esq, comparacoes);
+                return pesquisar__(x, i.esq, comparacoes);
             }else if(x.compareTo(i.elemento.getTitle()) > 0){
                 System.out.print("dir ");
-                return pesquisar2(x, i.dir, comparacoes);
+                return pesquisar__(x, i.dir, comparacoes);
             }else{
                 return true;
             } 
@@ -293,7 +293,7 @@ public class Show {
             r.readLine();
             while ((linha = r.readLine()) != null) {
                 Show show = new Show();
-                show.atribuir(linha);
+                show.atribui(linha);
                 listaShow.add(show);
             }
         } catch (IOException e) {
@@ -302,10 +302,10 @@ public class Show {
         return listaShow;
     }
 
-    public void atribuir(String linha) {
+    public void atribui(String linha) {
         String[] str = new String[11];
         Arrays.fill(str, "");
-        str = separarLinha(linha);
+        str = separar(linha);
         SimpleDateFormat formato = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
 
         setShowId((str[0] != null) ? str[0] : "NaN");
@@ -313,7 +313,7 @@ public class Show {
         setTitle((str[2] != null) ? str[2] : "NaN");
         setDirector((str[3] != null) ? str[3] : "NaN");
         if (str[4] != null) {
-            setCast(ordenaArray(str[4]));
+            setCast(ordenacao(str[4]));
         } else {
             setCast(new String[]{"NaN"});
         }
@@ -327,20 +327,20 @@ public class Show {
                 setDateAdded(data);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao adicionar a data: " + str[6]);
+            System.out.println("Erro na data: " + str[6]);
             this.dateAdded = null;
         }
         setReleaseYear((str[7] != null) ? Integer.parseInt(str[7]) : -1);
         setRating((str[8] != null) ? str[8] : "NaN");
         setDuration((str[9] != null) ? str[9] : "NaN");
         if (str[10] != null) {
-            setListedIn(ordenaArray(str[10]));
+            setListedIn(ordenacao(str[10]));
         } else {
             setListedIn(new String[]{"NaN"});
         }
     }
 
-    public static String[] ordenaArray(String str) {
+    public static String[] ordenacao(String str) {
         int temp = 0, tam = 0;
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == ',') {
@@ -355,7 +355,7 @@ public class Show {
             if (str.charAt(i) != ',') {
                 array[temp] += str.charAt(i);
             } else if (str.charAt(i) == ',') {
-                i++; // para retirar o espaço extra
+                i++; 
                 temp++;
             }
 
@@ -373,7 +373,7 @@ public class Show {
         return array;
     }
 
-    public static String[] separarLinha(String linha) {
+    public static String[] separar(String linha) {
         String[] str = new String[11];
         Arrays.fill(str, "");
         int aux = 0, i = 0;
@@ -423,13 +423,13 @@ public class Show {
     }
     
     public static void arquivoLog(double duracao, int[] comparacoes){
-        String matricula = "1543790";
+        String matricula = "874422";
         try {
             PrintWriter w = new PrintWriter(matricula + "_arvoreArvore.txt");
             w.printf("%s\t%d\t%fms", matricula, comparacoes[0], duracao);
             w.close();
         } catch (IOException e) {
-            System.err.println("Erro para escrever no arquivo de log: " + e.getMessage());
+            System.err.println("Erro" + e.getMessage());
         }
     }
  
@@ -470,8 +470,8 @@ public class Show {
         }
         long fimTempo = System.nanoTime();
         
-        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; // em milisegundos
-        //Escrever no arquivo de log
+        double duracao = (fimTempo - inicioTempo) / 1_000_000.0; 
+
         arquivoLog(duracao, comparacoes);
         input.close();
     }
