@@ -1,3 +1,4 @@
+package Escrita;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;    
 

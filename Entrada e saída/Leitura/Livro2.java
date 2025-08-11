@@ -1,8 +1,9 @@
 // titulo autor preço
+package Leitura;
 
 import java.text.DecimalFormat;
 
-public class Livro {
+public class Livro2 {
     protected int IdLivro;
     protected String titulo;
     protected String autor;
@@ -10,7 +11,7 @@ public class Livro {
 
     DecimalFormat df = new DecimalFormat("#,##0.00");
 
-    public Livro(int i, String t, String a, float p){
+    public Livro2(int i, String t, String a, float p){
         IdLivro = i;
         titulo =t;
         autor = a;
