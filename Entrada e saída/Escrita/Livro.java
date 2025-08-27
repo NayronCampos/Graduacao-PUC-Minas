@@ -11,18 +11,25 @@ public class Livro {
 
     DecimalFormat df = new DecimalFormat("#,##0.00");
 
-    public Livro(int i, String t, String a, float p){
+    public Livro(int i, String t, String a, float p) {
         IdLivro = i;
-        titulo =t;
+        titulo = t;
         autor = a;
-        preco =p;
+        preco = p;
     }
 
-    public String toString(){
+    public Livro() {
+        IdLivro = -1;
+        titulo = " ";
+        autor = " ";
+        preco = 0F;
+    }
+
+    public String toString() {
         return "\nID:" + IdLivro +
-               "\nTítulo:" + titulo +
-               "\nAutor:" + autor +
-               "\nPreço: R$" + df.format(preco);
+                "\nTítulo:" + titulo +
+                "\nAutor:" + autor +
+                "\nPreço: R$" + df.format(preco);
 
     }
 
