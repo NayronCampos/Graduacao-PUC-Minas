@@ -1,0 +1,15 @@
+/*
+O aluno deverá definir e construir um banco de dados relacional com no mínimo 8 e no máximo 12 entidades. O banco de dados deverá obedecer aos seguintes critérios:
+
+Estar relacionado ao problema social de adoção de animais (cães, gatos) para pessoas interessadas.
+Os alunos devem modelar um problema real, para isso devem visitar alguma organização com fim social que realize adoção de animais, entrevistar usuários, e extrair a descrição do minimundo a partir dessa realidade.
+
+
+O banco de dados deverá minimamente permitir o registro de animais, capturadores (pessoas que recolhem e entregam os animais), captura (registros de local e data onde o animal foi encontrado ou recolhindo), receptores (pessoas que adotam animais), adoções (com registro de data de adoção).
+*/
+
+A Pet Lares tem como objetivo recolher animais em situações de rua ou de fragilidade, oferecendo cuidados e disponibilizando-os para adoção por pessoas interessadas. Quando um animal é recolhido, seu cadastro deve ser realizado no sistema, contendo um identificador único gerado automaticamente, nome, raça, tipo (cão ou gato) e idade. Os capturadores são as pessoas responsáveis por recolher os animais e devem ser identificados por um número de matrícula único, além de possuir nome, sexo e data de nascimento.
+
+Ao realizar uma captura, o sistema deve registrar qual animal foi recolhido, o local e a data da captura, além de identificar o capturador responsável. As pessoas interessadas em adotar algum animal precisam comparecer à instituição para realizar o cadastro como receptor, que deve conter CPF (identificador único), nome, data de nascimento e endereço.
+
+Quando ocorre uma adoção, o sistema deve registrar o animal adotado, o CPF do receptor e a data da adoção. Cada animal é capturado apenas uma vez e pode ser adotado uma única vez, enquanto um receptor pode adotar vários animais e um capturador pode recolher vários animais
