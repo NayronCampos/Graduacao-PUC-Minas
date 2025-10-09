@@ -16,7 +16,7 @@ Quando um animal é recolhido, deve ser cadastrado no sistema com um identificad
 
 Os capturadores são pessoas responsáveis por recolher os animais e devem ser identificados por matrícula, nome, sexo e data de nascimento. Quando uma captura ocorre, o sistema registra o animal capturado, o local e a data da captura, além do capturador responsável.
 
-A instituição conta também com voluntários, que auxiliam nos cuidados diários, transporte e apoio durante eventos de adoção. Cada voluntário possui matrícula, nome, sexo, data de nascimento e telefone de contato.
+A instituição conta também com voluntários, que auxiliam nos cuidados diários, transporte e apoio durante eventos de adoção. Cada voluntário pode ajudar em apenas uma instituição e possui matrícula, nome, sexo, data de nascimento e telefone de contato.
 
 As pessoas interessadas em adotar um animal devem se cadastrar como receptores, informando CPF, nome, data de nascimento e endereço. Quando ocorre uma adoção, o sistema registra o animal adotado, o CPF do receptor, a data da adoção e o veterinário responsável pela liberação do animal.
 
