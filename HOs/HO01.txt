@@ -1,0 +1,56 @@
+1 - O que é um sistema de banco de dados (SBD)?
+São um conjunto de dados, sua forma de organização, estrutura e acesso. Além de ter um software que provê o acesso aos dados.
+
+2 - Do que um SBD é composto?
+De uma coleção de dados, uma estrutura lógica e software.
+
+3 - Como usuários e aplicações interagem com um SBD?
+Através de consultas, que são interpretadas pelo sistema que realiza as otimizações necessárias.
+
+4 - O que é um banco de dados (BD)? Cite um exemplo de um BD, indicando o link onde seja possível encontrá-lo.
+É uma coleção de dados organizados. https://www.apoioentrega.com/?srsltid=AfmBOoqxPqPgCbmUB7snJrkHB0unXpGp46seGFQFCLZFKC9gXwihP8Iy
+
+5 - Quais são as propriedades de um BD?
+Finalidade, realidade, coerência e compartilhamento.
+
+6 - Quais são as etapas de um projeto de BD?
+Especificação, análise de requisitos, projeto conceitual, projeto lógico, projeto físico.
+
+7 - O que é um sistema gerenciador de banco de dados (SGBD)?
+São um conjunto de softwares que permitem aos usuários criar e manter bancos de dados.
+
+8 - Quais são as propriedades de um SGBD?
+Flexibilidade, múltiplas interfaces, economia, garate padronizações, restrição de acesso, backup e recuperação, disponibilidade, tempo de desenvolvimento..
+
+9 - Indique situações em que o uso de SGBD pode se mostrar inadequado.
+O acesso com múltiplos usuários, pouca ou baixa complexidade, requisitos rigorosos, como pouco armazenamento para muitos dados e requisitos, custo restrito.
+
+10 - O que é um modelo de dados? 
+É uma estrutura lógica que determina a forma como os dados são armazenados, organizados e manipulados. Permitindo meios necessários para se alcançar a abstração
+
+11 - Em relação ao nível de abstração, quais são os tipos de modelos de dados?
+Conceitual, representativo e físico.
+
+12 - O que é um Esquema de BD?
+É a descrição do banco de dados, sendo especificado no projeto e não modifica com frequência. Apresenta a estrutura de cada tipo de elemento.
+
+13 - O que é uma Instância de BD?
+São o conjunto de dados armazenados em um determinado momento, por exemplo, estado vazio, inicial, se alterando ao fazer algum comando.
+
+14 - Quais as vantagens de se adotar uma Arquitetura de Três Esquemas para implementar um BD?
+Permite uma visão e acesso de dados em diferente níveis de abstração, de acordo com as características estruturais.
+
+15 - Quais níveis existem em uma Arquitetura de Três Esquemas?
+Nível externo, conceitual e interno .
+
+16 - O que é Mapeamento em uma Arquitetura de Três Esquemas?
+É a transformação de requisições e resultados entre níveis.
+
+17 - O que é Independência de Dados e qual sua importância para um SBD?
+É a capacidade de alterar um esquema em um nível sem precisar modifica os sistemas nos outros níveis.
+
+18 - O que é uma Linguagem de Consulta?
+É uma linguagem usada para buscar informações em bases de dados ou sistemas que armazenam dados.
+
+19 - Cite as linguagens incorporadas na linguagem SQL.
+VDL, DDL, SDL, DML.

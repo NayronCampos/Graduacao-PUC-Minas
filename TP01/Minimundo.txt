@@ -18,7 +18,7 @@ Os capturadores são pessoas responsáveis por recolher os animais e devem ser i
 
 A instituição conta também com voluntários, que auxiliam nos cuidados diários, transporte e apoio durante eventos de adoção. Cada voluntário pode ajudar em apenas uma instituição e possui matrícula, nome, sexo, data de nascimento e telefone de contato.
 
-As pessoas interessadas em adotar um animal devem se cadastrar como receptores, informando CPF, nome, data de nascimento e endereço. Quando ocorre uma adoção, o sistema registra o animal adotado, o CPF do receptor, a data da adoção e o veterinário responsável pela liberação do animal.
+As pessoas interessadas em adotar um animal devem se cadastrar como receptores, informando CPF, nome, data de nascimento e endereço. Quando ocorre uma adoção, o sistema registra o animal adotado, o CPF do receptor, a data da adoção e o veterinário responsável pela liberação do animal. O animal pode ser devolvido a instituição caso o receptor não o queira mais, permitindo assim que um animal possa ser adotado por vários receptores.
 
 Cada animal é capturado apenas uma vez e pode ser adotado uma única vez. Um receptor pode adotar vários animais, um capturador pode recolher vários animais, um veterinário pode ser responsável por vários animais e um voluntário pode auxiliar em várias atividades relacionadas a diferentes animais.
 
