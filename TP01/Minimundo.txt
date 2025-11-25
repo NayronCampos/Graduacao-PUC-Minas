@@ -1,35 +1,37 @@
-/*
-O aluno deverá definir e construir um banco de dados relacional com no mínimo 8 e no máximo 12 entidades. O banco de dados deverá obedecer aos seguintes critérios:
+    /*
+    O aluno deverá definir e construir um banco de dados relacional com no mínimo 8 e no máximo 12 entidades. O banco de dados deverá obedecer aos seguintes critérios:
 
-Estar relacionado ao problema social de adoção de animais (cães, gatos) para pessoas interessadas.
-Os alunos devem modelar um problema real, para isso devem visitar alguma organização com fim social que realize adoção de animais, entrevistar usuários, e extrair a descrição do minimundo a partir dessa realidade.
+    Estar relacionado ao problema social de adoção de animais (cães, gatos) para pessoas interessadas.
+    Os alunos devem modelar um problema real, para isso devem visitar alguma organização com fim social que realize adoção de animais, entrevistar usuários, e extrair a descrição do minimundo a partir dessa realidade.
 
 
-O banco de dados deverá minimamente permitir o registro de animais, capturadores (pessoas que recolhem e entregam os animais), captura (registros de local e data onde o animal foi encontrado ou recolhindo), receptores (pessoas que adotam animais), adoções (com registro de data de adoção).
-*/
+    O banco de dados deverá minimamente permitir o registro de animais, capturadores (pessoas que recolhem e entregam os animais), captura (registros de local e data onde o animal foi encontrado ou recolhindo), receptores (pessoas que adotam animais), adoções (com registro de data de adoção).
+    */
 
-MINIMUNDO:
+    MINIMUNDO:
 
-A Pet Lares é uma instituição que atua no acolhimento de animais em situação de rua ou fragilidade, oferecendo cuidados veterinários e disponibilizando-os para adoção por pessoas interessadas. Cada instituição deve possuir a cidade, nome da filial e um identificador unico.
+ A Pet Lares é uma instituição que atua no acolhimento de animais em situação de rua ou fragilidade, oferecendo cuidados veterinários e disponibilizando-os para adoção. Cada instituição deve possuir um identificador único, a cidade e o nome da filial.
 
-Quando um animal é recolhido, deve ser cadastrado no sistema com um identificador gerado automaticamente, nome, raça, tipo (cão ou gato) e idade. Cada animal fica vinculado a um veterinário responsável, que acompanha sua saúde até o momento da adoção. Os "médicos de pets" devem ser identificados por seu cpf, nome e area de atuação.
+Quando um animal é recolhido, ele é cadastrado no sistema com um identificador gerado automaticamente, nome, raça, tipo (cão ou gato) e idade registrada em meses. No momento do recolhimento, também são registrados o local da captura, a data da captura e o capturador responsável, que é a pessoa que encontrou e recolheu o animal.
 
-Os capturadores são pessoas responsáveis por recolher os animais e devem ser identificados por matrícula, nome, sexo e data de nascimento. Quando uma captura ocorre, o sistema registra o animal capturado, o local e a data da captura, além do capturador responsável.
+Os capturadores são identificados por matrícula, nome, sexo e data de nascimento, e podem capturar vários animais.
 
-A instituição conta também com voluntários, que auxiliam nos cuidados diários, transporte e apoio durante eventos de adoção. Cada voluntário pode ajudar em apenas uma instituição e possui matrícula, nome, sexo, data de nascimento e telefone de contato.
+O atendimento veterinário é registrado separadamente: sempre que um veterinário examina ou trata um animal, é criado um registro de atendimento indicando a data, o animal atendido e o veterinário responsável.
 
-As pessoas interessadas em adotar um animal devem se cadastrar como receptores, informando CPF, nome, data de nascimento e endereço. Quando ocorre uma adoção, o sistema registra o animal adotado, o CPF do receptor, a data da adoção e o veterinário responsável pela liberação do animal. O animal pode ser devolvido a instituição caso o receptor não o queira mais, permitindo assim que um animal possa ser adotado por vários receptores.
+Os veterinários são identificados por CPF, nome e área de atuação, e podem atender vários animais.
 
-Cada animal é capturado apenas uma vez e pode ser adotado uma única vez. Um receptor pode adotar vários animais, um capturador pode recolher vários animais, um veterinário pode ser responsável por vários animais e um voluntário pode auxiliar em várias atividades relacionadas a diferentes animais.
+A Pet Lares conta também com voluntários, responsáveis por auxiliar nas atividades internas, transporte, eventos e cuidados gerais. Os voluntários possuem matrícula, nome, sexo, data de nascimento e telefone. Um voluntário pode ajudar em várias instituições, e o sistema registra quantas horas ele auxiliou em cada instituição, permitindo controlar seu histórico de contribuição.
 
-<------------------------------------------------------------------------------------------------------>
+As pessoas interessadas em adotar um animal se cadastram como receptores, com CPF, nome, data de nascimento e endereço. Um receptor pode adotar vários animais, e um mesmo animal pode ser adotado por diferentes receptores ao longo do tempo caso seja devolvido. Cada adoção registra o animal adotado, o receptor e o veterinário responsável pela liberação do animal, além da data da adoção.
+    <------------------------------------------------------------------------------------------------------>
 
-Entidades:
-- Animal
-- Capturador
-- Captura
-- Receptor
-- Adoção
-- Veterinário
-- Voluntário
-- Pet Lares
+    Entidades:
+    - Animal
+    - Capturador
+    - Receptor
+    - Atendido
+    - Adoção
+    - Ajuda
+    - Veterinário
+    - Voluntário
+    - Instituição
