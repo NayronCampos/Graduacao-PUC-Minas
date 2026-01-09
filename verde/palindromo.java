@@ -1,5 +1,6 @@
 package verde;
 import java.util.Scanner;
+import java.io.File;
 
 
 public class palindromo {
@@ -7,14 +8,24 @@ public class palindromo {
         String palavra;
         boolean palin;
 
-        Scanner scan = new Scanner(System.in);
+        String caminhoarq = "pub.in";
+
+
+        File pub = new File(caminhoarq);
+        Scanner scan = new Scanner(pub);
+
+        while (scan.hasNextLine()){
+
         palavra = scan.nextLine();
         int tam = palavra.length();
 
 
         palin = palindromo_rec(palavra, tam, 0);
         System.out.println(palin);
+
+        scan.close();
     }
+}
     
 
 
