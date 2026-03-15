@@ -1,0 +1,30 @@
+; Guia_1502.txt
+; Nayron Campos 874422
+;
+; dado01 + dado02 - dado03 + dado04
+; Usando 16 bits (sinal + amplitude)
+
+LXI H,0200       ; HL <- endereco de dado01 // Carrega o endereço de dado01
+MOV A,M          ; A <- MEM [HL] // A = dado01
+INX H            ; HL <- HL+1 // Endereço de dado02
+ADD M            ; A <- A + MEM [HL] // A = dado01 + dado02
+
+LXI H,0204       ; HL <- endereco de dado03
+MOV B,M          ; B <- dado03
+CPI 00h          ; Complemento de 2 para a subtração
+MOV C,A          ; C <- A
+SUB M            ; A <- A - dado03 (A com complemento de 2 de B)
+MOV A,C          ; A = dado01 + dado02 - dado03
+
+LXI H,0206       ; HL <- endereco de dado04
+ADD M            ; A <- A + MEM [HL] // A = resultado + dado04
+
+STA 0208         ; Armazena resultado final em dado05
+HLT              ; Finaliza o programa
+
+; Área de dados
+dado01: 05h       ; dado01 = 5h (exemplo em hexadecimal)
+dado02: 03h       ; dado02 = 3h (exemplo em hexadecimal)
+dado03: 02h       ; dado03 = 2h (exemplo em hexadecimal)
+dado04: 04h       ; dado04 = 4h (exemplo em hexadecimal)
+dado05: 00h       ; dado05 (resultado) armazenado em 0208

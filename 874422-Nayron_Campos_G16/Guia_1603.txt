@@ -1,0 +1,45 @@
+//Nayron Campos Soares
+//Matricula: 874422 
+//Ex01
+
+JMP MAIN
+
+F_MOD:
+    MOV D, M        
+    INX H            
+    MOV E, M         
+    MOV A, D         
+    MVI B, 00        
+
+MOD_LOOP:
+    MOV A, D         
+    CMP E            
+    JC MOD_DONE      
+    SUB E            
+    MOV D, A         
+    INX B            
+    JMP MOD_LOOP     
+
+MOD_DONE:
+    STA 0052         
+    RET              
+
+MAIN:
+    LXI H, 0050      
+    MOV B, M         
+    INX H            
+    MOV C, M         
+
+    PUSH B           
+    PUSH C           
+
+    CALL F_MOD       
+
+    HLT              
+
+END:
+
+// Data section
+// dado01: 10h
+// dado02: 03h
+// dado03: 00h

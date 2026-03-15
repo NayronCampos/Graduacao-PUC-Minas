@@ -1,0 +1,36 @@
+; Guia_1503.txt
+; Nayron Campos 874422
+;
+; Calcular dado05 = dado01 - dado02 - dado03 + dado04
+
+; Área de código
+LXI H,0200       ; HL <- endereco de dado01 // Carrega o endereço de dado01
+MOV A,M          ; A <- MEM [HL] // A = dado01
+INX H            ; HL <- HL+1 // Endereço de dado02
+SUB M            ; A <- A - MEM [HL] // A = dado01 - dado02
+
+LXI H,0202       ; HL <- endereco de dado03
+MOV B,M          ; B <- dado03
+SUB M            ; A <- A - dado03 (A com complemento de 2 de B)
+
+LXI H,0203       ; HL <- endereco de dado04
+ADD M            ; A <- A + MEM [HL] // A = dado01 - dado02 - dado03 + dado04
+
+; Verifica se o resultado passou de 9 em BCD (A > 9)
+CPI 0Ah          ; Compara A com 9h (decimal 9)
+JC No_Adjust     ; Se A <= 9, pula o ajuste
+
+; Ajuste BCD: Se A > 9, soma 6 (ajuste de BCD)
+ADI 06h          ; A <- A + 06h (ajuste de BCD)
+
+No_Adjust:
+
+STA 0204         ; Armazena resultado final em dado05
+HLT              ; Finaliza o programa
+
+; Área de dados
+dado01: 02h       ; dado01 = 2h (exemplo em BCD)
+dado02: 03h       ; dado02 = 3h (exemplo em BCD)
+dado03: 01h       ; dado03 = 1h (exemplo em BCD)
+dado04: 04h       ; dado04 = 4h (exemplo em BCD)
+dado05: 00h       ; dado05 (resultado) armazenado em 0204

@@ -1,0 +1,29 @@
+; Guia_1504.txt
+; Nayron Campos 874422
+;
+; Calcular dado03 = 2 * (dado01 - 3 * dado02)
+
+; Área de código
+LXI H,0200       ; HL <- endereco de dado01 // Carrega o endereço de dado01
+MOV A,M          ; A <- MEM [HL] // A = dado01
+INX H            ; HL <- HL+1 // Endereço de dado02
+MOV B,M          ; B <- dado02
+
+; 3 * dado02
+MOV A,B          ; A = dado02
+ADD B            ; A = dado02 + dado02 (2 * dado02)
+ADD B            ; A = dado02 + dado02 + dado02 (3 * dado02)
+
+; dado01 - 3 * dado02
+SUB A            ; A = dado01 - (3 * dado02)
+
+; Agora multiplicar por 2: 2 * (dado01 - 3 * dado02)
+ADD A            ; A = A + A (dobro de A)
+
+STA 0202         ; Armazena resultado final em dado03
+HLT              ; Finaliza o programa
+
+; Área de dados
+dado01: 05h       ; dado01 = 5h (exemplo em hexadecimal)
+dado02: 03h       ; dado02 = 3h (exemplo em hexadecimal)
+dado03: 00h       ; dado03 (resultado) armazenado em 0202
