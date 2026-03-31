@@ -1,0 +1,181 @@
+Recuperação Arquitetura I 
+Aluno: Nayron Campos Soares
+Matrícula: 874422
+
+Questão 01: Dado o mapa de Veitch-Karnaugh:
+
+Mintermos: 1,3,4,5,7,A,B,D,F
+Maxtermos: 0,2,6,8,9,C,E
+
+a) Expressão canônica para SoP(a,b,c,d) = 
+
+(a'.b'.c'.d) + (a'.b'.c.d) + (a'.b.c'.d') + (a'.b.c'.d) + (a'.b.c.d) + (a.b'.c.d') + (a.b'.c.d) + (a.b.c'.d) + (a.b.c.d)
+
+
+b) Expressão canônica para PoS(A,B,C,D) = 
+
+(A+B+C+D) . (A+B+C'+D) . (A+B'+C'+D) . (A'+B+C+D) . (A'+B+C+D') . (A'+B'+C+D) . (A'+B'+C'+D)
+
+
+c) simplificação de mintermos por mapa de Veitch-Karnaugh
+
+Gp01 (1,3,5,7) = a'.d
+Gp02 (3,7,11,15) = c'.d
+Gp03 (4,5) =  a'.b.c'
+Gp04 (5,7,13,15) = b.d
+Gp05 (10,11) = a.b'.c
+
+Simplificado: (a'.d) + (c'.d) + (a'.c'.b) + (b.c'.d) + (a.b'.c) 
+
+
+d) simplificação de MAXTERMOS por mapa de Veitch-Karnaugh
+
+Gp01 (0,2) = A+B+D
+Gp02 (2,6) = A+C'+D
+Gp03 (6,14) = B'+C'+D
+Gp04 (12,14) = A'+B'+D
+Gp05 (8,9) = A'+B+C
+Gp06 (0,8) = B+C+D
+
+Simplificado: (A+B+D) . (A+C'+D) . (B'+C'+D). (A'+B'+D). (A'+B+C) . (B+C+D)
+
+
+e.) expressão SoP equivalente com portas NAND de 2 entradas (usar dupla negação)
+
+Expressão original:
+f = (a'·d) + (c'·d) + (a'·c'·b) + (b·c'·d) + (a·b'·c)
+
+Forma com dupla negação:
+[((a'·d) + (c'·d) + (a'·c'·b) + (b·c'·d) + (a·b'·c))']' = Dupla negação
+
+Distributiva da negação interna:
+[(a'·d)' · (c'·d)' · (a'·c'·b)' · (b·c'·d)' · (a·b'·c)']' = Distributiva da negação interna
+
+
+f .) expressão PoS equivalente com portas NOR de 2 entradas (usar dupla negação)
+
+Expressão original:
+f = (A + B + D) · (A + C' + D) · (B' + C' + D) · (A' + B' + D) · (A' + B + C) · (B + C + D)
+
+Forma com dupla negação:
+[((A + B + D) · (A + C' + D) · (B' + C' + D) · (A' + B' + D) · (A' + B + C) · (B + C + D))']' = Dupla negação
+
+Distributiva da negação interna:
+[(A + B + D)' + (A + C' + D)' + (B' + C' + D)' + (A' + B' + D)' + (A' + B + C)' + (B + C + D)']' = Distributiva da negação interna
+
+
+Questão 02:
+
+a.) sa = mux (not(b), b, a);
+
+Tabela verdade
+b	a	s
+0	0	1
+0	1	0
+1	0	0
+1	1	1
+
+
+b.) sb = nand(nand(nand(a,a),b), nand(c,nand(b,b))));
+
+Tabela verdade
+a	b	c	s
+0	0	0	0
+0	0	1	1
+0	1	0	1
+0	1	1	1
+1	0	0	0
+1	0	1	1
+1	1	0	0
+1	1	1	0
+
+
+
+
+Questão 03:
+
+a.) (~a&d) | (a&~b)
+
+Tabela Verdade
+b	a	d	s
+0	0	0	0
+0	0	1	1
+0	1	0	1
+0	1	1	1
+1	0	0	0
+1	0	1	1
+1	1	0	0
+1	1	1	0
+
+
+b.) (a'.c'.d)+(a.b')+(b'd)
+
+Tabela Verdade
+a	b	c	d	s
+0	0	0	0	0
+0	0	0	1	1
+0	0	1	0	0
+0	0	1	1	1
+0	1	0	0	0
+0	1	0	1	1
+0	1	1	0	0
+0	1	1	1	0
+1	0	0	0	1
+1	0	0	1	1
+1	0	1	0	1
+1	0	1	1	1
+1	1	0	0	0
+1	1	0	1	0
+1	1	1	0	0
+1	1	1	1	0
+
+
+Questão 04:
+
+A)
+Tabela Verdade
+a	b	c	s
+0	0	0	0
+0	0	1	0
+0	1	0	0
+0	1	1	0
+1	0	0	1
+1	0	1	1
+1	1	0	1
+1	1	1	0
+
+
+B)Obter a expressão equivalente usando apenas portas NAND
+
+Expressão original:
+(a' + b.c)'
+
+a' = a NAND a
+b.c = (b NAND c) NAND (b NAND c)
+a' + b.c = (a NAND a) NAND ((b NAND c) NAND (b NAND c))
+(a' + b.c)' = ((a NAND a) NAND ((b NAND c) NAND (b NAND c))) NAND ((a NAND a) NAND ((b NAND c) NAND (b NAND c)))
+
+
+Questão 05:
+
+Calcular:
+a.) o valor binário igual a C2,8(53(10))
+ - Não soube.. :(
+
+
+b.) a distância Hamming entre os valores C6(16) e 3231(4)
+
+convertendo:
+
+C6(16)
+1100 0110 = 11000110
+
+3231(4)
+11 10 11 01 = 11101101
+
+completando com 0 e distancia Hamming:
+
+11000110
+11101101
+  1 1 11 = 4 de distância Hamming
+

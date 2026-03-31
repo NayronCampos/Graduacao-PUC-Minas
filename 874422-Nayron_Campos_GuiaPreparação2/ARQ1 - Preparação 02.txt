@@ -1,0 +1,165 @@
+//Nayron Campos Soares
+//Matrícula: 874422
+
+Questões:
+
+01.) [Texto] Montar as expressões por mintermos dos flip-flops
+
+//OBS: Montei a tabela no caderno para fazer as expressões. Os mapas são representados nas prox questões.
+
+a.) SoP (Da) =  (a'.b'.c) + (a.b'.c') + (a.b'.c) + (a.b.c)
+b.) SoP (Ja) =  (a'.b'.c)
+c.) SoP (Ka) =  (a.b.c)
+d.) SoP (Ta) =  (a'.b'.c) + (a.b.c) 
+
+a.) SoP (Db) =  (a'.b.c') + (a.b'.c) + (a.b.c') + (a.b.c)
+b.) SoP (Jb) =  (a.b'.c)
+c.) SoP (Kb) =  (a'.b.c)
+d.) SoP (Tb) =  (a'.b.c) + (a.b'.c)
+
+
+
+02.) [Texto] Montar as expressões compactas por MAXTERMOS dos flip-flops
+
+a.) PoS (Da) =  (A+B+C) . (A+B'+C) . (A+B'+C') . (A'+B'+C')
+b.) PoS (Ja) =  (A+B+C) . (A+B'+C) . (A+B'+C') . (A'+B+C) . (A'+B+C') . (A'+B'+C) . (A'+B'+C')
+c.) PoS (Ka) =  (A+B+C) . (A.B.C') . (A+B'+C) . (A+B'+C') . (A'+B+C) . (A'+B+C') . (A'+B'+C)
+d.) PoS (Ta) =  (A+B+C) . (A+B'+C) . (A+B'+C') . (A'+B+C) (A'+B+C') . (A'+B'+C)
+
+a.) PoS (Db) =  (A+B+C) . (A.B.C') . (A+B'+C') . (A'+B+C) 
+b.) PoS (Jb) =  (A+B+C) . (A.B.C') . (A+B'+C) . (A+B'+C') . (A'+B+C) . (A'+B'+C) . (A'.B'.C')
+c.) PoS (Kb) =  (A+B+C) . (A.B.C') . (A+B'+C) . (A'+B+C) . (A'+B+C') (A'+B'+C) . (A'.B'.C') 
+d.) PoS (Tb) =  (A+B+C) . (A.B.C') . (A+B'+C) . (A'+B+C) . (A'+B'+C) . (A'.B'.C')
+
+
+03.) [Texto] Montar os mapas de Veitch-Karnaugh correspondentes e simplificar suas expressões SoP:
+
+Mapas A:
+
+DA                     
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   | 1 |
+|------|---|---|
+| 01   |   |   |
+|------|---|---|
+| 11   | 1 |   |
+|------|---|---|
+| 10   | 1 | 1 |
+|______|___|___|
+
+SoP simplificada: (b.c) + (a.c) + (a.b)
+
+TA
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   | 1 |
+|------|---|---|
+| 01   |   |   |
+|------|---|---|
+| 11   |   | 1 |
+|------|---|---|
+| 10   |   |   |
+|______|___|___|
+
+SoP simplificada: Não tem como
+
+JA             
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   | 1 |
+|------|---|---|
+| 01   |   |   |
+|------|---|---|
+| 11   |   |   |
+|------|---|---|
+| 10   |   |   |
+|______|___|___|
+
+SoP simplificada: Apenas um termo 
+
+//Considerei os que variam (x), como 0.. duvida feita em sala de aula no final do horário
+
+KA    
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   |   |
+|------|---|---|
+| 01   |   |   |
+|------|---|---|
+| 11   |   | 1 |
+|------|---|---|
+| 10   |   |   |
+|______|___|___|
+
+SoP simplificada: Apenas um termo
+
+Mapas B:
+
+DB                     
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   |   |
+|------|---|---|
+| 01   | 1 |   |
+|------|---|---|
+| 11   | 1 | 1 |
+|------|---|---|
+| 10   |   | 1 |
+|______|___|___|
+
+SoP simplificada: (b.c) + (a.b) + (a.c) 
+
+TB  
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   |   |
+|------|---|---|
+| 01   |   | 1 |
+|------|---|---|
+| 11   |   |   |
+|------|---|---|
+| 10   |   | 1 |
+|______|___|___|
+
+SoP simplificada: Não tem como
+
+JB                  
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   |   |
+|------|---|---|
+| 01   |   |   |
+|------|---|---|
+| 11   |   |   |
+|------|---|---|
+| 10   |   | 1 |
+|______|___|___|
+
+SoP simplificada: Apenas um termo
+
+
+//Considerei os que variam (x), como 0.. duvida feita em sala de aula no final do horário
+
+KB         
+ ______________ 
+| ab\c | 0 | 1 |
+|------|---|---|
+| 00   |   |   |
+|------|---|---|
+| 01   |   | 1 |
+|------|---|---|
+| 11   |   |   |
+|------|---|---|
+| 10   |   |   |
+|______|___|___|
+
+SoP simplificada: Apenas um termo
+

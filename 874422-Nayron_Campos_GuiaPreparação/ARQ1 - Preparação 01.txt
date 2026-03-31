@@ -1,0 +1,154 @@
+Pontifícia Universidade Católica de Minas Gerais Instituto de Ciências Exatas e Informática – ICEI Arquitetura de Computadores I
+
+ARQ1 - Preparação 01
+Tema: Sistemas de Numeração e circuitos combinatórios
+
+
+// Nayron Campos Soares
+// Matrícula: 874422
+Exercícios:
+
+01.)	Dada tabela-verdade e o mapa de Veitch-Karnaugh abaixo:
+
+ _________________________________________________
+| m |    m        |        M         | f(a,b,c,d) |
+|---|-------------|------------------|------------|
+| 0 | a'b'c'd'    | A+B+C+D'         |     0      |
+| 1 | a'b'c'd     | A+B+C+D          |     0      |
+| 2 | a'b'c d'    | A+B+C'+D'        |     1      |
+| 3 | a'b'c d     | A+B+C'+D         |     0      |
+| 4 | a'b c'd'    | A+B'+C+D'        |     0      |
+| 5 | a'b c'd     | A+B'+C+D         |     0      |
+| 6 | a'b c d'    | A+B'+C'+D'       |     1      |
+| 7 | a'b c d     | A+B'+C'+D        |     1      |
+| 8 | a b'c'd'    | A'+B+C+D'        |     0      |
+| 9 | a b'c'd     | A'+B+C+D         |     0      |
+| A | a b'c d'    | A'+B+C'+D'       |     1      |
+| B | a b'c d     | A'+B+C'+D        |     0      |
+| C | a b c'd'    | A'+B'+C+D'       |     0      |
+| D | a b c'd     | A'+B'+C+D        |     0      |
+| E | a b c d'    | A'+B'+C'+D'      |     1      |
+| F | a b c d     | A'+B'+C'+D       |     1      |
+|___|_____________|__________________|____________|
+
+
+         
+Montando o mapa de Veitch-Karnaugh:
+
+ab\cd  00  01  11  10
+     +---+---+---+---+
+   00| 0 | 0 | 0 | 1 |
+     +---+---+---+---+
+   01| 0 | 0 | 1 | 1 |
+     +---+---+---+---+
+   11| 1 | 0 | 1 | 1 |
+     +---+---+---+---+
+   10| 0 | 0 | 0 | 0 |
+     +---+---+---+---+
+
+
+Passando para a tabela e marcando os mintermos e maxtermos:
+
++------------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+|            | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F |
++------------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| mintermos  |   |   | x |   |   |   | x | x |   |   |   |   | x |   | x | x |
++------------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+| MAXTERMOS  | x | x |   | x | x | x |   |   | x | x | x | x |   | x |   |   |
++------------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+
+
+Determinar e implementar os circuitos equivalentes em Verilog e no Logisim:
+
+
+a.)Expressão canônica para SoP(a,b,c,d)
+	
+∑ m ( 2, 6, 7, C, E, F ) = (a'b'c d') + (a'b c d') + (a'b c d) + (a b c'd') + (a b c d') + (a b c d)
+
+
+b.)Expressão canônica para PoS(A,B,C,D)
+ 
+π M (0, 1, 3, 4, 5, 8, 9, A, B, D) = (A+B+C+D) & (A+B+C+D') & (A+B+C'+D') & (A+B'+C+D) & (A+B'+C+D') & (A'+B+C+D) & (A'+B+C+D') & (' A'+B+C'+D) & (A'+B+C'+D') & (A'+B'+C+D')
+
+
+c.)Simplificação de mintermos pelo mapa de Veitch-Karnaugh
+
+GP01 (6,7,14,15) = (b.c)
+GP02 (2,6) = (a.b.d')
+GP03 (12,14) = (a'.c.d')
+
+∑ m ( 2, 6, 7, C, E, F ) = (b . c) + (a . b . d’) + (a’ . c . d’)
+
+
+d.)Simplificação de MAXTERMOS pelo mapa de Veitch-Karnaugh
+
+GP01 (0,1,4,5) = (A + C)
+GP02 (8,9,10,11) = (A’ + B)
+GP03 (1,5,9,13) = (C + D’)
+GP04 (1,3,9,11) = (B + D’)
+	
+π M (0, 1, 3, 4, 5, 8, 9, A, B, D) = (A + C) . (A’ + B) . (C + D’) . (B + D’)
+
+
+e.)Expressão SoP equivalente com portas NAND (usar dupla negação) 
+
+∑ m ( 2, 6, 7, C, E, F ) = (b . c) + (a . b . d’) + (a’ . c . d’)
+
+[((b.c) + (a.b.d’) + (a’.c.d’))’]’ = Dupla negação
+[(b.c)' . (a.b.d')' . (a'.c.d')']' = Distributiva da negação interna
+ 
+
+f .) expressão PoS equivalente com portas NOR (usar dupla negação)
+
+π M (0, 1, 3, 4, 5, 8, 9, A, B, D) = (A + C) . (A’ + B) . (C + D’) . (B + D’)
+
+[((A + C) . (A’ + B) . (C + D’) . (B + D’))']' = Dupla negação
+[(A + C)' + (A’ + B)' + (C + D’)' + (B + D’)']' = Distributiva da negação interna
+
+
+02.) Implementar e testar a função lógica descrita em Verilog e no Logisim para obter
+a tabela-verdade:
+
+Disponível os arquivos como:
+Guia_ex2.v
+Ex_02.pnj
+Ex02.circ
+
+03.) Implementar no Verilog e no Logisim a expressão abaixo para obter
+a tabela verdade:
+DICA: Usar MUX(a,b,chave). Se chave=0, (a); senão, (b).
+MUX ( MUX(a,b,c), MUX(NOT(b),NOT(a),c), NOT(c) )
+
+Disponível os arquivos como:
+Guia_ex3.v
+Ex_03.pnj
+Ex03.circ
+
+
+04.) Dado o valor negativo, já em complemento de 2, 2130(4) , com 01 byte de representação,
+encontrar a soma binária desse valor com 65 (8) . Completar com zeros, se necessário.
+
+2130(4) = 
+2  1  3  0
+10 01 11 00 = 10011100
+
+65(8) = 
+0011 0101 = 00110101
+
+Soma:
+
+ 10011100
++00110101
+ 11010001
+
+Resultado: 11010001
+
+
+05.) Implementar no Verilog e no Logisim a expressão abaixo para obter
+a expressão por mintermos equivalente:
+NAND (XNOR (a, b), NOR (NOT(a),NOT (b)))
+
+Disponível os arquivos como:
+Guia_ex5.v
+Ex_05.pnj
+Ex05.circ
