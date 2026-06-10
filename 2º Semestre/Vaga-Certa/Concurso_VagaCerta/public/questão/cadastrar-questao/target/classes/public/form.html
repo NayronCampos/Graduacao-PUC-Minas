@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Questão</title>
+    <link rel="stylesheet" href="/assets/css/form.css">
+</head>
+<body>
+    <form action="/questao/cadastrar" method="post">
+        <h2>Cadastro de Questão</h2>
+
+        <label for="concurso_id">ID do Concurso:</label>
+        <input type="number" id="concurso_id" name="concurso_id" placeholder="ID do Concurso" required>
+
+        <label for="enunciado">Enunciado:</label>
+        <textarea id="enunciado" name="enunciado" placeholder="Enunciado" rows="3" required></textarea>
+
+        <label for="a">Alternativa A:</label>
+        <input type="text" id="a" name="a" placeholder="Alternativa A" required>
+
+        <label for="b">Alternativa B:</label>
+        <input type="text" id="b" name="b" placeholder="Alternativa B" required>
+
+        <label for="c">Alternativa C:</label>
+        <input type="text" id="c" name="c" placeholder="Alternativa C" required>
+
+        <label for="d">Alternativa D:</label>
+        <input type="text" id="d" name="d" placeholder="Alternativa D" required>
+
+        <label for="resposta">Resposta Correta (A, B, C ou D):</label>
+        <input type="text" id="resposta" name="resposta" placeholder="Resposta Correta" required>
+
+        <button type="submit">Cadastrar</button>
+
+        <div class="feedback"></div>
+        <a href="/questoes">Ver Questões</a>
+    </form>
+</body>
+</html>

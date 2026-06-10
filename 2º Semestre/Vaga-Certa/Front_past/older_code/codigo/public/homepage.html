@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="./assets/css/homepage.css">
+    <!--<link rel="stylesheet" href="./assets/css/style.css">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol width="24" height="24" id="icon-user" viewBox="0 0 24 24">
+            <title>profile</title>
+            <g fill="currentColor">
+                <path d="M15 14.5h-6c-3.58 0-6.5 2.92-6.5 6.5v1c0 0.22 0.14 0.41 0.35 0.48 0.13 0.04 3.27 1.02 9.15 1.02s9.02-0.98 9.15-1.02c0.21-0.07 0.35-0.26 0.35-0.48v-1c0-3.58-2.92-6.5-6.5-6.5z"></path>
+                <path d="M12 12.5c3.1 0 5.5-3.49 5.5-6.5 0-3.03-2.47-5.5-5.5-5.5s-5.5 2.47-5.5 5.5c0 3.01 2.4 6.5 5.5 6.5z"></path>
+            </g>
+        </symbol>
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-config">
+            <title>settings-2</title>
+            <g fill="currentColor">
+                <path d="M11.08 9.67l-3.08-3.08v-3.13l-4.13-2.75-3.16 3.16 2.75 4.13h3.13l3.08 3.08 1.41-1.41z"></path>
+                <path d="M19.64 15.39a8.45 8.45 0 0 1-4.86 0.43l-1.49 1.71 4.59 4.59a2.99 2.99 0 0 0 2.12 0.88c0.77 0 1.54-0.29 2.12-0.88 0.57-0.57 0.88-1.32 0.88-2.12s-0.31-1.55-0.88-2.12l-2.49-2.49z"></path>
+                <path d="M22.95 4.39l-0.07-0.17-3 3a1 1 0 0 1-1.41 0l-1.78-1.78a1 1 0 0 1 0-1.42l2.95-2.95-0.03-0.02a6.45 6.45 0 0 0-2.76-0.55c-2.81 0.07-5.33 2.02-6.1 4.73a6.4 6.4 0 0 0 0.17 4.04l-8.82 7.93a3.3 3.3 0 0 0-1.1 2.39 3.3 3.3 0 0 0 0.97 2.44 3.34 3.34 0 0 0 2.36 0.97c0.19 0 0.38-0.01 0.71-0.11a4.43 4.43 0 0 0 2.06-1.34l7.47-8.52a6.49 6.49 0 0 0 4.07 0.26c2.52-0.64 4.45-2.81 4.8-5.38a6.49 6.49 0 0 0-0.49-3.52z"></path>
+            </g>
+        </symbol>
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-notification">
+            <title>alarm</title>
+            <g fill="currentColor">
+                <path d="M12 23.5a3 3 0 0 0 2.96-2.5h-5.92a3 3 0 0 0 2.96 2.5z" fill="currentColor"></path>
+                <path d="M21.91 19.21c-0.02-0.03-2.41-3.41-2.41-6.21v-5a7.5 7.5 0 1 0-15 0v5c0 2.8-2.38 6.18-2.41 6.21a0.5 0.5 0 0 0 0.41 0.79h19a0.5 0.5 0 0 0 0.41-0.79z" fill="#currentColor"></path>
+            </g>
+        </symbol >
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-concurso">
+            <title>graduation-cap</title>
+            <g fill="currentColor">
+                <title>graduation-cap</title>
+                <g fill="currentColor" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M12.58 3.14l8.42 4.34a1.13 1.13 0 0 1 0 2l-8.42 4.34a1.33 1.33 0 0 1-1.22 0l-8.42-4.34a1.13 1.13 0 0 1 0-2l8.42-4.34a1.33 1.33 0 0 1 1.22 0z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+
+                    </path>
+                    <path d="M21.61 8.48a14.87 14.87 0 0 0 0 6.69" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M5.65 14.3v4.32c0 1.47 2.83 2.66 6.32 2.66s6.32-1.19 6.32-2.66v-4.32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+
+                    </path>
+                </g>
+            </g>
+        </symbol>
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-simulados">
+            <title>attachment-2</title>
+            <g fill="currentColor" stroke-linejoin="round" stroke-linecap="round">
+                <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M21.74 9.73l-8.04 9.57c-2.31 2.76-6.4 3.12-9.16 0.8s-3.12-6.4-0.8-9.15l7.07-8.43c1.6-1.92 4.42-2.16 6.34-0.56s2.16 4.42 0.56 6.34l-6.43 7.67c-0.9 1.07-2.45 1.21-3.52 0.31s-1.21-2.45-0.31-3.52l5.46-6.52" stroke-linejoin="round">
+
+                </path>
+            </g>
+        </symbol>
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-cronograma">
+            <title>clipboard-check</title>
+            <g fill="currentColor">
+                <path d="M8.31 3.66h-1.33a2.66 2.66 0 0 0-2.66 2.66v12.63a2.66 2.66 0 0 0 2.66 2.66h9.98a2.66 2.66 0 0 0 2.66-2.66v-12.63a2.66 2.66 0 0 0-2.66-2.66h-1.33" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+
+                </path>
+
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.64 1.66h4.66q1.33 0 1.33 1.33v1.33q0 1.33-1.33 1.33h-4.66q-1.33 0-1.33-1.33v-1.33q0-1.33 1.33-1.33z"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.31 13.63l2.33 2.66 4.99-6.65">
+
+                </path>
+            </g>
+        </symbol>
+
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-lib">
+            <title>book-open</title>
+            <g fill="currentColor" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M11.97 20.02c0.23 0 0.45-0.06 0.66-0.18a8.35 8.35 0 0 1 4.17-1.12 8.23 8.23 0 0 1 3.02 0.57c0.86 0.34 1.79-0.32 1.79-1.24v-12.08a1.32 1.32 0 0 0-0.65-1.15 8.23 8.23 0 0 0-4.17-1.14c-2.51 0-4.25 1.16-4.82 1.57" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+
+                </path>
+                <path d="M11.97 20.02a1.32 1.32 0 0 1-0.66-0.18 8.35 8.35 0 0 0-4.17-1.12 8.23 8.23 0 0 0-3.02 0.57c-0.86 0.34-1.79-0.32-1.79-1.24v-12.09c0-0.47 0.24-0.9 0.65-1.13a8.23 8.23 0 0 1 4.17-1.15c2.51 0 4.25 1.16 4.82 1.57s0 14.77 0 14.77z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+
+                </path>
+            </g>
+        </symbol>
+
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-cadlivro">
+            <title>book-bookmark</title>
+            <g fill="currentColor" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M3.66 18.62v-12.97a2.66 2.66 0 0 1 2.66-2.66h13.96v13.3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+
+                </path>
+                <path d="M14.63 18.62h-5.32v4.66a0.67 0.67 0 0 0 1.14 0.47l1.52-1.53 1.52 1.53a0.67 0.67 0 0 0 1.14-0.48v-4.65z" fill="currentColor" data-stroke="none" stroke="none">
+
+                </path>
+                <path d="M6.98 20.95h-1a2.33 2.33 0 1 1 0-4.66h14.3c-0.85 1.12-0.98 3.39 0 4.66h-3.32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+
+                </path>
+                <path fill="currentColor" data-stroke="none" d="M7.65 11.97a1 1 0 1 0 0 2 1 1 0 1 0 0-2z" stroke="none">
+
+                </path>
+                <path fill="currentColor" data-stroke="none" d="M7.65 5.32a1 1 0 1 0 0 2 1 1 0 1 0 0-2z" stroke="none">
+
+                </path>
+                <path fill="currentColor" data-stroke="none" d="M7.65 8.64a1 1 0 1 0 0 2 1 1 0 1 0 0-2z" stroke="none">
+
+                </path>
+            </g>
+        </symbol>
+        <symbol width="24" height="24" viewBox="0 0 24 24" id="icon-cadconcurso">
+            <path d="M10.696 1.565C9.508 1.207 8.152 2.126 7.876 3.478L6.000 3.478C4.570 3.478 3.478 4.570 3.478 6.000L3.478 19.478C3.478 20.908 4.570 22.000 6.000 22.000L12.384 22.000C11.860 21.044 11.388 20.083 11.000 19.130L6.000 19.130C5.269 19.130 4.696 18.557 4.696 17.826L4.696 6.000C4.696 5.269 5.269 4.696 6.000 4.696L8.384 4.696C8.793 5.348 9.457 5.826 10.217 5.826L13.783 5.826C14.543 5.826 15.207 5.348 15.616 4.696L18.000 4.696C18.731 4.696 19.304 5.269 19.304 6.000L19.304 11.087C19.652 11.146 19.978 11.261 20.261 11.391L20.261 6.000C20.261 4.570 19.169 3.478 17.739 3.478L15.849 3.478C15.574 2.126 14.218 1.207 13.030 1.565L10.696 1.565 z M 10.696 2.826L13.030 2.826C13.576 2.826 14.000 3.250 14.000 3.826C14.000 4.402 13.576 4.826 13.030 4.826L10.696 4.826C10.150 4.826 9.726 4.402 9.726 3.826C9.726 3.250 10.150 2.826 10.696 2.826 z M 17.000 12C14.239 12 12 14.239 12 17C12 19.761 14.239 22.000 17.000 22.000C19.761 22.000 22.000 19.761 22.000 17C22.000 14.239 19.761 12 17.000 12 z M 17.000 13.565C17.348 13.565 17.609 13.826 17.609 14.174L17.609 16.000L19.435 16.000C19.783 16.000 20.043 16.261 20.043 16.609C20.043 16.957 19.783 17.217 19.435 17.217L17.609 17.217L17.609 19.043C17.609 19.391 17.348 19.652 17.000 19.652C16.652 19.652 16.391 19.391 16.391 19.043L16.391 17.217L14.565 17.217C14.217 17.217 13.957 16.957 13.957 16.609C13.957 16.261 14.217 16.000 14.565 16.000L16.391 16.000L16.391 14.174C16.391 13.826 16.652 13.565 17.000 13.565 z" />
+        </symbol>
+
+    </svg>
+      
+    <header>
+        <div class="px-3 py-1 text-bg-dark-steel-blue border-bottom">
+          <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+              <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <img class="bi me-2" width="85" height="70" src="./assets/images/logo_vaga_certa.svg" alt="">
+              </a>
+    
+              <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="#" class="nav-link text-secondary">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#icon-user"></use></svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-secondary">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#icon-config"></use></svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-secondary">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#icon-notification"></use></svg>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+        <!----
+        <a href="./homepage.html"><img src="./assets/images/logo.png" class="logo"></a>
+        <div class="icones">
+            <a href="./suaconta.html"><img src="./assets/images/suaconta.png" class="conta"></a>
+            <a href="./config.html"><img src="./assets/images/config.png" class="config"></a>
+            <a href="./notificacao.html"><img src="./assets/images/notificacoes.png" class="notificacao"></a>
+        </div>
+        </div>
+    -->
+
+<main>
+    <div class="container d-flex flex-column align-items-center justify-content-center" style="height: 70vh;">
+        <!-- Primeira linha de botões -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+            <button class="btn button-dark-steel-blue btn-custom">
+                <svg class="button-icon"><use xlink:href="#icon-concurso"></use></svg> 
+                <span class="button-text">CONCURSOS</span>
+            </button>
+            <a href="simulados.html">
+                <button class="btn button-dark-steel-blue btn-custom">
+                    <svg class="button-icon"><use xlink:href="#icon-simulados"></use></svg>
+                    <span class="button-text">SIMULADOS</span> 
+                </button>
+            </a>
+            <a href="cronograma.html">
+                <button class="btn button-dark-steel-blue btn-custom">
+                    <svg class="button-icon"><use xlink:href="#icon-cronograma"></use></svg>
+                    <span class="button-text">CRONOGRAMA</span>
+                </button>
+            </a>
+            <a href="exiLivros.html">
+                <button class="btn button-dark-steel-blue btn-custom">
+                    <svg class="button-icon"><use xlink:href="#icon-lib"></use></svg>
+                    <span class="button-text">BIBLIOTECA</span>
+                </button>
+            </a>
+        </div>
+
+        <!-- Segunda linha de botões -->
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="biblioteca.html">
+                <button class="btn button-orange btn-custom">
+                    <svg class="button-icon"><use xlink:href="#icon-cadlivro"></use></svg>
+                    <span class="button-text">CADASTRO DE LIVROS</span>
+                </button>
+            </a>
+            <a href="cadastrodeconcurso.html">
+                <button class="btn button-orange btn-custom">
+                    <svg class="button-icon" fill="currentColor" width="24" height="24"><use xlink:href="#icon-cadconcurso"></use></svg>
+                    <span class="button-text">CADASTRO DE CONCURSOS</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    </main>
+<!----
+    <footer>
+        <p>&copy; 2024 VagaCerta. Todos os direitos reservados.</p>
+        <p>Contato: vagacerta@gmail.com</p>
+    </footer>
+-->
+</body>
+
+<script src="./assets/js/darktheme.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const icons = document.querySelectorAll("svg.bi");
+
+    icons.forEach(icon => {
+        icon.classList.add("icon-hover");
+    });
+});
+</script>
+</html>

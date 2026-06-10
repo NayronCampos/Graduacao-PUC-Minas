@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmar Exclusão</title>
+  <link rel="stylesheet" href="/assets/css/form.css">
+</head>
+<body>
+  <form action="/questao/excluir/{{id}}" method="post">
+    <h2>Deseja realmente excluir esta questão?</h2>
+    <p><strong>ID:</strong> {{id}}</p>
+    <p><strong>Enunciado:</strong> {{enunciado}}</p>
+    <p><strong>Alternativas:</strong> {{alternativas}}</p>
+    <p><strong>Resposta:</strong> {{resposta}}</p>
+
+    <button type="submit">Confirmar Exclusão</button>
+    <a href="/questoes">Cancelar</a>
+  </form>
+</body>
+</html>
