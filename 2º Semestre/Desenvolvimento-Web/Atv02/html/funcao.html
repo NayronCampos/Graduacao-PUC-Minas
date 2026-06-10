@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Função</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <section class="secao">
+            <div class="entrada">
+                <input type="number" id="num1_1" class="numero" placeholder="primeiro número">
+                <input type="number" id="num2_1" class="numero" placeholder="segundo número">
+                <button onclick="chama_funcao()">Somar</button>
+            </div>
+            <article id="resp_1" class="painel"></article>
+        </section>
+    </div>
+
+
+    <div class="container">
+        <section class="secao">
+            <div class="entrada">
+                <input type="number" id="num1_2" class="numero" placeholder="primeiro número">
+                <input type="number" id="num2_2" class="numero" placeholder="segundo número">
+                <button onclick="somar2(
+                    parseInt(document.getElementById('num1_2').value), 
+                    parseInt(document.getElementById('num2_2').value))">Somar</button>
+            </div>
+            <article id="resp_2" class="painel"></article>
+        </section>
+    </div>
+
+    <script src="../javaScript/java.js"></script>
+
+</body>
+
+</html>
