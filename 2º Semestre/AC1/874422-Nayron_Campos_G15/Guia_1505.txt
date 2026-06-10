@@ -1,0 +1,27 @@
+; Guia_1505.txt
+; Nayron Campos 874422
+;
+; Calcular dado03 = dado01 * 8 + dado02 / 2
+
+; Área de código
+LXI H,0200       ; HL <- endereco de dado01 // Carrega o endereço de dado01
+MOV A,M          ; A <- MEM [HL] // A = dado01
+RAL              ; A = A << 1 (multiplica por 2)
+RAL              ; A = A << 1 (multiplica por 4)
+RAL              ; A = A << 1 (multiplica por 8) // A = dado01 * 8
+
+LXI H,0201       ; HL <- endereco de dado02 // Carrega o endereço de dado02
+MOV B,M          ; B <- dado02
+
+; Divisão por 2
+RRA              ; A = A >> 1 (divide por 2) // A = dado02 / 2
+
+ADD B            ; A = A + dado02 / 2 (somando a multiplicação e a divisão)
+
+STA 0203         ; Armazena o resultado final em dado03
+HLT              ; Finaliza o programa
+
+; Área de dados
+dado01: 08h       ; dado01 = 8h (exemplo em hexadecimal)
+dado02: 04h       ; dado02 = 4h (exemplo em hexadecimal)
+dado03: 00h       ; dado03 (resultado) armazenado em 0203

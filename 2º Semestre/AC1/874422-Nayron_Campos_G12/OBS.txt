@@ -1,0 +1,4 @@
+OBS:
+
+Não sei muito bem se era assim para fazer.
+Mas procurei implementar os endereços como forma de escolha, ou seja, 2 endereços, vc deixa o enable ativado, ele vai para um, desativa vai para outro..

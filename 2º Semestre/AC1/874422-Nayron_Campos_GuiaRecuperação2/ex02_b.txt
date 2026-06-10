@@ -1,0 +1,27 @@
+//Nayron Campos Soares
+//Matrícula: 874422
+
+module sop_f (
+    input a, b, c,
+    output f
+);
+    assign f = (~a & ~c) | (a & ~b);
+endmodule
+module test_sop_f;
+    reg a, b, c;
+    wire f;
+
+    sop_f uut (.a(a), .b(b), .c(c), .f(f));
+
+    initial begin
+        $display("a b c | f");
+        $monitor("%b %b %b | %b", a, b, c, f);
+        
+        for (integer i = 0; i < 8; i = i + 1) begin
+            {a, b, c} = i;
+            #10;
+        end
+
+        $finish;
+    end
+endmodule

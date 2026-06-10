@@ -1,0 +1,261 @@
+Matrícula: 874422
+Aluno: Nayron Campos Soares
+
+Atividades
+
+
+01a.) manualmente
+a.) C1,6 (1011(2)) = 110100(2)
+Completando os 6 bits:
+001011, ivertendo:
+110100
+
+b.) C1,8 (1100(2)) = 11110011(2)
+Completando com os 8 bits:
+00001100, invertendo:
+11110011
+
+c.) C2,6 (100011(2)) = 011101(2)
+Já possui 6 bits:
+100011, invertendo:
+011100, somando 1:
+     1
+011101
+
+d.) C2,7 (101001(2)) = 1010111(2)
+Completando com 7 bits:
+0101001, invertendo:
+1010110, somando 1:
+      1
+1010111
+
+e.) C2,8 (111010(2)) = (2)
+Completando com 8 bits:
+00111010, invertendo:
+11000101, somando 1:
+       1
+11000110
+
+01b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex01-874422_Nayron.v
+
+
+02a.) manualmente
+a.) C1,6 (123(4)) = 100100(2)
+convertendo para base 2 direto:
+1   2   3
+01  10  11 = 011011
+invertendo:  100100
+
+b.) C1,8 (C4(16)) = 00111011(2)
+convertendo para base 2:
+C=12, em binário: 1100
+4 em binário:100 = 0100
+11000100, invertendo:
+00111011
+
+c.) C2,6 (312(4)) = 001010(2)
+Convertendo para base 2 direto:
+ 3   1   2
+ 11  01  10 = 110110
+110110, invertendo:
+001001, adicionando 1:
+     1
+001010
+
+d.) C2,10 (153(8)) = 1110010101(2)
+Convertendo para base 2 direto:
+ 1    5   3
+ 001  101 011 = 001101011, adicionando 0 para 10 bits:
+0001101011, invertendo e somando 1:
+1110010100 +
+         1
+1110010101
+
+
+e.) C2,8 (7D(16)) = 10000011(2)
+Convertendo para base 2:
+7 em binário: 0111
+D=13, em binário: 1101
+01111101, invertendo e somando 1:
+10000010
+       1+
+10000011
+
+
+02b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex02-874422_Nayron.v
+
+
+03a.) manualmente
+
+a.) 10101(2) = 11(10)
+10101
+    1-
+10100, invertendo:
+01011, convertendo a base 10
+2^3 + 2^1 + 2^0 = 11
+
+b.) 110101(2) = 11(10)
+110101
+     1-
+110100, invertendo:
+001011, convertendo a base 10:
+2^3 + 2^1 + 2^0 = 11
+
+c.) 100110(2) = 011010X(2)
+100110
+     1-
+100101, invertendo:
+011010
+
+d.) 1010111(2) = 0101001(2)
+1010111
+      1-
+1010110, invertendo:
+0101001
+
+e.) 1110101(2) = 0B(16)
+1110101
+      1-
+1110100, invertendo:
+0001011, convertendo a base 16:
+0000 1011
+  0    B = 0B
+
+03b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex03-874422_Nayron.v
+
+
+04.) Fazer as operações indicadas mediante uso de complemento de dois:
+04a.) manualmente
+
+a.) 11101(2) - 1101(2) = 10000(2) (OBS: Colocar do mesmo tamanho, primeiro)
+invertendo número do mesmo tamanho 01101:
+
+10010
++   1
+10011
+
+somando:
+  11101
++ 10011
+ 110000
+(1)10000
+
+Voltando ao resultado positivo:
+10000 -> 01111+1= 10000
+
+b.) 101,1001(2) - 10,01(2) = 111,0101(2) (OBS.: Alinhar as vírgulas, primeiro, antes de operar)
+101,1001 - 10,0100, complemente do segundo:
+ 01,1011
++      1
+ 01,1100
+
+Somando:
+
+101,1001
++01,1100
+111,0101 
+
+c.) 321(4) - 213(4) = 102(4)
+transformando em binário:
+111001-100111, complemento de 2:
+
+011000+1=011001
+011001+111001= (1)010010
+
+01 00 10
+ 1  0  2
+
+
+d.) 354(8) - 265(8) = 067(8)
+011 101 100 - 010 110 101, complemento de 2:
+              101 001 010
+             +          1
+              101 001 011
+Somando:
+011 101 100+101 001 011= (1)000 110 111, na base 6 = 0 6 7
+
+
+e.) 6A2(16) - C14(16) = A8E(16)
+0110 1010 0010 - 1100 0001 0100, complemento de dois:
+                 0011 1110 1011
+                +             1
+                 0011 1110 1100
+0110 1010 0010
+0011 1110 1100+
+1010 1000 1110 = A 8 E
+
+04b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex04-874422_Nayron.v
+
+
+05.) Executar as operações abaixo,
+05a.) manualmente
+
+a.) 110110(2) – 1101(2) = 00101001
+00110110 - 00001101
+Complemento de 2:
+11110010
++      1
+11110011
+
+Somando ambos:
+00110110
+11110011+
+(1)00101001
+
+b.) 101,1011(2) – 3,4(8) = 0010,001
+0101,1011 - 0011,100
+complemento de 2:
+1100,011
++      1
+1100,100
+
+0101,1011
+1100,100+
+(1)0010,001
+
+c.) 231(4) – 3A(16) = 1111 0011
+0010 1101 - 0011 1010
+complemento de 2:
+1100 0101
++      1
+1100 0110
+
+0010 1101
+1100 0110+
+1111 0011
+
+
+d.) D3(16) – 1011101(2) = 0111 0110
+1101 0011 - 0101 1101
+complemento de 2:
+1010 0010
++      1
+1010 0011
+
+1101 0011
+1010 0011+
+0111 0110
+
+
+e.) 5E(16) – 3C(16) = 0010 0010
+0101 1110 - 0011 1100
+complemento de 2:
+1100 0011
++      1
+1100 0100
+
+0101 1110
+1100 0100+
+0010 0010
+
+05b.) mediante uso de um programa em Verilog
+
+Disponível na pasta como ex05-874422_Nayron.v

@@ -1,0 +1,36 @@
+//Nayron Campos Soares
+//MAtrícula: 874422
+
+01.)
+
+a)
+Da = x(Q1'Q0 + Q1Q0') + Q1Q0
+
+b)
+Db = (Q1 + Q0 + x) · (Q1 + Q0 + x') · (Q1 + Q0' + x') · (Q1' + Q0 + x)
+
+c)
+Ja = x (Q1'Q0 + Q1Q0')
+Ka = Q1' Q0 x'
+
+d)
+Jb = m2 M(0,1,3,4,5,6,7)
+Kb = m3, m4 M(0,1,2,5,6,7)
+
+e)
+Ta = Q1'Q0 x + Q1'Q0' x' + Q1Q0' x
+
+f)
+Tb = Q1 xor Q1+
+
+
+02.) Dada a expressão PoS (1,3,6,7)
+
+a.) expressão simplificada por mintermos
+(a'.c) + (b'.c) + (a.b')
+
+b.) expressão SoP em Verilog, com módulo de testes
+Na pasta
+
+c.) expressão PoS em Verilog, com módulo de testes
+Na pasta

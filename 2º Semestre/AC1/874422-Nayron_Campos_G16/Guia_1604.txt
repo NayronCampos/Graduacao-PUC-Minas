@@ -1,0 +1,32 @@
+//Nayron Campos Soares
+//Matricula: 874422 
+//Ex01
+
+JMP MAIN
+
+F_MAX:
+    MOV A, M        
+    INX H            
+    MOV B, M         
+    CMP B            
+    JC F_NEXT        
+    MOV A, B         
+F_NEXT:
+    INX H            
+    MOV B, M         
+    MOV L, A         
+    RET              
+
+MAIN:
+    LXI H, 0050      
+    CALL F_MAX       
+
+    STA 0052         
+    HLT              
+
+END:
+
+// Data section
+// dado01: 10h ; First element of the array
+// dado02: 03h ; Second element of the array
+// dado03: 00h ; Maximum value

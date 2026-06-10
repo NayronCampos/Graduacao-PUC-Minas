@@ -1,0 +1,89 @@
+ARQUITETURA DE COMPUTADORES I – Atividade Prática – Artigo Científico
+
+//Aluno: Nayron Campos Soares
+//Matrícula: 874422
+
+Questão 1:
+
+Artigos lidos:
+
+- Dispositivos Lógicos Programáveis (Prof. Marcelo Wendling, UNESP);
+- O CPLD (Dispositivo Complexo de Lógica Programação aplicado em automação industrial" Tiago Tobias Freitas, Thiago Luiz Pasqualinoto e Juliano Carlos Leão;
+
+
+Questão 2:
+
+ Referências segundo ABNT:
+
+FREITAS, Tiago Tobias; PASQUALINOTO, Thiago Luiz; LEÃO, Juliano Carlos.
+O CPLD (Dispositivo Complexo de Lógica Programação aplicado em automação industrial). Trabalho apresentado à Feira SENAI Paulista de Inovação Tecnológica – INOVASENAI, 2005, na categoria Equipamento. Centro de Treinamento SENAI/Lençóis Paulista-SP, 2005. 51 p. Arquivo PDF fornecido pelo autor.
+
+OLIVEIRA, Caio Augusto de; AGUIAR, Jéssica Azevedo de; FONTANINI, Mateus Galvão Said.
+Dispositivos de Lógica Programável. Guaratinguetá: Colégio Técnico Industrial de Guaratinguetá “Professor Carlos Augusto Patrício Amorim” – CTIG/UNESP, 2011. Revisão: Marcelo Wendling. 43 p. Disponível em: https://www.feg.unesp.br/Home/PaginasPessoais/ProfMarceloWendling/logica-programavel.pdf. Acesso em: 27 abr. 2025. 
+
+
+Questão 3:
+
+Segundo os textos recomendados, definir e caracterizar
+
+ ASIC - Application Specific IC
+Sua função é inteiramente “gravada” na própria máscara de fabricação: ou seja, ele não é genérico, mas sim projetado para executar apenas um conjunto específico de operações lógicas ou aritméticas, definidas pelo designer. Requer máscaras específicas para cada para cada projeto, mas acaba elevando seu custo.
+
+ ASSP – Application Specific Standard Product
+É um CI padronizado para um mercado de aplicação específico e vendido “pronto” a múltiplos fabricantes, combinando funções digitais, mistas e analógicas sem a necessidade de reengenharia completa para cada cliente, o que reduz o NRE em comparação a um ASIC puro.
+
+ SPLD – Simple Programmable Logic Device
+São pequenos PLDs que reúnem uma matriz programável de portas (AND/OR em PLA ou AND programável e OR fixo em PAL) para implementar funções de soma de produtos em lógica de glue e máquinas de estado simples, com capacidade reduzida, baixo custo e facilidade de reprogramação pós-fabricação.
+
+ CPLD – Complex Programmable Logic Device
+Agrupa vários SPLDs (macrocélulas) interligados por um barramento programável (PIA), com configuração não-volátil (EEPROM/Flash) que dá boot instantâneo, capacidade lógica moderada (centenas a poucos milhares de portas) e atrasos de propagação previsíveis em torno de nanossegundos.
+
+ SoC – System on Chip
+Integra em um único die não só blocos de lógica programável, mas também CPU(s), memória, periféricos e aceleradores de hardware, formando um sistema completo em silício que reduz custos, consumo e espaço em aplicações embarcadas.
+
+ FPGA – Field Programmable Gate Array
+Consiste em uma malha de células lógicas (LUTs) e chaves de roteamento programáveis em campo, permitindo reconfigurar quantas vezes for preciso para implementar lógica muito complexa, embora sofra overhead de latência e consumo comparado a ASICs/CPLDs.
+
+
+Questão 4:
+
+Diferenciar (sugestão: montar uma tabela)
+ PROM
+ PLA
+ PAL
+ ________________________________________________________ 
+| CHIP |    Nível    |           Vantagem           |       Desvantagem      |
+|------|-------------|------------------------------|------------------------|
+| PROM | Memoria ROM | Pode implementar tabela da   | Alto custo de silício  |
+|      | programável | verdade simples.             | por função lógica.     |
+|------|-------------|------------------------------|------------------------|
+| PLA  |  2 níveis   | Máxima flexibilidade para    | Custo de fabricação    |
+|      |  (AND+OR)   | funções de somas.            | elevado.               |
+|------|-------------|------------------------------|------------------------|
+| PAL  |  1 nível    | Custos e atrasos menores     | Menos flexível.        |
+|      |(AND)+OR fixo| que o PLA.                   |                        |
+|______|_____________|______________________________|________________________|
+
+Em resumo:
+
+A PROM é um chip de memória ROM reprogramável que, pela sua estrutura, chegou a ser usado como PLD.
+
+O PLA é um chip que inclui internamente dois planos programáveis de portas AND e OR, formando um dispositivo de lógica programável.
+
+O PAL é também um chip de PLD, com um plano de AND programável e um OR fixo, comercializado em canaletas padronizadas.
+
+
+Questão 5:
+
+Diferenciar (sugestão: montar uma tabela)
+ CPLD
+ FPGA
+
+
+Característica    | CPLD                       | FPGA
+----------------- | -------------------------- | ---------------------------
+Organização       | Vários blocos de lógica    | Rede de pequenos blocos
+Início            | Liga e já funciona         | Precisa carregar o programa
+Tamanho           | Médio (até alguns milhares)| Grande (dezenas de milhares)
+Reconfigurar      | Troca parte por JTAG       | Troca tudo com arquivo  
+

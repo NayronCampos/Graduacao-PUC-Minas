@@ -1,0 +1,41 @@
+//Nayron Campos Soares
+//Matricula: 874422 
+//Ex01
+
+JMP MAIN
+
+F_BCD_TO_HEX:
+    MOV A, M         
+    ANI 0F0h         
+    MOV B, A         
+    
+    MOV A, M         
+    ANI 0Fh          
+    MOV C, A         
+    
+    MVI D, 00        
+    
+    MOV A, B         
+    ADD A            
+    MOV E, A         
+    ADD A            
+    MOV H, A         
+    ADD E            
+    MOV L, A         
+    
+    ADD C            
+    STA 0052         
+    
+    RET              
+
+MAIN:
+    LXI H, 0050      
+    CALL F_BCD_TO_HEX 
+
+    HLT              
+
+END:
+
+// Data section
+// dado01: 24h
+// dado02: 00h
