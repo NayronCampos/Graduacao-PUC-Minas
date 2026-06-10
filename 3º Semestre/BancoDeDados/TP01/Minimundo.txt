@@ -1,0 +1,37 @@
+    /*
+    O aluno deverá definir e construir um banco de dados relacional com no mínimo 8 e no máximo 12 entidades. O banco de dados deverá obedecer aos seguintes critérios:
+
+    Estar relacionado ao problema social de adoção de animais (cães, gatos) para pessoas interessadas.
+    Os alunos devem modelar um problema real, para isso devem visitar alguma organização com fim social que realize adoção de animais, entrevistar usuários, e extrair a descrição do minimundo a partir dessa realidade.
+
+
+    O banco de dados deverá minimamente permitir o registro de animais, capturadores (pessoas que recolhem e entregam os animais), captura (registros de local e data onde o animal foi encontrado ou recolhindo), receptores (pessoas que adotam animais), adoções (com registro de data de adoção).
+    */
+
+    MINIMUNDO:
+
+ A Pet Lares é uma instituição que atua no acolhimento de animais em situação de rua ou fragilidade, oferecendo cuidados veterinários e disponibilizando-os para adoção. Cada instituição deve possuir um identificador único, a cidade e o nome da filial.
+
+Quando um animal é recolhido, ele é cadastrado no sistema com um identificador gerado automaticamente, nome, raça, tipo (cão ou gato) e idade registrada em meses. No momento do recolhimento, também são registrados o local da captura, a data da captura e o capturador responsável, que é a pessoa que encontrou e recolheu o animal.
+
+Os capturadores são identificados por matrícula, nome, sexo e data de nascimento, e podem capturar vários animais.
+
+O atendimento veterinário é registrado separadamente: sempre que um veterinário examina ou trata um animal, é criado um registro de atendimento indicando a data, o animal atendido e o veterinário responsável.
+
+Os veterinários são identificados por CPF, nome e área de atuação, e podem atender vários animais.
+
+A Pet Lares conta também com voluntários, responsáveis por auxiliar nas atividades internas, transporte, eventos e cuidados gerais. Os voluntários possuem matrícula, nome, sexo, data de nascimento e telefone. Um voluntário pode ajudar em várias instituições, e o sistema registra quantas horas ele auxiliou em cada instituição, permitindo controlar seu histórico de contribuição.
+
+As pessoas interessadas em adotar um animal se cadastram como receptores, com CPF, nome, data de nascimento e endereço. Um receptor pode adotar vários animais, e um mesmo animal pode ser adotado por diferentes receptores ao longo do tempo caso seja devolvido. Cada adoção registra o animal adotado, o receptor e o veterinário responsável pela liberação do animal, além da data da adoção.
+    <------------------------------------------------------------------------------------------------------>
+
+    Entidades:
+    - Animal
+    - Capturador
+    - Receptor
+    - Atendido
+    - Adoção
+    - Ajuda
+    - Veterinário
+    - Voluntário
+    - Instituição

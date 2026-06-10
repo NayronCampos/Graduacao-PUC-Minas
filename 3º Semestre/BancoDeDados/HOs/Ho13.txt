@@ -1,0 +1,62 @@
+Banco de dados
+Aluno: Nayron Campos Soares
+Matrícula: 874422
+
+
+Reescrever as consultas abaixo para maximizar a probabilidade delas serem executadas de maneira eficiente:
+
+
+1
+
+Código:
+SELECT DISTINCT A.CPF, A.Nome
+FROM Funcionarios A
+WHERE A.CPF IN (SELECT CPF_Supervisor FROM Funcionarios)
+ AND A.CPF NOT IN (SELECT CPF FROM Clientes)
+
+Reescrita:
+
+    SELECT A.CPF, A.Nome
+    FROM Funcionarios A
+    JOIN Funcionarios B ON A.CPF = B.CPF_Supervisor
+    LEFT JOIN Clientes C ON A.CPF = C.CPF
+    WHERE C.CPF IS NULL;
+
+2
+
+Código:
+SELECT A.CodFilme, B.Nome
+FROM Midias A, Filmes B
+WHERE A.CodFilme = B.Codigo
+ AND A.Tipo = "DVD"
+OR A.Tipo = "VHS"
+
+Reescrita:
+
+    SELECT A.CodFilme, B.Nome
+    FROM Midias A
+    JOIN Filmes B ON A.CodFilme = B.Codigo
+    WHERE A.Tipo IN ('DVD', 'VHS');
+
+3
+
+Código:
+SELECT A.CPF_Cliente, A.ID_Midia, A.DataLocacao
+FROM Aluguel A, Clientes B
+WHERE A.CPF_Cliente = B.CPF
+ AND B.Sexo != "F"
+ AND EXISTS (SELECT * FROM Pagamentos C
+WHERE C.CPF_Cliente = A.CPF_Cliente
+ AND C.ID_Midia = A.ID_Midia
+ AND C.DataLocacao = A.DataLocacao)
+
+Reescrita:
+
+    SELECT A.CPF_Cliente, A.ID_Midia, A.DataLocacao
+    FROM Aluguel A
+    JOIN Clientes B ON A.CPF_Cliente = B.CPF
+    JOIN Pagamentos C ON C.CPF_Cliente = A.CPF_Cliente
+      AND C.ID_Midia = A.ID_Midia
+      AND C.DataLocacao = A.DataLocacao
+    WHERE B.Sexo != 'F';
+
