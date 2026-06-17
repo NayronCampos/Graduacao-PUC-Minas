@@ -25,3 +25,6 @@ from imblearn.over_sampling import SMOTE
 RANDOM_STATE = 42
 np.random.seed(RANDOM_STATE)
 
+
+df = pd.read_csv("creditcard.csv")
+df.head()
