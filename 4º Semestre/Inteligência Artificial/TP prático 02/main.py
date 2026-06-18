@@ -1,5 +1,4 @@
 import time
-
 from bfs import bfs
 from dfs import dfs
 from uniforme import busca_uniforme
