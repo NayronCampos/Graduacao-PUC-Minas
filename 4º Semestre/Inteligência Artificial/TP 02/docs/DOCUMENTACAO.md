@@ -1,6 +1,6 @@
 # TP 02: Algoritmos de Busca no 8-Puzzle
 
-**Grupo**: Nayron Campos, Davi Manuel, Felipe Quites, Felipe Costa
+**Grupo**: Nayron Campos, Davi Manoel, Felipe Quites, Felipe Costa
 
 ## O Projeto
 
@@ -287,7 +287,7 @@ A gente usou:
 - Wikipedia e artigos sobre 8-Puzzle
 - A comunidade Python e Stack Overflow (porque a gente ama programar, não inventar a roda)
 
-**Desenvolvido por**: Nayron Campos, Davi Manuel, Felipe Quites, Felipe Costa  
+**Desenvolvido por**: Nayron Campos, Davi Manoel, Felipe Quites, Felipe Costa  
 **Disciplina**: Inteligência Artificial  
 **Universidade**: PUC Minas  
 **Data**: Junho 2026
