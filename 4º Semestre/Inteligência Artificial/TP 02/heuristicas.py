@@ -27,7 +27,7 @@ def h2_manhattan(estado):
         linha_atual = i // 3
         coluna_atual = i % 3
 
-        pos_obj = valor - 1
+        pos_obj = valor
 
         linha_obj = pos_obj // 3
         coluna_obj = pos_obj % 3
