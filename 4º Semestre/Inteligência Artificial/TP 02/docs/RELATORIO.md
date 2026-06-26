@@ -1,6 +1,6 @@
 # Relatório: Algoritmos de Busca para o 8-Puzzle
 
-**Grupo**: Nayron Campos, Davi Manuel, Felipe Quites, Felipe Costa  
+**Grupo**: Nayron Campos, Davi Manoel, Felipe Quites, Felipe Costa  
 **Disciplina**: Inteligência Artificial  
 **Universidade**: PUC Minas  
 **Data**: Junho 2026
